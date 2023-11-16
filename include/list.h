@@ -5,12 +5,19 @@
 #ifndef LO21_LIST_H
 #define LO21_LIST_H
 
-typedef struct elem{
-    int value;
+typedef struct elemRules{
+    char *value;
     struct elem *next;
-    struct elem *prev;
-} ElemList;
+} ElemRules;
 
-typedef ElemList *List;
+typedef ElemRules *RulesList;
+
+typedef struct elemListRules{
+    RulesList value;
+    char *conclude;
+    struct elemListRules *next;
+} ElemRulesList;
+
+typedef ElemRules *ListOfRules;
 
 #endif //LO21_LIST_H
