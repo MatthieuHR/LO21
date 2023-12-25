@@ -31,3 +31,5 @@ Rules* remouvePremise(Rules* rule,Properties premise);
 Bool isPremiseEmpty(Rules* rule);
 ElmOfProperties* getHeadOfPremise(Rules* rule);
 Properties* getConclusion(Rules* rule);
+void printPremise(Rules* rule);
+void printRule(Rules* rule);

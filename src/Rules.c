@@ -24,6 +24,12 @@ Bool cmpProperty(Properties p1, Properties p2){
     }
 }
 
+void printProperties(Properties* p){
+    if(p!=NULL){
+        printf("name:%s desc:%s\n",p->name,p->desc);
+    }
+}
+
 Rules* createEmptyRule(){
     Rules* newl = malloc(sizeof (Rules));
     newl->is_true=False;
@@ -110,4 +116,22 @@ ElmOfProperties* getHeadOfPremise(Rules* rule){
 
 Properties* getConclusion(Rules* rule){
     return rule->conclusion;
+}
+
+void printPremise(Rules* rule){
+    ElmOfProperties *point = rule->premise;
+    while (point!=NULL){
+        printProperties(&point->value);
+        point=point->next;
+    }
+}
+
+void printRule(Rules* rule){
+    printPremise(rule);
+    printProperties(rule->conclusion);
+    if(rule->is_true==True){
+        printf("Rule is True\n");
+    }else{
+        printf("Rule is False\n");
+    }
 }
