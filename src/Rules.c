@@ -3,11 +3,31 @@
 #include "stdio.h"
 #include "string.h"
 
+ void affectValues(Properties* source, Properties* dest){
+    strcpy( dest->name,source->name);
+    strcpy( dest->desc,source->desc);
+}
+
+Bool isEmptyProperty(Properties prop){
+    if(prop.name != NULL){
+        return False;
+    }else{
+        return True;
+    }
+}
+
+Bool cmpProperty(Properties p1, Properties p2){
+    if(p1.name==p2.name){
+        return True;
+    } else{
+        return False;
+    }
+}
+
 Rules* createEmptyRule(){
     Rules* newl = malloc(sizeof (Rules));
     newl->is_true=False;
-    newl->conclusion.name="None";
-    newl->conclusion.desc="None";
+    newl->conclusion=NULL;
     newl->premise=NULL;
     return newl;
 }
@@ -16,8 +36,7 @@ Rules* addPremise(Rules* rules,Properties premise){
     if(premise.name != NULL && premise.desc != NULL){
         if((strcmp(premise.name,"")!=0)){
             ElmOfProperties* newl = malloc(sizeof(ElmOfProperties));
-            strcpy( newl->value.name,premise.name);
-            strcpy( newl->value.desc,premise.desc);
+            affectValues(&premise,&newl->value);
             newl->next=NULL;
             newl->prev=NULL;
             if(rules==NULL){
@@ -39,21 +58,19 @@ Rules* addPremise(Rules* rules,Properties premise){
 }
 
 
-Rules* createConclusion(Rules* rule, Properties conclusion){
-    if(conclusion.name != NULL && conclusion.desc != NULL){
-        if(strcmp(conclusion.name,"")!=0){
-            if(rule!=NULL || rule->premise!=NULL){
-                if(rule->premise->value.name != NULL){
-                    rule->conclusion=conclusion;
-                    return rule;
-                }
+Rules* createConclusion(Rules* rule, Properties* conclusion){
+    if(isEmptyProperty(*conclusion)){
+        if(rule!=NULL || rule->premise!=NULL){
+            if(isEmptyProperty(rule->premise->value)==False){
+                   rule->conclusion=conclusion;
+                   return rule;
             }
         }
     }
 }
 
 Bool PropertiesInPremise(ListOfProperties premise, Properties prop){
-    if(premise->value.name==prop.name){
+    if(cmpProperty(premise->value,prop)==True){
         return True;
     }
     return PropertiesInPremise(premise->next,prop);
@@ -63,7 +80,7 @@ Rules* remouvePremise(Rules* rule,Properties premise){
     if(rule->premise!=NULL){
         ElmOfProperties* point = rule->premise;
         while (point->next!=NULL){
-            if(point->value.name == premise.name){
+            if(cmpProperty(point->value,premise)){
                 point->prev->next=point->next;
                 point->next->prev=point->prev;
                 free(point);
@@ -91,6 +108,6 @@ ElmOfProperties* getHeadOfPremise(Rules* rule){
     }
 }
 
-Properties getConclusion(Rules* rule){
+Properties* getConclusion(Rules* rule){
     return rule->conclusion;
 }

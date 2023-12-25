@@ -17,7 +17,7 @@ typedef ElmOfProperties * ListOfProperties;
 
 typedef struct elm2{
     ListOfProperties premise;
-    Properties conclusion;
+    Properties* conclusion;
     Bool is_true;
 }Rules;
 
@@ -25,9 +25,9 @@ typedef Rules* ListOfRules;
 
 Rules* createEmptyRule();
 Rules* addPremise(Rules* rules,Properties premise);
-Rules* createConclusion(Rules* rule, Properties conclusion);
+Rules* createConclusion(Rules* rule, Properties* conclusion);
 Bool PropertiesInPremise(ListOfProperties premise, Properties prop);
 Rules* remouvePremise(Rules* rule,Properties premise);
 Bool isPremiseEmpty(Rules* rule);
 ElmOfProperties* getHeadOfPremise(Rules* rule);
-Properties getConclusion(Rules* rule);
+Properties* getConclusion(Rules* rule);
