@@ -4,8 +4,8 @@
 #include "string.h"
 
  void affectValues(Properties* source, Properties* dest){
-    strcpy( dest->name,source->name);
-    strcpy( dest->desc,source->desc);
+    dest->name = source->name;
+    dest->desc = source->desc;
 }
 
 Bool isEmptyProperty(Properties prop){
@@ -17,7 +17,7 @@ Bool isEmptyProperty(Properties prop){
 }
 
 Bool cmpProperty(Properties p1, Properties p2){
-    if(p1.name==p2.name){
+    if(strcmp(p1.name,p2.name)==0){
         return True;
     } else{
         return False;
@@ -44,7 +44,6 @@ Rules* addPremise(Rules* rules,Properties premise){
             ElmOfProperties* newl = malloc(sizeof(ElmOfProperties));
             affectValues(&premise,&newl->value);
             newl->next=NULL;
-            newl->prev=NULL;
             if(rules==NULL){
                 rules = createEmptyRule();
             }
@@ -56,7 +55,6 @@ Rules* addPremise(Rules* rules,Properties premise){
                     point = point->next;
                 }
                 point->next=newl;
-                newl->prev=point;
             }
             return rules;
         }
@@ -76,6 +74,7 @@ Rules* createConclusion(Rules* rule, Properties* conclusion){
 }
 
 Bool PropertiesInPremise(ListOfProperties premise, Properties prop){
+    if(premise == NULL){return False;}
     if(cmpProperty(premise->value,prop)==True){
         return True;
     }
@@ -85,14 +84,22 @@ Bool PropertiesInPremise(ListOfProperties premise, Properties prop){
 Rules* remouvePremise(Rules* rule,Properties premise){
     if(rule->premise!=NULL){
         ElmOfProperties* point = rule->premise;
-        while (point->next!=NULL){
-            if(cmpProperty(point->value,premise)){
-                point->prev->next=point->next;
-                point->next->prev=point->prev;
-                free(point);
-                return rule;
+        if(cmpProperty(point->value,premise)==True){
+            rule->premise=point->next;
+            free(point);
+
+        }else{
+            if(point->next!=NULL){
+                while (point->next!=NULL){
+                    if(cmpProperty(point->next->value,premise)==True){
+                        ElmOfProperties* tmp = point->next;
+                        point->next=point->next->next;
+                        free(tmp);
+                        return rule;
+                    }
+                    point = point->next;
+                }
             }
-            point = point->next;
         }
     }
     return rule;
@@ -127,7 +134,9 @@ void printPremise(Rules* rule){
 }
 
 void printRule(Rules* rule){
+    printf("Premise :\n");
     printPremise(rule);
+    printf("Conclusion:\n");
     printProperties(rule->conclusion);
     if(rule->is_true==True){
         printf("Rule is True\n");

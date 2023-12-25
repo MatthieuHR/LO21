@@ -6,4 +6,6 @@ set(CMAKE_C_STANDARD 11)
 add_executable(LO21 main.c
         src/Rules.c
         include/Rules.h
-        test/TestRules.c)
+        test/TestRules.c
+        src/BC.c
+        include/BC.h)
