@@ -4,24 +4,23 @@
 typedef struct elm1{
     Properties* value;
     struct elm1* next;
-}ElmOfRules;
+}ElmOfPremise;
 
-typedef ElmOfRules * ListOfProperties;
+typedef ElmOfPremise * Premise;
 
-typedef struct elm2{
-    ListOfProperties premise;
+typedef struct{
+    Premise premise;
     Properties* conclusion;
-    Bool is_true;
 }Rules;
 
 
 Rules* createEmptyRule();
 Rules* addPremise(Rules* rules,Properties* premise);
 Rules* createConclusion(Rules* rule, Properties* conclusion);
-Bool PropertiesInPremise(ListOfProperties premise, Properties* prop);
+Bool PropertiesInPremise(Premise premise, Properties* prop);
 Rules* remouvePremise(Rules* rule,Properties* premise);
 Bool isPremiseEmpty(Rules* rule);
-ElmOfRules* getHeadOfPremise(Rules* rule);
+ElmOfPremise* getHeadOfPremise(Rules* rule);
 Properties* getConclusion(Rules* rule);
 void printPremise(Rules* rule);
 void printRule(Rules* rule);

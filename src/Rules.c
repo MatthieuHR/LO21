@@ -5,7 +5,6 @@
 //Function to create an empty Rules with all pointer initialise on NULL
 Rules* createEmptyRule(){
     Rules* newl = malloc(sizeof (Rules));
-    newl->is_true=False;
     newl->conclusion=NULL;
     newl->premise=NULL;
     return newl;
@@ -14,7 +13,7 @@ Rules* createEmptyRule(){
 //Function to add a Properties in the premise field to a Rules
 Rules* addPremise(Rules* rules,Properties* premise){
         if(isEmptyProperty(premise) == False){
-            ElmOfRules* newl = malloc(sizeof(ElmOfRules));
+            ElmOfPremise* newl = malloc(sizeof(ElmOfPremise));
             newl->value=premise;
             newl->next=NULL;
             if(rules==NULL){
@@ -23,7 +22,7 @@ Rules* addPremise(Rules* rules,Properties* premise){
             if(rules->premise==NULL){
                 rules->premise=newl;
             } else{
-                ElmOfRules* point = rules->premise;
+                ElmOfPremise* point = rules->premise;
                 while (point->next != NULL){
                     point = point->next;
                 }
@@ -45,7 +44,7 @@ Rules* createConclusion(Rules* rule, Properties* conclusion){
 }
 
 //Function to check if a Properties is in the premise field of a Rules
-Bool PropertiesInPremise(ListOfProperties premise, Properties* prop){
+Bool PropertiesInPremise(Premise premise, Properties* prop){
     if(premise == NULL){return False;}
     if(cmpProperty(premise->value,prop)==True){
         return True;
@@ -56,7 +55,7 @@ Bool PropertiesInPremise(ListOfProperties premise, Properties* prop){
 //Function to remove(free) a Properties in the premise field of a Rules
 Rules* remouvePremise(Rules* rule,Properties* premise){
     if(rule->premise!=NULL){
-        ElmOfRules* point = rule->premise;
+        ElmOfPremise* point = rule->premise;
         if(cmpProperty(point->value,premise)==True){
             rule->premise=point->next;
             free(point);
@@ -65,7 +64,7 @@ Rules* remouvePremise(Rules* rule,Properties* premise){
             if(point->next!=NULL){
                 while (point->next!=NULL){
                     if(cmpProperty(point->next->value,premise)==True){
-                        ElmOfRules* tmp = point->next;
+                        ElmOfPremise* tmp = point->next;
                         point->next=point->next->next;
                         free(tmp);
                         return rule;
@@ -87,8 +86,8 @@ Bool isPremiseEmpty(Rules* rule){
     }
 }
 
-//Function who return the first Premise(ElmOfRules) of a Rules
-ElmOfRules* getHeadOfPremise(Rules* rule){
+//Function who return the first Premise(ElmOfPremise) of a Rules
+ElmOfPremise* getHeadOfPremise(Rules* rule){
     if(isPremiseEmpty(rule) == True){
         return NULL;
     }else{
@@ -103,7 +102,7 @@ Properties* getConclusion(Rules* rule){
 
 //Function who display with style the premise field
 void printPremise(Rules* rule){
-    ElmOfRules *point = rule->premise;
+    ElmOfPremise *point = rule->premise;
     while (point!=NULL){
         printProperties(&point->value);
         point=point->next;
@@ -116,9 +115,4 @@ void printRule(Rules* rule){
     printPremise(rule);
     printf("Conclusion:\n");
     printProperties(rule->conclusion);
-    if(rule->is_true==True){
-        printf("Rule is True\n");
-    }else{
-        printf("Rule is False\n");
-    }
 }
