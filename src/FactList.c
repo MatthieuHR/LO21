@@ -69,7 +69,7 @@ FactList remouveAllFacts(FactList list){
     return point;
 }
 
-//Fonction to get the fact in a FactList and NULL if the fact is not in the Factlist
+//Fonction to get the fact in a FactList and NULL if the fact is not in a Factlist
 Properties* isInFactList(FactList list, Properties* fact){
     if(list==NULL){return NULL;}
     if(cmpProperty(list->fact,fact)==True){return list->fact;}
