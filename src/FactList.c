@@ -47,7 +47,7 @@ FactList createFactList(){
 
 //Function to add a fact(Properties) in tail to a FactList
 FactList addFact(FactList list,Properties fact){
-    ElmOfFact* newl = malloc(sizeof(ElmOfFact));
+    ElmOfFact* newl = createFactList();
     if((newl->fact= affectField(fact)) == NULL){
         return NULL;
     }
