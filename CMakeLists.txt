@@ -8,4 +8,7 @@ add_executable(LO21 main.c
         include/Rules.h
         test/TestRules.c
         src/BC.c
-        include/BC.h)
+        include/BC.h
+        src/FactList.c
+        include/FactList.h
+        include/define.h)

@@ -1,8 +1,8 @@
 #include "Rules.h"
 
-typedef struct elm{
+typedef struct elm3{
     Rules* rule;
-    struct elm* next;
+    struct elm3* next;
 }ElmBC;
 
 typedef ElmBC * BC;
