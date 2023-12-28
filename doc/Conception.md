@@ -13,6 +13,8 @@ De plus nous avons aussi remarqué que les algorithms ne tirait pas d'avantages 
 
 ## Types implémentés
 
+Voici un récapitulatif des types implémenté et leurs utilités (sans distinctions entre pointeur et type).
+
 ---
 ### `Property`
 
@@ -119,6 +121,7 @@ typedef struct elm{
 
 typedef ElmOfFact* FactList;
 ````
+Ici `fact` est un pointeur sur un élément du type `Property` pour pouvoir les comparées en mémoire.
 
 ---
 ### Fichier `Rules.h`
