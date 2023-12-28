@@ -9,15 +9,15 @@ Dans cette sections vous pouvez retrouver tous les algorithmes des sous programm
 ### `addFact`
 Cette fonction sert a ajouter un élément dans une `FactList`.
 ````
-function addFact(list:FactList, fact:Properties):FactList
+function addFact(list:FactList, fact:Property):FactList
 Start
     newl:ElmOfFact
     fact(newl) <- affectfiel(fact)
-    If isEmpty(fact(newl)) SO
+    If isEmpty(fact(newl)) Then
         addFact <- EMTPY
     EndIf
     next(newl) = EMPTY
-    If not isEmpty(list) SO
+    If not isEmpty(list) Then
         next(newl) <- list
     EndIf
     addFact <- newl
@@ -39,21 +39,21 @@ Start
     remouveAllFacts <- point
 End
 ````
-## Les algorithmes avec des `Rules`
+## Les algorithmes avec des `Rule`
 
 ---
 ### `addPremise`
 ````
-function addPremise(rule:Rules, premise:Properties):Rules
+function addPremise(rule:Rule, premise:Property):Rule
 Stat
-    If not isEmpty(premise) So
+    If not isEmpty(premise) Then
         newl:ElmOfPremise
-        value(newl) <- premise
+        premise(newl) <- premise
         next(newl) <- INDEFINE
-        If isEmpty(rule) So
+        If isEmpty(rule) Then
             rule <- createEmptyRule()
         EndIf
-        If isEmpty(premise(rule)) So
+        If isEmpty(premise(rule)) Then
             premise(rule) <- newl
         Else
             point:ElmOfPremise <- head(premise(rule))
@@ -70,10 +70,10 @@ End
 ---
 ### `createConclusion`
 ````
-function createConclusion(rule:Rules, conclusion:Properties):Rules
+function createConclusion(rule:Rule, conclusion:Property):Rule
 Start
-    If not isEmpty(conclusion) So
-        If not isEmpty(conclusion(rule)) So
+    If not isEmpty(conclusion) Then
+        If not isEmpty(conclusion(rule)) Then
             free(conclusion(rule))
         EndIf
         conclusion(rule) <- conclusion
@@ -85,12 +85,12 @@ End
 ---
 ### `PropertiesInPremise`
 ````
-function PropertiesInPremise(premise:Premise, prop:Properties):Bool
+function PropertiesInPremise(premise:Premise, prop:Property):Bool
 Start
-    If isEmpty(premise) So
+    If isEmpty(premise) Then
         PropertiesInPremise <- False
     EndIf
-    If value(head(premise)) = prop So
+    If premise(head(premise)) = prop Then
         PropertiesInPremise <- True
     Endif
     PropertiesInPremise <- PropertiesInPremise(rest(premise), prop)
@@ -100,17 +100,17 @@ End
 ---
 ### `remouvePremise`
 ````
-function remouvePremise(rule:Rules, premise:Properties):Rules
+function remouvePremise(rule:Rule, premise:Property):Rule
 Start
-    If not isEmpty(premise(Rule)) So
+    If not isEmpty(premise(Rule)) Then
         point:ElmOfPremise <- head(premise(rule))
-        If value(point) = premise So
+        If premise(point) = premise Then
             head(premise(rule)) <- next(point)
             free(point)
         Else
-            If not isEmpty(next(point)) So
+            If not isEmpty(next(point)) Then
                 While not isEmpty(next(point)) Do
-                    If value(next(point)) = premise So
+                    If premise(next(point)) = premise Then
                         tmp:ElmOfPremise <- next(point)
                         next(point) <- next(next(point))
                         free(tmp)
@@ -130,13 +130,13 @@ End
 ---
 ### `addRuleToBC`
 ```
-function addRuleToBC(bc:BC, rule:Rules):BC
+function addRuleToBC(bc:BC, rule:Rule):BC
 Start
-    newl:ElmBC
+    newl:ElmOfBC
     rule(newl) <- rule
     next(newl) <- INDEFINE
-    If not isEmpty(bc) So
-        point:ElmBC <- head(bc)
+    If not isEmpty(bc) Then
+        point:ElmOfBC <- head(bc)
         While not isEmpty(next(point)) Do
             point <- next(point)
         Done

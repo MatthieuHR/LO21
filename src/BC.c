@@ -6,13 +6,13 @@ BC createEmptyBC(){
     return malloc(sizeof(BC));
 }
 
-//Function to add a Rules to a BC
-BC addRuleToBC(BC bc,Rules* rule){
-    ElmBC* newl = malloc(sizeof (BC));
+//Function to add a Rule to a BC
+BC addRuleToBC(BC bc, Rule* rule){
+    ElmOfBC* newl = malloc(sizeof (BC));
     newl->rule=rule;
     newl->next=NULL;
     if(bc!=NULL){
-        ElmBC* point = bc;
+        ElmOfBC* point = bc;
         while (point->next!=NULL){
             point=point->next;
         }
@@ -23,8 +23,8 @@ BC addRuleToBC(BC bc,Rules* rule){
     }
 }
 
-//Function to get the first Rules of a BC
-Rules* getHeadRule(BC bc){
+//Function to get the first Rule of a BC
+Rule* getHeadRule(BC bc){
     if(bc!=NULL){
         return bc->rule;
     }else{

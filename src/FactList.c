@@ -3,8 +3,8 @@
 #include "stdio.h"
 #include "string.h"
 
-//Function to test if a Properties is empty (based on selected criteria)
-Bool isEmptyProperty(Properties* prop){
+//Function to test if a Property is empty (based on selected criteria)
+Bool isEmptyProperty(Property* prop){
     if(prop->name != NULL){
         return False;
     }else{
@@ -12,8 +12,8 @@ Bool isEmptyProperty(Properties* prop){
     }
 }
 
-//Function to compare 2 Properties (based on selected criteria) and return True if they are the same and False otherwise
-Bool cmpProperty(Properties* p1, Properties* p2){
+//Function to compare 2 Property (based on selected criteria) and return True if they are the same and False otherwise
+Bool cmpProperty(Property* p1, Property* p2){
     if(strcmp(p1->name,p2->name)==0){
         return True;
     } else{
@@ -21,17 +21,17 @@ Bool cmpProperty(Properties* p1, Properties* p2){
     }
 }
 
-//Methode to display a Properties
-void printProperties(Properties* p){
+//Methode to display a Property
+void printProperties(Property* p){
     if(p!=NULL){
         printf("name:%s desc:%s\n",p->name,p->desc);
     }
 }
 
-//Function to transform a Properties to a Properties pointer
-Properties* affectField(Properties fact){
+//Function to transform a Property to a Property pointer
+Property* affectField(Property fact){
     if(fact.desc != NULL && fact.name != NULL){
-        Properties* newl = malloc(sizeof(Properties));
+        Property* newl = malloc(sizeof(Property));
         newl->name=fact.name;
         newl->desc=fact.desc;
         return newl;
@@ -45,8 +45,8 @@ FactList createFactList(){
     return malloc(sizeof(FactList));
 }
 
-//Function to add a fact(Properties) in tail to a FactList
-FactList addFact(FactList list,Properties fact){
+//Function to add a fact(Property) in tail to a FactList
+FactList addFact(FactList list, Property fact){
     ElmOfFact* newl = createFactList();
     if((newl->fact= affectField(fact)) == NULL){
         return NULL;
@@ -70,7 +70,7 @@ FactList remouveAllFacts(FactList list){
 }
 
 //Fonction to get the fact in a FactList and NULL if the fact is not in a Factlist
-Properties* isInFactList(FactList list, Properties* fact){
+Property* isInFactList(FactList list, Property* fact){
     if(list==NULL){return NULL;}
     if(cmpProperty(list->fact,fact)==True){return list->fact;}
     else{return isInFactList(list->next,fact);}

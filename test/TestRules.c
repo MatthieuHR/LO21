@@ -2,10 +2,10 @@
 #include "stdio.h"
 
 int main(){
-    Rules* r1 = createEmptyRule();
-    Properties p1 = {"P1","P1"};
+    Rule* r1 = createEmptyRule();
+    Property p1 = {"P1", "P1"};
     r1 = addPremise(r1,p1);
-    Properties p2 = {"P2","P2"};
+    Property p2 = {"P2", "P2"};
     r1 = addPremise(r1, p2);
     p2.name = "CCL";p2.desc="CCL";
     r1= createConclusion(r1,&p2);
@@ -42,6 +42,6 @@ int main(){
         printf("The premise head didn't exist\n");
     }
 
-    Properties* ccl = getConclusion(r1);
+    Property* ccl = getConclusion(r1);
     printProperties(ccl);
 }

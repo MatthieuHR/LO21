@@ -1,12 +1,12 @@
 #include "Rules.h"
 
 typedef struct elm3{
-    Rules* rule;
+    Rule* rule;
     struct elm3* next;
-}ElmBC;
+}ElmOfBC;
 
-typedef ElmBC * BC;
+typedef ElmOfBC * BC;
 
 BC createEmptyBC();
-BC addRuleToBC(BC bc,Rules* rule);
-Rules* getHeadRule(BC bc);
+BC addRuleToBC(BC bc, Rule* rule);
+Rule* getHeadRule(BC bc);

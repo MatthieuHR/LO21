@@ -2,19 +2,19 @@
 #include "stdlib.h"
 #include "stdio.h"
 
-//Function to create an empty Rules with all pointer initialise on NULL
-Rules* createEmptyRule(){
-    Rules* newl = malloc(sizeof (Rules));
+//Function to create an empty Rule with all pointer initialise on NULL
+Rule* createEmptyRule(){
+    Rule* newl = malloc(sizeof (Rule));
     newl->conclusion=NULL;
     newl->premise=NULL;
     return newl;
 }
 
-//Function to add a Properties in the premise field to a Rules
-Rules* addPremise(Rules* rules,Properties* premise){
+//Function to add a Property in the premise field to a Rule
+Rule* addPremise(Rule* rules, Property* premise){
         if(isEmptyProperty(premise) == False){
             ElmOfPremise* newl = malloc(sizeof(ElmOfPremise));
-            newl->value=premise;
+            newl->premise=premise;
             newl->next=NULL;
             if(rules==NULL){
                 rules = createEmptyRule();
@@ -33,7 +33,7 @@ Rules* addPremise(Rules* rules,Properties* premise){
 }
 
 //Fonction to add or update the conclusion field of a rule
-Rules* createConclusion(Rules* rule, Properties* conclusion){
+Rule* createConclusion(Rule* rule, Property* conclusion){
     if(isEmptyProperty(conclusion)==False){
         if(isEmptyProperty(rule->conclusion)==False) {
             free(rule->conclusion);
@@ -43,27 +43,27 @@ Rules* createConclusion(Rules* rule, Properties* conclusion){
     return rule;
 }
 
-//Function to check if a Properties is in the premise field of a Rules
-Bool PropertiesInPremise(Premise premise, Properties* prop){
+//Function to check if a Property is in the premise field of a Rule
+Bool PropertiesInPremise(Premise premise, Property* prop){
     if(premise == NULL){return False;}
-    if(cmpProperty(premise->value,prop)==True){
+    if(cmpProperty(premise->premise, prop) == True){
         return True;
     }
     return PropertiesInPremise(premise->next,prop);
 }
 
-//Function to remove(free) a Properties in the premise field of a Rules
-Rules* remouvePremise(Rules* rule,Properties* premise){
+//Function to remove(free) a Property in the premise field of a Rule
+Rule* remouvePremise(Rule* rule, Property* premise){
     if(rule->premise!=NULL){
         ElmOfPremise* point = rule->premise;
-        if(cmpProperty(point->value,premise)==True){
+        if(cmpProperty(point->premise, premise) == True){
             rule->premise=point->next;
             free(point);
 
         }else{
             if(point->next!=NULL){
                 while (point->next!=NULL){
-                    if(cmpProperty(point->next->value,premise)==True){
+                    if(cmpProperty(point->next->premise, premise) == True){
                         ElmOfPremise* tmp = point->next;
                         point->next=point->next->next;
                         free(tmp);
@@ -78,7 +78,7 @@ Rules* remouvePremise(Rules* rule,Properties* premise){
 }
 
 //Function who return True if the premise is empty and False otherwise
-Bool isPremiseEmpty(Rules* rule){
+Bool isPremiseEmpty(Rule* rule){
     if(rule->premise==NULL){
         return True;
     } else{
@@ -86,8 +86,8 @@ Bool isPremiseEmpty(Rules* rule){
     }
 }
 
-//Function who return the first Premise(ElmOfPremise) of a Rules
-ElmOfPremise* getHeadOfPremise(Rules* rule){
+//Function who return the first Premise(ElmOfPremise) of a Rule
+ElmOfPremise* getHeadOfPremise(Rule* rule){
     if(isPremiseEmpty(rule) == True){
         return NULL;
     }else{
@@ -96,21 +96,21 @@ ElmOfPremise* getHeadOfPremise(Rules* rule){
 }
 
 //Function who always return the conclusion field
-Properties* getConclusion(Rules* rule){
+Property* getConclusion(Rule* rule){
     return rule->conclusion;
 }
 
 //Function who display with style the premise field
-void printPremise(Rules* rule){
+void printPremise(Rule* rule){
     ElmOfPremise *point = rule->premise;
     while (point!=NULL){
-        printProperties(&point->value);
+        printProperties(&point->premise);
         point=point->next;
     }
 }
 
-//Function who display with style a Rules
-void printRule(Rules* rule){
+//Function who display with style a Rule
+void printRule(Rule* rule){
     printf("Premise :\n");
     printPremise(rule);
     printf("Conclusion:\n");

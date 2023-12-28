@@ -3,19 +3,19 @@
 typedef struct {
     char* name;
     char* desc;
-}Properties;
+}Property;
 
 typedef struct elm{
-    Properties* fact;
+    Property* fact;
     struct elm* next;
 }ElmOfFact;
 
 typedef ElmOfFact* FactList;
 
-Bool isEmptyProperty(Properties* prop);
-Bool cmpProperty(Properties* p1, Properties* p2);
-void printProperties(Properties* p);
+Bool isEmptyProperty(Property* prop);
+Bool cmpProperty(Property* p1, Property* p2);
+void printProperties(Property* p);
 FactList createFactList();
-FactList addFact(FactList list,Properties fact);
+FactList addFact(FactList list, Property fact);
 FactList remouveAllFacts(FactList list);
-Properties * isInFactList(FactList list, Properties* fact);
+Property * isInFactList(FactList list, Property* fact);
