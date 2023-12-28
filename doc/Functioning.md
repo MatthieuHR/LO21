@@ -58,3 +58,5 @@ Voici les fonctions qui permets sa conception :
 
 Il y a aussi des fonctions qui intéragissent avec le type `BC` :
 * `getHeadRule(BC bc)` qui donne la première règle d'une base de connaissance.
+
+>Pour plus de détail sur les fonctions merci de regarder les algorithms commenter [ici](Alogrithm.md)
