@@ -94,4 +94,11 @@ Une fois que la pile est vide le programme nous retourne sa liste de conclusion 
 ### Les codes d'erreur
 
 
+## Les fonctions utiles
+
+---
+
+
+
+
 

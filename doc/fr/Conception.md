@@ -78,6 +78,7 @@ Ce type est composé de deux champs :
 Et représente un élément d'une liste de type `BC`.
 
 
+
 ## Choix final
 
 ---
