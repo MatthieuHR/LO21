@@ -99,6 +99,9 @@ En parlant de la structure `Property`, cette dernière représente le type de do
 * `isEmptyProperty` qui définie ce qu'est une `Property` vide
 * `cmpProperty` qui définie comment est comparer deux `Property`
 * `printProperties` qui défini un affichage pour une `Property`
+* `affectField` qui permet de passer d'une allocation auto à manuelle de la donnée.
+
+La fonction `affectField` est très importante car elle permet de rendre la donné accessible en mémoire en un unique point ce qui est utile si l'on veut se servire de l'emplacement mémoire comme identifiant de la donnée.
 
 ## Les structures implémenters et explication
 
@@ -121,7 +124,7 @@ typedef struct elm{
 
 typedef ElmOfFact* FactList;
 ````
-Ici `fact` est un pointeur sur un élément du type `Property` pour pouvoir les comparées en mémoire.
+Ici `fact` est un pointeur sur un élément du type `Property` pour pouvoir comparées les emplacements mémoire.
 
 ---
 ### Fichier `Rules.h`
@@ -160,7 +163,7 @@ typedef ElmOfBC * BC;
 
 Si jamais les explications écrites et morceaux de codes ne vous onts pas sufis voici un shéma qui résume le tout.
 
-<img src="TypeGraph.jpg">
+<img src="../TypeGraph.jpg">
 
 ---
 C'est tout pour cette section, vous pouvez passer a la section suivante : [Fonctionnement du système expert](Functioning.md)

@@ -24,7 +24,8 @@ Dans notre système expert toutes les conclusions et prémises sont tirée de ce
 Pour vous aider à sa création vous avez à votre dispositions plusieurs fonctions :
 * `createFactList()` pour créer une liste de fait vide (sans éléments).
 *  `addFact(FactList list,Property fact)` pour ajouter une propriétée(`fact`) a une lsite de fait(`list`). Vous pouver utiliser la meme variable `fact` en changent ça valeur sans soucis.
-*  `remouveAllFacts(FactList list)` pour supprimer tous les fait d'une lsite de fait.
+*  `remouveAllFacts(FactList list)` pour supprimer tous les fait d'une liste de fait.
+*  `transferFact(FactList list, Property* fact)` pour transférer un fait déjà existant d'une liste de fait vers une une autre avec son pointeur.
 
 Il y a aussi des fonctions qui intéragissent avec le type `FactList` :
 * `isInFactList(FactList list, Property* fact)` qui vérifie si l'élément est dans la liste de fait et revoie un `Bool`. 
@@ -41,6 +42,7 @@ Commençons par créer une règle. Le type d'une **règle** est `Rule` et ces fo
 * `addPremise(Rule* rules,Property* premise)` qui ajoute une prémise tiré d'une liste de fait à la liste de prémises.
 * `createConclusion(Rule* rule, Property* conclusion)` qui permet de définir une conclusion tirée d'une liste de fait.
 * `remouvePremise(Rule* rule,Property* premise)` qui retire une prémise si elle est présente.
+* `BC copyOfBC(BC bc)` pour renvoyer une copie une base de connaissance.
 
 Il y a aussi des fonctions qui intéragissent avec le type `Rule` :
 * `PropertiesInPremise(Premise premise, Property* prop)` qui vérifie si un fait(`prop`) est dans la prémise et renvoie un `Bool`.
@@ -73,7 +75,7 @@ Avant de faire fonctionner notre système expert merci de créer 3 liste de fait
 
 Il faudra aussi créer une base de connaissance.
 
->A chaque utilisation la base de connaissance est alterrée il faut donc la recréer à chaque fois.
+>A chaque utilisation la base de connaissance est alterrée il faut donc la recréer à chaque fois ou la copier avec la fonction `copyOfBC`.
 
 ---
 ### Pendant l'exécution

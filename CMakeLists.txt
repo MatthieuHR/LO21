@@ -11,4 +11,7 @@ add_executable(LO21 main.c
         include/BC.h
         src/FactList.c
         include/FactList.h
-        include/define.h)
+        include/define.h
+        src/Properties.c
+        include/Properties.h
+)

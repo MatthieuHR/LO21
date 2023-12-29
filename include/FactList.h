@@ -1,9 +1,4 @@
-#include "define.h"
-
-typedef struct {
-    char* name;
-    char* desc;
-}Property;
+#include "Properties.h"
 
 typedef struct elm{
     Property* fact;
@@ -12,10 +7,8 @@ typedef struct elm{
 
 typedef ElmOfFact* FactList;
 
-Bool isEmptyProperty(Property* prop);
-Bool cmpProperty(Property* p1, Property* p2);
-void printProperties(Property* p);
 FactList createFactList();
 FactList addFact(FactList list, Property fact);
 FactList remouveAllFacts(FactList list);
 Property * isInFactList(FactList list, Property* fact);
+FactList transferFact(FactList list, Property* fact);

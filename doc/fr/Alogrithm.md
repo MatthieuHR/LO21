@@ -25,6 +25,22 @@ End
 ````
 
 ---
+### `tranferFact`
+````
+function transferFact(list:FactList, fact:Property):FactList
+Start
+    If isInFactList(list,fact) = INDEFINE Then
+        newl:ElmOfFact <- createElmOfFact()
+        fact(newl) <- fact
+        next(newl) <- list
+        transferFact <- newl
+    Else
+        transferFact <- list
+    Endif
+End
+````
+
+---
 ### `remouveAllFacts`
 Cette fonction permet de libérer la mémoire utilisée par une `FactList` en cas de besoin, par exemple en cas d'erreur.
 ````
@@ -148,3 +164,25 @@ Start
     EndIf
 End
 ```
+
+---
+### `copyOfBC`
+````
+function copyOfBC(bc:BC):BC
+Start 
+    new_bc:BC <- createBC()
+    point:ElmOfBC <- head(bc)
+    While not isEmpty(point) Do
+        new_rule:Rule <- createRule()
+        premise:ElmOfPremise <- premise(rule(point))
+        While not isEmpty(premise) Do
+            new_rule <- addPremise(new_rule, premise(premise))
+            premise <- next(premise)
+        Done
+        conclusion(new_rule) <- conclusion(rule(point))
+        new_bc <- addRuleToBC(new_bc, new_rule)
+        point <- next(point)
+    Done
+    copyOfBC <- new_bc
+End
+````

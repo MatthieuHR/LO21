@@ -10,3 +10,4 @@ typedef ElmOfBC * BC;
 BC createEmptyBC();
 BC addRuleToBC(BC bc, Rule* rule);
 Rule* getHeadRule(BC bc);
+BC copyOfBC(BC bc);

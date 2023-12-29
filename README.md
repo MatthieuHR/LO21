@@ -12,7 +12,7 @@ Bonjour nous avons eu l'occasion de réaliser un projet ayant pour but de réali
 ## Sommaire
 
 ---
-* [Choix de conceptions](doc/Conception.md)
-* [Fonctionnement du système expert](doc/Functioning.md)
-* [Algorithmes des sous programmes](doc/Alogrithm.md)
-* [Jeu de test et commentaire](doc/Test.md)
+* [Choix de conceptions](doc/fr/Conception.md)
+* [Fonctionnement du système expert](doc/fr/Functioning.md)
+* [Algorithmes des sous programmes](doc/fr/Alogrithm.md)
+* [Jeu de test et commentaire](doc/fr/Test.md)
