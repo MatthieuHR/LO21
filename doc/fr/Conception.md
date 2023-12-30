@@ -18,7 +18,7 @@ Voici un récapitulatif des types implémenté et leurs utilités (sans distinct
 ---
 ### `Property`
 
-Ce type est une réprésentation de ce qu'est un fait, une donnée. Cette représentation peut être changer au besoin et n'impacte pas le fonctionnement des algorithms.
+Ce type est une réprésentation de ce qu'est un fait, une donnée. Cette représentation peut être changée au besoin et n'impacte pas le fonctionnement des algorithms.
 
 ---
 ### `FactList`
@@ -56,10 +56,10 @@ Et représente un élément d'une liste de type `Premise`.
 ### `Rule`
 
 Ce type est composé de deux champs :
-* `premise` de type `Premise` qui représente un ensemble de conditions a satisfaire.
-* `conclusion` de type `Property` qui est le résultat si la premise satisfaite vrai.
+* `premise` de type `Premise` qui représente un ensemble de conditions à satisfaire.
+* `conclusion` de type `Property` qui est le résultat si la premise est satisfaite.
 
-Et représente une règle a satisfaire.
+Et représente une règle à satisfaire.
 
 ---
 ### `BC`
@@ -83,7 +83,7 @@ Et représente un élément d'une liste de type `BC`.
 
 ---
 ### Représentation des listes
-Pour notre choix final nous avons décidé de réaliser uniquement des listes simplement chainées avec un unique champs de valeur et un type liste qui est uniquement un pointeur sur la structure étant définie comme un éléments de la liste. Cela nous donne une structure générique de type : 
+Pour notre choix final, nous avons décidé de réaliser uniquement des listes simplement chainées avec un unique champ de valeur et un type liste qui est uniquement un pointeur sur la structure étant définie comme un élément de la liste. Cela nous donne une structure générique de type : 
 ```c
 typedef struct elm{
     type premise;
@@ -96,13 +96,13 @@ Dans notre cas les structures comme `Rule` et `ElmOfFact` ont des pointeurs sur 
 
 ---
 ### Implementation de la donnée "fait"
-En parlant de la structure `Property`, cette dernière représente le type de donner que l'on souhaite utiliser en tant que fait pour notre moteur expert donc tous peut être mis dedans et alors il faut modifier les fonctions suivantes:
+En parlant de la structure `Property`, cette dernière représente le type de donner que l'on souhaite utiliser en tant que fait pour notre moteur expert donc tous peut être mis dedans et alors, il faut modifier les fonctions suivantes :
 * `isEmptyProperty` qui définie ce qu'est une `Property` vide
-* `cmpProperty` qui définie comment est comparer deux `Property`
+* `cmpProperty` qui définie comment est comparé deux `Property`
 * `printProperties` qui défini un affichage pour une `Property`
 * `affectField` qui permet de passer d'une allocation auto à manuelle de la donnée.
 
-La fonction `affectField` est très importante car elle permet de rendre la donné accessible en mémoire en un unique point ce qui est utile si l'on veut se servire de l'emplacement mémoire comme identifiant de la donnée.
+La fonction `affectField` est très importante, car elle permet de rendre la donnée accessible en mémoire en un unique point ce qui est utile si l'on veut se servir de l'emplacement mémoire comme identifiant de la donnée.
 
 ## Les structures implémenters et explication
 
@@ -116,7 +116,7 @@ typedef struct {
     type name;
 }Property;
 ````
-La structure `ElmOfFact` définie un élément de la liste des faits. En complement la structure `FactList` sert à définir en la liste de fait en elle même.
+La structure `ElmOfFact` définie un élément de la liste des faits. En complement la structure `FactList` sert à définir en la liste de fait en elle-même.
 ````c
 typedef struct elm{
     Property* fact;
@@ -125,11 +125,11 @@ typedef struct elm{
 
 typedef ElmOfFact* FactList;
 ````
-Ici `fact` est un pointeur sur un élément du type `Property` pour pouvoir comparées les emplacements mémoire.
+Ici `fact` est un pointeur sur un élément du type `Property` pour pouvoir comparer les emplacements mémoire.
 
 ---
 ### Fichier `Rules.h`
-La structure `ElmOfPremise` sert à définir un élément de la liste qui a pour type `Premise` et qui est seulement un pointeur. Dans ce cas l'élément passer au champs `premise` doit provenir d'une `FactList`.
+La structure `ElmOfPremise` sert à définir un élément de la liste qui a pour type `Premise` et qui est seulement un pointeur. Dans ce cas l'élément passer au champ `premise` doit provenir d'une `FactList`.
 ````c
 typedef struct elm{
     Property* premise;
@@ -148,7 +148,7 @@ typedef struct{
 
 ---
 ### Fichier `BC.h`
-La structure `ElmOfBC` représente un élément d'une **Base de Connaissance**. Une **Base de Connaissance** est une liste de règle représenté par le type `BC`.
+La structure `ElmOfBC` représente un élément d'une **Base de Connaissance**. Une **Base de Connaissance** est une liste de règle représentée par le type `BC`.
 ````c
 typedef struct elm{
     Rule* rule;
@@ -162,11 +162,11 @@ typedef ElmOfBC * BC;
 
 ### Schéma des structures
 
-Si jamais les explications écrites et morceaux de codes ne vous onts pas sufis voici un shéma qui résume le tout.
+Si jamais les explications écrites et morceaux de codes ne vous ont pas sufis voici un schéma qui résume le tout.
 
-<img src="../TypeGraph.jpg">
+<img src="../TypeGraph.jpg" alt="un graphique illustrant les relations entre les propriétés">
 
 ---
-C'est tout pour cette section, vous pouvez passer a la section suivante : [Fonctionnement du système expert](Functioning.md)
+C'est tout pour cette section, vous pouvez passer à la section suivante : [Fonctionnement du système expert](Functioning.md)
 
 

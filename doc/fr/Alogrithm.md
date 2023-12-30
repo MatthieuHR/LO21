@@ -1,17 +1,31 @@
 # Algorithm des sous programmes
 
 ---
-Dans cette sections vous pouvez retrouver tous les algorithmes des sous programmes en fonctions des données qu'ils traites.
+Dans cette section, vous pouvez retrouver tous les algorithmes des sous programmes en fonctions des données qu'ils traitent.
+
+>Avant de commencer la fonction `isEmpty(elm:type)` permet de savoir si un élément est vide (`UNDEFINED`) peu importe le type `type`.
 
 ## Les algorithmes avec des `FactList`
 
 ---
+### Les fonctions de bases
+* `createElmOfFact()` renvoie un élément vide d'une liste de fait (`FactList`).
+* `affectFiel(fact:Property)` renvoie un fait utilisable par une liste de fait (`FactList`) à partir du `fact`.
+* `head(elm:FactList)` permet l'accès au premier élément de la liste.
+* `fact(elm:ElmOfFact)` permet l'accession au champ `fact` de `elm`.
+* `next(elm:ElmOfFact)` permet l'accession au suivant de `elm`.
+
+---
 ### `addFact`
-Cette fonction sert a ajouter un élément dans une `FactList`.
+Cette fonction sert à ajouter un élément dans une `FactList`.
+* `list` est la liste de fait où on veut ajouter l'élément.
+* `fact` est le fait que l'on souhaite ajouter.
+* `newl` est le nouvel élément de la `FactList` `list`.
+>La fonction renvoie la liste de fait modifiée.
 ````
 function addFact(list:FactList, fact:Property):FactList
 Start
-    newl:ElmOfFact
+    newl:ElmOfFact <- createElmOfFact()
     fact(newl) <- affectfiel(fact)
     If isEmpty(fact(newl)) Then
         addFact <- EMTPY
@@ -26,10 +40,15 @@ End
 
 ---
 ### `tranferFact`
+Cette fonction permet de transférer un fait de type `Property` vers une liste de fait de type `FactList`.
+* `list` est la liste de fait où on veut ajouter l'élément.
+* `fact` est le fait qui existe déjà et que l'on souhaite ajouter.
+* `newl` est le nouvel élément de la `FactList` `list`.
+>La fonction renvoie la `list` modifiée.
 ````
 function transferFact(list:FactList, fact:Property):FactList
 Start
-    If isInFactList(list,fact) = INDEFINE Then
+    If isInFactList(list,fact) = UNDEFINED Then
         newl:ElmOfFact <- createElmOfFact()
         fact(newl) <- fact
         next(newl) <- list
@@ -43,6 +62,8 @@ End
 ---
 ### `remouveAllFacts`
 Cette fonction permet de libérer la mémoire utilisée par une `FactList` en cas de besoin, par exemple en cas d'erreur.
+* `list` est la liste que l'on souhaite vider.
+>La fonction renvoie la liste de fait modifiée.
 ````
 function remouveAllFacts(list:FactList):FactList
 Start
@@ -58,14 +79,32 @@ End
 ## Les algorithmes avec des `Rule`
 
 ---
+
+### Les fonctions de bases
+* `head(elm:Premise)` permet l'accès au premier élément de la liste.
+* `createElmOfPremise()` Renvoie un élément vide d'une prémisse (`Premise`).
+* `premise(elm:ElmOfPremise)` permet l'accession au champ `premise` de `elm`.
+* `next(elm:ElmOfPremise)` permet l'accession au suivant de `elm`.
+* `createRule()` Renvoie un élément vide d'une règle (`Rule`).
+* `premise(elm:Rule)` permet l'accession au champ `premise` de `elm`.
+* `conclusion(elm:Rule)` permet l'accession au champ `conclusion` de `elm`.
+* `next(elm:ElmOfPremise)` permet l'accession au suivant de `elm`.
+
+---
 ### `addPremise`
+Cette fonction permet d'ajouter un élément à la premise d'une règle.
+* `rule` est la règle à laquelle on veut modifier la prémisse.
+* `premise` est un fait qui provient d'une liste de fait (`FactList`) et que l'on souhaite ajouter à la prémisse de la règle.
+* `newl` est le nouvel élément de la prémisse.
+* `point` est un pointeur pour parcourir la liste afin de faire un ajout en queue.
+>La fonction renvoie la règle modifiée.
 ````
 function addPremise(rule:Rule, premise:Property):Rule
 Stat
     If not isEmpty(premise) Then
-        newl:ElmOfPremise
+        newl:ElmOfPremise <- createElmOfPremise()
         premise(newl) <- premise
-        next(newl) <- INDEFINE
+        next(newl) <- UNDEFINED
         If isEmpty(rule) Then
             rule <- createEmptyRule()
         EndIf
@@ -85,6 +124,10 @@ End
 
 ---
 ### `createConclusion`
+Cette fonction permet de mettre à jour la conclusion d'une règle.
+* `rule` est la règle à laquelle on veut modifier la conclusion.
+* `conclusion` est un fait qui provient d'une liste de fait (`FactList`) et que l'on souhaite utiliser comme conclusion de la règle.
+>La fonction renvoie la règle modifiée.
 ````
 function createConclusion(rule:Rule, conclusion:Property):Rule
 Start
@@ -100,6 +143,10 @@ End
 
 ---
 ### `PropertiesInPremise`
+Cette fonction sert à définir récursivement si un fait est dans une prémisse de règle.
+* `premise` est la prémisse provenant d'une règle (`Rule`) dont on veut savoir si le fait y est contenu.
+* `prop` est le fait que l'on cherche.
+>La fonction renvoie `True` si la propriété est comprise, `False` sinon.
 ````
 function PropertiesInPremise(premise:Premise, prop:Property):Bool
 Start
@@ -115,6 +162,11 @@ End
 
 ---
 ### `remouvePremise`
+Cette fonction permet de retirer un fait de la prémisse.
+* `rule` est la règle à laquelle on veut modifier la prémisse.
+* `premise` est un fait qui provient d'une liste de fait (`FactList`) et que l'on souhaite retirer à la prémisse de la règle.
+* `point` est un pointeur pour parcourir la liste.
+>La fonction renvoie la règle modifiée.
 ````
 function remouvePremise(rule:Rule, premise:Property):Rule
 Start
@@ -144,13 +196,26 @@ End
 ## Les algorithmes avec des `BC`
 
 ---
+### Les fonctions de bases
+* `head(elm:BC)` permet l'accès au premier élément de la liste.
+* `createElmOfBC()` Renvoie un élément vide d'une base de connaissance (`BC`).
+* `rule(elm:ElmOfBC)` permet l'accession au champ `rule` de `elm`.
+* `next(elm:ElmOfBC)` permet l'accession au suivant de `elm`.
+
+---
 ### `addRuleToBC`
+Cette fonction permet d'ajouter une règle à une base de connaissance.
+* `bc` est la base de connaissance à laquelle on veut ajouter une règle.
+* `rule` est une règle que l'on souhaite ajouter.
+* `newl` est le nouvel élément de la base de connaissance.
+* `point` est un pointeur pour parcourir la liste afin de faire un ajout en queue.
+>La fonction renvoie la base de connaissance modifiée.
 ```
 function addRuleToBC(bc:BC, rule:Rule):BC
 Start
     newl:ElmOfBC
     rule(newl) <- rule
-    next(newl) <- INDEFINE
+    next(newl) <- UNDEFINED
     If not isEmpty(bc) Then
         point:ElmOfBC <- head(bc)
         While not isEmpty(next(point)) Do
@@ -167,6 +232,12 @@ End
 
 ---
 ### `copyOfBC`
+Cette fonction permet de réaliser une copie d'une base de connaissance.
+* `bc` est la base de connaissance que l'on souhaite copier.
+* `point` est un pointeur pour parcourir la base de connaissance `bc`.
+* `new_rule` est l'ensemble de nouvelles règles que l'on ajoute à `bc`.
+* `premise` est l'ensemble des premise des règles de `bc`.
+>La fonction revoit la copie de la bc.
 ````
 function copyOfBC(bc:BC):BC
 Start 
