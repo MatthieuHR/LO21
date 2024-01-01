@@ -14,4 +14,6 @@ add_executable(LO21 main.c
         include/define.h
         src/Properties.c
         include/Properties.h
+        src/Rules.c
+        test/TestRules.c
 )

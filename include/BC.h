@@ -5,9 +5,13 @@ typedef struct elm3{
     struct elm3* next;
 }ElmOfBC;
 
-typedef ElmOfBC * BC;
+typedef struct {
+    ElmOfBC* head;
+    ElmOfBC* tail;
+    FactList facts;
+}BC;
 
-BC createEmptyBC();
+BC createEmptyBC(FactList facts);
 BC addRuleToBC(BC bc, Rule* rule);
 Rule* getHeadRule(BC bc);
 BC copyOfBC(BC bc);

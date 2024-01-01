@@ -1,47 +1,75 @@
-#include "../include/Rules.h"
+#include "../include/BC.h"
+#include "stdlib.h"
 #include "stdio.h"
 
+typedef struct{
+    int number;
+}elm;
+
+Bool cmp(elm* p1, elm* p2){
+    if(p1->number == p2->number){
+        return True;
+    }else{
+        return False;
+    }
+}
+
+Bool cmpValue(Property *p, Property *c){
+    return cmp(p->value,c->value);
+}
+
+void affectValue(elm* var, int value){
+    var->number=value;
+}
+
+void print(elm* var){
+    printf("%d",var->number);
+}
+
 int main(){
-    Rule* r1 = createEmptyRule();
-    Property p1 = {"P1", "P1"};
-    r1 = addPremise(r1,p1);
-    Property p2 = {"P2", "P2"};
-    r1 = addPremise(r1, p2);
-    p2.name = "CCL";p2.desc="CCL";
-    r1= createConclusion(r1,&p2);
-    printRule(r1);
-    printf("\n");
-    if(PropertiesInPremise(r1->premise,p1)==True){
-        printf("p1 is in r1\n");
-    }
-    printf("\n");
-    if(PropertiesInPremise(r1->premise,p2)==False){
-        printf("p2 isn't in r1\n");
-    }
-    printf("\n");
+    Bool (*fnPointer)(Property*,Property*);
+    fnPointer = cmpValue;
+    FactList facts = createFactList(fnPointer);
+    Property* aFact = malloc(sizeof(Property));
+    aFact->value = malloc(sizeof(int));
+    affectValue(aFact->value,3);
+    facts = addFact(facts,aFact);
 
-    r1= remouvePremise(r1,p2);
-    printRule(r1);
-    printf("\n");
+    Property* aFact2 = malloc(sizeof(Property));
+    aFact2->value = malloc(sizeof(int));
+    affectValue(aFact2->value,12);
+    facts = addFact(facts,aFact2);
 
-    p2.name = "P2";
-    r1= remouvePremise(r1,p2);
-    printRule(r1);
-    printf("\n");
+    Rule* aRule = createEmptyRule(facts);
+    aRule = addPremise(aRule, getById(facts,1));
+    print(aRule->facts.head->fact->value);
 
-    r1= remouvePremise(r1,p1);
-    printRule(r1);
-    printf("\n");
+    aRule = addPremise(aRule, getById(facts,0));
+    print(aRule->facts.head->next->fact->value);
 
-    if(isPremiseEmpty(r1)==True){
-        printf("The premise is empty");
-    }
-    printf("\n");
-
-    if(getHeadOfPremise(r1) == NULL){
-        printf("The premise head didn't exist\n");
+    if(PropertiesInPremise(aRule, getById(facts,0))){
+        printf("Pass");
     }
 
-    Property* ccl = getConclusion(r1);
-    printProperties(ccl);
+    aRule = removePremise(aRule, getById(facts,1));
+
+    if(!PropertiesInPremise(aRule, getById(facts,2))){
+        printf("Pass");
+    }
+
+    aRule = createConclusion(aRule, getById(facts,1));
+    ElmOfPremise * ccl = getHeadOfPremise(aRule);
+    print(ccl->premise->value);
+
+    BC bc = createEmptyBC(facts);
+    bc = addRuleToBC(bc,aRule);
+    print(bc.head->rule->premise.head->premise->value);
+
+    Rule* head = getHeadRule(bc);
+    print(head->premise.tail->premise->value);
+
+    BC copy = copyOfBC(bc);
+    print(copy.head->rule->premise.head->premise->value);
+
+    return 0;
 }

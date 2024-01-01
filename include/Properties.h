@@ -1,12 +1,9 @@
 #include "define.h"
 
 typedef struct {
-    char* name;
-    char* desc;
+    void *value;
 }Property;
 
 
 Bool isEmptyProperty(Property* prop);
-Bool cmpProperty(Property* p1, Property* p2);
-void printProperties(Property* p);
-Property* affectField(Property fact);
+Bool isEqual(Property* p1, Property* p2, Bool (*cmpValue)(Property*, Property*));

@@ -1,3 +1,3 @@
 typedef enum {
-    True, False
+    True=1, False=0
 }Bool;

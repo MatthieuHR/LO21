@@ -41,7 +41,7 @@ Commençons par créer une règle. Le type d'une **règle** est `Rule` et ces fo
 * `createEmptyRule()` qui créer une règle vide.
 * `addPremise(Rule* rules,Property* premise)` qui ajoute une prémise tiré d'une liste de fait à la liste de prémises.
 * `createConclusion(Rule* rule, Property* conclusion)` qui permet de définir une conclusion tirée d'une liste de fait.
-* `remouvePremise(Rule* rule,Property* premise)` qui retire une prémise si elle est présente.
+* `removePremise(Rule* rule,Property* premise)` qui retire une prémise si elle est présente.
 * `BC copyOfBC(BC bc)` pour renvoyer une copie une base de connaissance.
 
 Il y a aussi des fonctions qui intéragissent avec le type `Rule` :

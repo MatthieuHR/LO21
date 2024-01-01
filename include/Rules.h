@@ -1,4 +1,3 @@
-#include "define.h"
 #include "FactList.h"
 
 typedef struct elm1{
@@ -6,22 +5,23 @@ typedef struct elm1{
     struct elm1* next;
 }ElmOfPremise;
 
-typedef ElmOfPremise * Premise;
+typedef struct {
+    ElmOfPremise* head;
+    ElmOfPremise* tail;
+}Premise;
 
 typedef struct{
     Premise premise;
     Property* conclusion;
-}Rule;
+    FactList facts;
+} Rule;
 
 
-Rule* createEmptyRule();
-Rule* addPremise(Rule* rules, Property* premise);
-Rule* createConclusion(Rule* rule, Property* conclusion);
-Bool PropertiesInPremise(Premise premise, Property* prop);
-Rule* remouvePremise(Rule* rule, Property* premise);
-Bool isPremiseEmpty(Rule* rule);
-ElmOfPremise* getHeadOfPremise(Rule* rule);
-Property* getConclusion(Rule* rule);
-void printPremise(Rule* rule);
-void printRule(Rule* rule);
-void printProperties(Property* p);
+Rule* createEmptyRule(FactList facts);//work
+Rule* addPremise(Rule* rule, Property* premise);//work
+Rule* createConclusion(Rule* rule, Property* conclusion);//work
+Bool PropertiesInPremise(Rule* rule, Property* prop);//work
+Rule* removePremise(Rule* rule, Property* premise);//work
+Bool isPremiseEmpty(Rule* rule);//work
+ElmOfPremise* getHeadOfPremise(Rule* rule);//work
+Property* getConclusion(Rule* rule);//work

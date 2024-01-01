@@ -82,6 +82,7 @@ End
 
 ### Les fonctions de bases
 * `head(elm:Premise)` permet l'accès au premier élément de la liste.
+* `tail(elm:Premise)` permet l'accès au dernier élément de la liste.
 * `createElmOfPremise()` Renvoie un élément vide d'une prémisse (`Premise`).
 * `premise(elm:ElmOfPremise)` permet l'accession au champ `premise` de `elm`.
 * `next(elm:ElmOfPremise)` permet l'accession au suivant de `elm`.
@@ -109,14 +110,10 @@ Stat
             rule <- createEmptyRule()
         EndIf
         If isEmpty(premise(rule)) Then
-            premise(rule) <- newl
-        Else
-            point:ElmOfPremise <- head(premise(rule))
-            While nnot isEmpty(ext(point)) Do
-                point <- next(point)
-            Done
-            next(point) <- newl
+            head(premise(rule)) <- newl
         EndIf
+        next(newl) <- tail(premise(rule)
+        tail(premise(rule)) <- newl
     EndIf
     addPremise <- rule
 End
@@ -156,19 +153,22 @@ Start
     If premise(head(premise)) = prop Then
         PropertiesInPremise <- True
     Endif
-    PropertiesInPremise <- PropertiesInPremise(rest(premise), prop)
+    new:Premise <- createPremise()
+    head(new) <- next(head(premise)
+    tail(new) <- tail(premise)
+    PropertiesInPremise <- PropertiesInPremise(new, prop)
 End
 ````
 
 ---
-### `remouvePremise`
+### `removePremise`
 Cette fonction permet de retirer un fait de la prémisse.
 * `rule` est la règle à laquelle on veut modifier la prémisse.
 * `premise` est un fait qui provient d'une liste de fait (`FactList`) et que l'on souhaite retirer à la prémisse de la règle.
 * `point` est un pointeur pour parcourir la liste.
 >La fonction renvoie la règle modifiée.
 ````
-function remouvePremise(rule:Rule, premise:Property):Rule
+function removePremise(rule:Rule, premise:Property):Rule
 Start
     If not isEmpty(premise(Rule)) Then
         point:ElmOfPremise <- head(premise(rule))
@@ -182,14 +182,14 @@ Start
                         tmp:ElmOfPremise <- next(point)
                         next(point) <- next(next(point))
                         free(tmp)
-                        remouvePremise <- rule
+                        removePremise <- rule
                     EndIf
                     point <- next(point)
                 Done
             EndIf
         EndIf
     EndIf
-    remouvePremise <- rule
+    removePremise <- rule
 End
 ````
 

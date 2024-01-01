@@ -1,75 +1,82 @@
 #include "../include/Rules.h"
 #include "stdlib.h"
-#include "stdio.h"
 
 //Function to create an empty Rule with all pointer initialise on NULL
-Rule* createEmptyRule(){
+Rule* createEmptyRule(FactList facts){
     Rule* newl = malloc(sizeof (Rule));
     newl->conclusion=NULL;
-    newl->premise=NULL;
+    newl->premise.tail=NULL;
+    newl->premise.head=NULL;
+    newl->facts = facts;
     return newl;
 }
 
 //Function to add a Property in the premise field to a Rule
-Rule* addPremise(Rule* rules, Property* premise){
-        if(isEmptyProperty(premise) == False){
+Rule* addPremise(Rule* rule, Property* premise){
+        if(!isEmptyProperty(premise) && rule!=NULL && isInFactList(rule->facts, premise) != NULL){
             ElmOfPremise* newl = malloc(sizeof(ElmOfPremise));
             newl->premise=premise;
             newl->next=NULL;
-            if(rules==NULL){
-                rules = createEmptyRule();
-            }
-            if(rules->premise==NULL){
-                rules->premise=newl;
-            } else{
-                ElmOfPremise* point = rules->premise;
-                while (point->next != NULL){
-                    point = point->next;
-                }
-                point->next=newl;
+            if(rule->premise.head==NULL){
+                rule->premise.head=newl;
+                rule->premise.tail=newl;
+                return rule;
+            }else{
+                rule->premise.tail->next = newl;
+                rule->premise.tail=newl;
+                return rule;
             }
     }
-    return rules;
+    return rule;
 }
 
 //Fonction to add or update the conclusion field of a rule
 Rule* createConclusion(Rule* rule, Property* conclusion){
-    if(isEmptyProperty(conclusion)==False){
-        if(isEmptyProperty(rule->conclusion)==False) {
-            free(rule->conclusion);
-        }
+    if(rule!=NULL && isInFactList(rule->facts, conclusion)){
         rule->conclusion=conclusion;
     }
     return rule;
 }
 
 //Function to check if a Property is in the premise field of a Rule
-Bool PropertiesInPremise(Premise premise, Property* prop){
-    if(premise == NULL){return False;}
-    if(cmpProperty(premise->premise, prop) == True){
+Bool PropertiesInPremise(Rule* rule, Property* prop){
+    if(rule == NULL || rule->premise.head == NULL || prop == NULL){return False;}
+    if(rule->premise.head->premise->value==prop->value){
         return True;
     }
-    return PropertiesInPremise(premise->next,prop);
+    Rule* new = malloc(sizeof(Rule));
+    new->premise.head = rule->premise.head->next;
+    new->premise.tail = rule->premise.tail;
+    new->conclusion = rule->conclusion;
+    new->facts = rule->facts;
+    return PropertiesInPremise(new,prop);
 }
 
 //Function to remove(free) a Property in the premise field of a Rule
-Rule* remouvePremise(Rule* rule, Property* premise){
-    if(rule->premise!=NULL){
-        ElmOfPremise* point = rule->premise;
-        if(cmpProperty(point->premise, premise) == True){
-            rule->premise=point->next;
-            free(point);
-
-        }else{
-            if(point->next!=NULL){
-                while (point->next!=NULL){
-                    if(cmpProperty(point->next->premise, premise) == True){
-                        ElmOfPremise* tmp = point->next;
-                        point->next=point->next->next;
-                        free(tmp);
+Rule* removePremise(Rule* rule, Property* premise){
+    if(rule != NULL && !isEmptyProperty(premise)){
+        if(rule->premise.head != NULL){
+            ElmOfPremise* prev = rule->premise.head;
+            ElmOfPremise* now = prev->next;
+            if(premise->value==prev->premise->value){
+                if(rule->premise.head==rule->premise.tail){
+                    free(prev);
+                    rule->premise.head=NULL;
+                    rule->premise.tail=NULL;
+                }else{
+                    free(prev);
+                    rule->premise.head=now;
+                }
+                return rule;
+            }else{
+                while(now!=NULL){
+                    if(now->premise->value==premise->value){
+                        prev->next=now->next;
+                        free(now);
                         return rule;
                     }
-                    point = point->next;
+                    prev=now;
+                    now=now->next;
                 }
             }
         }
@@ -79,7 +86,7 @@ Rule* remouvePremise(Rule* rule, Property* premise){
 
 //Function who return True if the premise is empty and False otherwise
 Bool isPremiseEmpty(Rule* rule){
-    if(rule->premise==NULL){
+    if(rule->premise.head==NULL){
         return True;
     } else{
         return False;
@@ -88,31 +95,14 @@ Bool isPremiseEmpty(Rule* rule){
 
 //Function who return the first Premise(ElmOfPremise) of a Rule
 ElmOfPremise* getHeadOfPremise(Rule* rule){
-    if(isPremiseEmpty(rule) == True){
+    if(isPremiseEmpty(rule)){
         return NULL;
     }else{
-        return rule->premise;
+        return rule->premise.head;
     }
 }
 
 //Function who always return the conclusion field
 Property* getConclusion(Rule* rule){
     return rule->conclusion;
-}
-
-//Function who display with style the premise field
-void printPremise(Rule* rule){
-    ElmOfPremise *point = rule->premise;
-    while (point!=NULL){
-        printProperties(&point->premise);
-        point=point->next;
-    }
-}
-
-//Function who display with style a Rule
-void printRule(Rule* rule){
-    printf("Premise :\n");
-    printPremise(rule);
-    printf("Conclusion:\n");
-    printProperties(rule->conclusion);
 }

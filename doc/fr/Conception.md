@@ -23,7 +23,7 @@ Ce type est une réprésentation de ce qu'est un fait, une donnée. Cette repré
 ---
 ### `FactList`
 
-Ce type est une liste de `ElmOfFact` de taille infixe.
+Ce type est une liste de `ElmOfFact` de taille infixe. On peut accéder uniquement à la tête de liste.
 
 Une `FactList` est une liste de fait (`Property`) qui servent de base pour les autres types.
 
@@ -39,7 +39,7 @@ Et représente un élément d'une liste de type `FactList`.
 ---
 ### `Premise`
 
-Ce type est une liste de `ElmOfPremise` de taille infixe.
+Ce type est une liste de `ElmOfPremise` de taille infixe. On peut accéder à la tête et queue de liste.
 
 Une `Premise` est une liste de fait (`Property`) lier par la condition `ET`.
 
@@ -64,7 +64,7 @@ Et représente une règle à satisfaire.
 ---
 ### `BC`
 
-Ce type est une liste de `ElmOfBC` de taille infixe.
+Ce type est une liste de `ElmOfBC` de taille infixe. On peut accéder uniquement à la tête de liste.
 
 Une `BC` est liste de règle (`Rule`) afin de pouvoir faire résonner notre système expert.
 
@@ -99,7 +99,7 @@ Dans notre cas les structures comme `Rule` et `ElmOfFact` ont des pointeurs sur 
 En parlant de la structure `Property`, cette dernière représente le type de donner que l'on souhaite utiliser en tant que fait pour notre moteur expert donc tous peut être mis dedans et alors, il faut modifier les fonctions suivantes :
 * `isEmptyProperty` qui définie ce qu'est une `Property` vide
 * `cmpProperty` qui définie comment est comparé deux `Property`
-* `printProperties` qui défini un affichage pour une `Property`
+* `printProperty` qui défini un affichage pour une `Property`
 * `affectField` qui permet de passer d'une allocation auto à manuelle de la donnée.
 
 La fonction `affectField` est très importante, car elle permet de rendre la donnée accessible en mémoire en un unique point ce qui est utile si l'on veut se servir de l'emplacement mémoire comme identifiant de la donnée.
