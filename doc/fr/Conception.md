@@ -16,26 +16,25 @@ De plus nous avons aussi remarqué que les algorithms ne tirait pas d'avantages 
 
 ---
 ### Représentation des listes
-Pour notre choix final, nous avons décidé de réaliser uniquement des listes simplement chainées avec un unique champ de valeur et un type liste qui est uniquement un pointeur sur la structure étant définie comme un élément de la liste. Cela nous donne une structure générique de type :
-```c
-typedef struct elm{
-    type premise;
-    struct elm* next;
-}ElementOfList;
+Pour représenter les listes le plus logique nous à semblés de garder des listes simplement chainées car des listes doublements chainées n'apporte que peu d'avantages.
 
-typedef ElementOfList* List;
-```
-Dans notre cas les structures comme `Rule` et `ElmOfFact` ont des pointeurs sur une structure `Property` pour pouvoir au besoin comparer les emplacements mémoire si c'est le mode de comparaison choisi pour l'implementation
+Cependant malgres le fait que garder des structures des listes les plus simples possible apporte des avantages nous avons décidés que chaque liste devras contenir une liste de fait pour s'assurer que chaque élément intéragise bien avec ça liste de fait.
+
+En parlant de liste de fait, nous avons décider de rajouter un type `FactList` qui n'était pas demander mais qui sert a contenir tous les faits pour les prémisses et conclusions. Ce type est aussi utile pour vérifier que les base de connaissances et règles se base sur les meme faits.
+
+Nous avons aussi rajouter le type `Bool` pour booléan qui fonctionne comme un `1` et `0` en C ou `True` vaux `1` et `False` vaut `0`.
 
 ---
 ### Implementation de la donnée "fait"
-En parlant de la structure `Property`, cette dernière représente le type de donner que l'on souhaite utiliser en tant que fait pour notre moteur expert donc tous peut être mis dedans et alors, il faut modifier les fonctions suivantes :
-* `isEmptyProperty` qui définie ce qu'est une `Property` vide
-* `cmpProperty` qui définie comment est comparé deux `Property`
-* `printProperty` qui défini un affichage pour une `Property`
-* `affectField` qui permet de passer d'une allocation auto à manuelle de la donnée.
+Nous avons longuement réfléchi à comment implémenter un fait sans qu celui-ci soit handicapent si on voulait y ajouter des informations. 
 
-La fonction `affectField` est très importante, car elle permet de rendre la donnée accessible en mémoire en un unique point ce qui est utile si l'on veut se servir de l'emplacement mémoire comme identifiant de la donnée.
+C'est pour quoi nous n'avons attribuer aucun type défini à cette donner. A la place nous laison l'utilisateur choisir quelle donnée il souhaite utilisé et comment il définie l'égaliter entre cette donné avec un pointeur de fonction.
+
+>La donnée est alors représenter en C par un pointeur sur void : `void*`
+
+Nous avons tous de meme des fonctions qui intéragisent avec ce type non définie :
+* `isEmptyProperty(fact)` qui dit si le fait est vide.
+* `isEqual(fact1, fact2)` qui dit si les deux faits sont égaux.
 
 
 ## Types implémentés
@@ -43,22 +42,23 @@ La fonction `affectField` est très importante, car elle permet de rendre la don
 Voici un récapitulatif des types implémenté et leurs utilités (sans distinctions entre pointeur et type).
 
 ---
-### `Property`
-
-Ce type est une réprésentation de ce qu'est un fait, une donnée. Cette représentation peut être changée au besoin et n'impacte pas le fonctionnement des algorithms.
-
----
 ### `FactList`
 
-Ce type est une liste de `ElmOfFact` de taille infixe. On peut accéder uniquement à la tête de liste.
+Ce type est une liste de `ElmOfFact` de taille infixe.
 
-Une `FactList` est une liste de fait (`Property`) qui servent de base pour les autres types.
+Il y a 3 champs :
+* `head` le première élement de la liste.
+* `last_id` qui est le dernier `id` donnée à un `ElmOfFact`
+* `cmpValue` qui est une fonction de comparaison entre 2 **faits**
+
+Une `FactList` est une liste de **fait** qui servent de base pour les autres types.
 
 ---
 ### `ElmOfFact`
 
 Ce type est composé de deux champs :
-* `fact` qui est de type `Property` et qui représente un fait, une donnée.
+* `id` qui est l'identifiant unique de cet élément
+* `fact` qui est de type `Property` et qui représente un **fait**, une donnée.
 * `next` qui représente l'élément suivant de la liste.
 
 Et représente un élément d'une liste de type `FactList`.
@@ -66,7 +66,11 @@ Et représente un élément d'une liste de type `FactList`.
 ---
 ### `Premise`
 
-Ce type est une liste de `ElmOfPremise` de taille infixe. On peut accéder à la tête et queue de liste.
+Ce type est une liste de `ElmOfPremise` de taille infixe. 
+
+Il posède 2 champs :
+* `head` qui permet d'accéder au premier élément.
+* `tail` qui permet d'accéder au dernier élément.
 
 Une `Premise` est une liste de fait (`Property`) lier par la condition `ET`.
 
@@ -85,13 +89,19 @@ Et représente un élément d'une liste de type `Premise`.
 Ce type est composé de deux champs :
 * `premise` de type `Premise` qui représente un ensemble de conditions à satisfaire.
 * `conclusion` de type `Property` qui est le résultat si la premise est satisfaite.
+* `facts` qui est la liste de fait (`FactList`) sur laquelle se base la règle
 
 Et représente une règle à satisfaire.
 
 ---
 ### `BC`
 
-Ce type est une liste de `ElmOfBC` de taille infixe. On peut accéder uniquement à la tête de liste.
+Ce type est une liste de `ElmOfBC` de taille infixe. 
+
+Il est composé de 3 champs :
+* `head` qui permet d'accéder au premier élément.
+* `tail` qui permet d'accéder au dernier élément.
+* * `facts` qui est la liste de fait (`FactList`) sur laquelle se base la base de connaissance.
 
 Une `BC` est liste de règle (`Rule`) afin de pouvoir faire résonner notre système expert.
 
@@ -109,55 +119,63 @@ Et représente un élément d'une liste de type `BC`.
 
 ---
 ### Fichier `FactList.h`
-La structure `Property` qui représente un fait et donc peut contenir ce que l'on souhaite. Pour un exemple, merci de regarder la [section test](Test.md).
-````c
-typedef struct {
-    type name;
-    ...
-    type name;
-}Property;
-````
 La structure `ElmOfFact` définie un élément de la liste des faits. En complement la structure `FactList` sert à définir en la liste de fait en elle-même.
 ````c
 typedef struct elm{
-    Property* fact;
+    long id;
+    void* fact;
     struct elm* next;
 }ElmOfFact;
 
-typedef ElmOfFact* FactList;
+typedef struct {
+    ElmOfFact* head;
+    int last_id;
+    Bool (*cmpValue)(void *, void*);
+}FactList;
 ````
-Ici `fact` est un pointeur sur un élément du type `Property` pour pouvoir comparer les emplacements mémoire.
+Ici l'`id` sert pour les utilisateurs humains car il n'est pas utiliser dans les sous programmes.
+
+`*cmpValue` est un pointeur de fonction renseigner par l'utilisateur qui permet de vérifie si deux élément du type qu'il à choisi sont égaux. Cette fonction ne sert qu'à eviter de mettre deux fois le meme fait dans une liste de fait.
 
 ---
 ### Fichier `Rules.h`
-La structure `ElmOfPremise` sert à définir un élément de la liste qui a pour type `Premise` et qui est seulement un pointeur. Dans ce cas l'élément passer au champ `premise` doit provenir d'une `FactList`.
+La structure `ElmOfPremise` sert à définir un élément de la liste qui a pour type `Premise` et qui est seulement un pointeur sur un **fait**. Dans ce cas l'élément passer au champ `premise` doit provenir d'une `FactList`.
 ````c
-typedef struct elm{
-    Property* premise;
-    struct elm* next;
+typedef struct elm1{
+    void* premise;
+    struct elm1* next;
 }ElmOfPremise;
 
-typedef ElmOfPremise * Premise;
+typedef struct {
+    ElmOfPremise* head;
+    ElmOfPremise* tail;
+}Premise;
 ````
-La structure `Rule` sert à définir une règle avec ça `premise` de type `Premise` et sa `conclusion` qui vien aussi d'une `FactList`.
+La structure `Rule` sert à définir un règle. Le champs `facts` esrt à vérifié que les éléménts de la prémise proviennent de la meme liste de fait qui a servie à créer la règle.
 ````c
 typedef struct{
     Premise premise;
-    Property* conclusion;
-}Rule;
+    void* conclusion;
+    FactList facts;
+} Rule;
 ````
 
 ---
 ### Fichier `BC.h`
 La structure `ElmOfBC` représente un élément d'une **Base de Connaissance**. Une **Base de Connaissance** est une liste de règle représentée par le type `BC`.
 ````c
-typedef struct elm{
+typedef struct elm3{
     Rule* rule;
-    struct elm* next;
+    struct elm3* next;
 }ElmOfBC;
 
-typedef ElmOfBC * BC;
+typedef struct {
+    ElmOfBC* head;
+    ElmOfBC* tail;
+    FactList facts;
+}BC;
 ````
+Ici encore le champs `facts` sert a vérifier que les règles ajouté dans la base connaissance soits isue de la même liste de fait.
 
 ---
 

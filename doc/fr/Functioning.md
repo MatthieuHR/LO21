@@ -23,12 +23,12 @@ Dans notre système expert toutes les conclusions et prémises sont tirée de ce
 
 Pour vous aider à sa création, vous avez à votre disposition plusieurs fonctions :
 * `createFactList()` pour créer une liste de fait vide (sans éléments).
-*  `addFact(FactList list,Property fact)` pour ajouter une propriété(`fact`) a une liste de fait(`list`). Vous pouvez utiliser la meme variable `fact` en changent ça valeur sans problems.
-*  `remouveAllFacts(FactList list)` pour supprimer tous les fait d'une liste de fait.
-*  `transferFact(FactList list, Property* fact)` pour transférer un fait déjà existant d'une liste de fait vers une autre avec son pointeur.
+* `addFact(FactList list,*void fact)` pour ajouter une propriété(`fact`) a une liste de fait(`list`). Vous pouvez utiliser la meme variable `fact` en changent ça valeur sans problems.
+* `remouveAllFacts(FactList list)` pour supprimer tous les fait d'une liste de fait.
 
 Il y a aussi des fonctions qui intéragissent avec le type `FactList` :
-* `isInFactList(FactList list, Property* fact)` qui vérifie si l'élément est dans la liste de fait et revoie un `Bool`. 
+* `isInFactList(FactList list, void* fact)` qui vérifie si l'élément est dans la liste de fait et revoie un `*void`. 
+* `getById(FactList list, long id)` qui renvoie l'élément associer a l'`id`;.
 
 >Pour plus de détail sur les fonctions merci de regarder les algorithms commenter [ici](Alogrithm.md)
 
@@ -39,16 +39,16 @@ Une fois notre liste de fait créer il nous faut établir des relations entre le
 
 Commençons par créer une règle. Le type d'une **règle** est `Rule` et ces fonctions sont disponibles pour aider à les créer :
 * `createEmptyRule()` qui créer une règle vide.
-* `addPremise(Rule* rules,Property* premise)` qui ajoute une prémise tiré d'une liste de fait à la liste de prémises.
-* `createConclusion(Rule* rule, Property* conclusion)` qui permet de définir une conclusion tirée d'une liste de fait.
-* `removePremise(Rule* rule,Property* premise)` qui retire une prémise si elle est présente.
-* `BC copyOfBC(BC bc)` pour renvoyer une copie une base de connaissance.
+* `addPremise(Rule* rules,void* premise)` qui ajoute une prémise tiré d'une liste de fait à la liste de prémises.
+* `createConclusion(Rule* rule, void* conclusion)` qui permet de définir une conclusion tirée d'une liste de fait.
+* `removePremise(Rule* rule,void* premise)` qui retire une prémise si elle est présente.
+
 
 Il y a aussi des fonctions qui intéragissent avec le type `Rule` :
-* `PropertiesInPremise(Premise premise, Property* prop)` qui vérifie si un fait(`prop`) est dans la prémise et renvoie un `Bool`.
+* `factInPremise(Premise premise, void* prop)` qui vérifie si un fait(`prop`) est dans la prémise et renvoie un `Bool`.
 * `isPremiseEmpty(Rule* rule)` qui renvoie un `Bool` et dit si la prémise est vide.
 * `getHeadOfPremise(Rule* rule)` qui renvoie le premier élément de la prémise de type `ElmOfPremise*`.
-* `getConclusion(Rule* rule)` qui renvoie la conclusion de type `Property*`.
+* `getConclusion(Rule* rule)` qui renvoie la conclusion de type `void*`.
 
 >Pour plus de détail sur les fonctions merci de regarder les algorithms commenter [ici](Alogrithm.md)
 
@@ -57,6 +57,7 @@ Une fois notre règle créée, il ne reste plus qu'à ajouter cette règle à un
 Voici les fonctions qui permettent sa conception :
 * `createEmptyBC()` pour créer une base de connaissance vide.
 * `addRuleToBC(BC bc,Rule* rule)` pour ajouter une règle à la base de connaissance.
+* `BC copyOfBC(BC bc)` pour renvoyer une copie une base de connaissance.
 
 Il y a aussi des fonctions qui intéragissent avec le type `BC` :
 * `getHeadRule(BC bc)` qui donne la première règle d'une base de connaissance.

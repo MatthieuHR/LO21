@@ -20,7 +20,7 @@ typedef struct{
 Rule* createEmptyRule(FactList facts);//work
 Rule* addPremise(Rule* rule, void* premise);//work
 Rule* createConclusion(Rule* rule, void* conclusion);//work
-Bool PropertiesInPremise(Rule* rule, void* prop);//work
+Bool factInPremise(Rule* rule, void* prop);//work
 Rule* removePremise(Rule* rule, void* premise);//work
 Bool isPremiseEmpty(Rule* rule);//work
 ElmOfPremise* getHeadOfPremise(Rule* rule);//work

@@ -4,7 +4,6 @@ typedef struct elm{
     long id;
     void* fact;
     struct elm* next;
-
 }ElmOfFact;
 
 typedef struct {

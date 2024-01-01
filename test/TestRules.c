@@ -41,13 +41,13 @@ int main(){
     aRule = addPremise(aRule, getById(facts,0));
     print(aRule->facts.head->next->fact);
 
-    if(PropertiesInPremise(aRule, getById(facts,0))){
+    if(factInPremise(aRule, getById(facts, 0))){
         printf("Pass");
     }
 
     aRule = removePremise(aRule, getById(facts,1));
 
-    if(!PropertiesInPremise(aRule, getById(facts,2))){
+    if(!factInPremise(aRule, getById(facts, 2))){
         printf("Pass");
     }
 

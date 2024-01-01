@@ -39,7 +39,7 @@ Rule* createConclusion(Rule* rule, void* conclusion){
 }
 
 //Function to check if a Property is in the premise field of a Rule
-Bool PropertiesInPremise(Rule* rule, void* prop){
+Bool factInPremise(Rule* rule, void* prop){
     if(rule == NULL || rule->premise.head == NULL || prop == NULL){return False;}
     if(rule->premise.head->premise==prop){
         return True;
@@ -49,7 +49,7 @@ Bool PropertiesInPremise(Rule* rule, void* prop){
     new->premise.tail = rule->premise.tail;
     new->conclusion = rule->conclusion;
     new->facts = rule->facts;
-    return PropertiesInPremise(new,prop);
+    return factInPremise(new, prop);
 }
 
 //Function to remove(free) a Property in the premise field of a Rule
