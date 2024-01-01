@@ -1,9 +1,8 @@
 #include "../include/FactList.h"
 #include "stdlib.h"
-#include "stdio.h"
 
 //Function to create an empty FactList
-FactList createFactList(Bool (*cmpValue)(Property*, Property*)){
+FactList createFactList(Bool (*cmpValue)(void*, void*)){
     FactList newl = {NULL,-1,cmpValue};
     return newl;
 }
@@ -17,7 +16,7 @@ ElmOfFact* createElmOfFact() {
 }
 
 //Fonction to get the fact in a FactList and NULL if the fact is not in a Factlist
-Property* isInFactList(FactList list, Property* fact){
+void* isInFactList(FactList list, void* fact){
     if(list.head==NULL){return NULL;}
     if(isEqual(list.head->fact,fact,list.cmpValue)){return list.head->fact;}
     else {
@@ -27,7 +26,7 @@ Property* isInFactList(FactList list, Property* fact){
 }
 
 //Function to add a fact(Property) in tail to a FactList
-FactList addFact(FactList list, Property* fact){
+FactList addFact(FactList list, void* fact){
     if(!isEmptyProperty(fact) && isInFactList(list,fact) == NULL) {
         ElmOfFact* newl = createElmOfFact();
         newl->fact=fact;
@@ -52,7 +51,7 @@ FactList remouveAllFacts(FactList list){
     return list;
 }
 
-Property* getById(FactList list, long id){
+void* getById(FactList list, long id){
     if(list.head != NULL && id <= list.last_id){
         ElmOfFact* point = list.head;
         while (point->id!=id){

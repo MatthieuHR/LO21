@@ -12,7 +12,7 @@ Rule* createEmptyRule(FactList facts){
 }
 
 //Function to add a Property in the premise field to a Rule
-Rule* addPremise(Rule* rule, Property* premise){
+Rule* addPremise(Rule* rule, void* premise){
         if(!isEmptyProperty(premise) && rule!=NULL && isInFactList(rule->facts, premise) != NULL){
             ElmOfPremise* newl = malloc(sizeof(ElmOfPremise));
             newl->premise=premise;
@@ -31,7 +31,7 @@ Rule* addPremise(Rule* rule, Property* premise){
 }
 
 //Fonction to add or update the conclusion field of a rule
-Rule* createConclusion(Rule* rule, Property* conclusion){
+Rule* createConclusion(Rule* rule, void* conclusion){
     if(rule!=NULL && isInFactList(rule->facts, conclusion)){
         rule->conclusion=conclusion;
     }
@@ -39,9 +39,9 @@ Rule* createConclusion(Rule* rule, Property* conclusion){
 }
 
 //Function to check if a Property is in the premise field of a Rule
-Bool PropertiesInPremise(Rule* rule, Property* prop){
+Bool PropertiesInPremise(Rule* rule, void* prop){
     if(rule == NULL || rule->premise.head == NULL || prop == NULL){return False;}
-    if(rule->premise.head->premise->value==prop->value){
+    if(rule->premise.head->premise==prop){
         return True;
     }
     Rule* new = malloc(sizeof(Rule));
@@ -53,12 +53,12 @@ Bool PropertiesInPremise(Rule* rule, Property* prop){
 }
 
 //Function to remove(free) a Property in the premise field of a Rule
-Rule* removePremise(Rule* rule, Property* premise){
+Rule* removePremise(Rule* rule, void* premise){
     if(rule != NULL && !isEmptyProperty(premise)){
         if(rule->premise.head != NULL){
             ElmOfPremise* prev = rule->premise.head;
             ElmOfPremise* now = prev->next;
-            if(premise->value==prev->premise->value){
+            if(premise==prev->premise){
                 if(rule->premise.head==rule->premise.tail){
                     free(prev);
                     rule->premise.head=NULL;
@@ -70,7 +70,7 @@ Rule* removePremise(Rule* rule, Property* premise){
                 return rule;
             }else{
                 while(now!=NULL){
-                    if(now->premise->value==premise->value){
+                    if(now->premise==premise){
                         prev->next=now->next;
                         free(now);
                         return rule;
@@ -103,6 +103,6 @@ ElmOfPremise* getHeadOfPremise(Rule* rule){
 }
 
 //Function who always return the conclusion field
-Property* getConclusion(Rule* rule){
+void* getConclusion(Rule* rule){
     return rule->conclusion;
 }

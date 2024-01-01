@@ -2,7 +2,7 @@
 
 typedef struct elm{
     long id;
-    Property* fact;
+    void* fact;
     struct elm* next;
 
 }ElmOfFact;
@@ -10,11 +10,11 @@ typedef struct elm{
 typedef struct {
     ElmOfFact* head;
     int last_id;
-    Bool (*cmpValue)(Property*, Property*);
+    Bool (*cmpValue)(void *, void*);
 }FactList;
 
-FactList createFactList(Bool (*cmpValue)(Property*, Property*));//work
-FactList addFact(FactList list, Property* fact);//work
+FactList createFactList(Bool (*cmpValue)(void*, void*));//work
+FactList addFact(FactList list, void* fact);//work
 FactList remouveAllFacts(FactList list);//work
-Property* isInFactList(FactList list, Property* fact);//work
-Property* getById(FactList list, long id);//work
+void* isInFactList(FactList list, void* fact);//work
+void* getById(FactList list, long id);//work

@@ -11,6 +11,33 @@ Après une analise rapide du sujet, nous avons remarqué qu'un parcours récursi
 
 De plus nous avons aussi remarqué que les algorithms ne tirait pas d'avantages en termes de performances entre des listes simplement chainées et doublement chainées. Seul l'algorithme de suppression dans une liste est plus simple avec une liste doublement chainée.
 
+
+## Choix final
+
+---
+### Représentation des listes
+Pour notre choix final, nous avons décidé de réaliser uniquement des listes simplement chainées avec un unique champ de valeur et un type liste qui est uniquement un pointeur sur la structure étant définie comme un élément de la liste. Cela nous donne une structure générique de type :
+```c
+typedef struct elm{
+    type premise;
+    struct elm* next;
+}ElementOfList;
+
+typedef ElementOfList* List;
+```
+Dans notre cas les structures comme `Rule` et `ElmOfFact` ont des pointeurs sur une structure `Property` pour pouvoir au besoin comparer les emplacements mémoire si c'est le mode de comparaison choisi pour l'implementation
+
+---
+### Implementation de la donnée "fait"
+En parlant de la structure `Property`, cette dernière représente le type de donner que l'on souhaite utiliser en tant que fait pour notre moteur expert donc tous peut être mis dedans et alors, il faut modifier les fonctions suivantes :
+* `isEmptyProperty` qui définie ce qu'est une `Property` vide
+* `cmpProperty` qui définie comment est comparé deux `Property`
+* `printProperty` qui défini un affichage pour une `Property`
+* `affectField` qui permet de passer d'une allocation auto à manuelle de la donnée.
+
+La fonction `affectField` est très importante, car elle permet de rendre la donnée accessible en mémoire en un unique point ce qui est utile si l'on veut se servir de l'emplacement mémoire comme identifiant de la donnée.
+
+
 ## Types implémentés
 
 Voici un récapitulatif des types implémenté et leurs utilités (sans distinctions entre pointeur et type).
@@ -77,32 +104,6 @@ Ce type est composé de deux champs :
 
 Et représente un élément d'une liste de type `BC`.
 
-
-
-## Choix final
-
----
-### Représentation des listes
-Pour notre choix final, nous avons décidé de réaliser uniquement des listes simplement chainées avec un unique champ de valeur et un type liste qui est uniquement un pointeur sur la structure étant définie comme un élément de la liste. Cela nous donne une structure générique de type : 
-```c
-typedef struct elm{
-    type premise;
-    struct elm* next;
-}ElementOfList;
-
-typedef ElementOfList* List;
-```
-Dans notre cas les structures comme `Rule` et `ElmOfFact` ont des pointeurs sur une structure `Property` pour pouvoir au besoin comparer les emplacements mémoire si c'est le mode de comparaison choisi pour l'implementation
-
----
-### Implementation de la donnée "fait"
-En parlant de la structure `Property`, cette dernière représente le type de donner que l'on souhaite utiliser en tant que fait pour notre moteur expert donc tous peut être mis dedans et alors, il faut modifier les fonctions suivantes :
-* `isEmptyProperty` qui définie ce qu'est une `Property` vide
-* `cmpProperty` qui définie comment est comparé deux `Property`
-* `printProperty` qui défini un affichage pour une `Property`
-* `affectField` qui permet de passer d'une allocation auto à manuelle de la donnée.
-
-La fonction `affectField` est très importante, car elle permet de rendre la donnée accessible en mémoire en un unique point ce qui est utile si l'on veut se servir de l'emplacement mémoire comme identifiant de la donnée.
 
 ## Les structures implémenters et explication
 
