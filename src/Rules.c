@@ -13,7 +13,7 @@ Rule* createEmptyRule(FactList facts){
 
 //Function to add a Property in the premise field to a Rule
 Rule* addPremise(Rule* rule, void* premise){
-        if(!isEmptyProperty(premise) && rule!=NULL && isInFactList(rule->facts, premise)){
+        if(!isEmptyProperty(premise) && rule!=NULL && isPresentInFactList(rule->facts, premise)){
             ElmOfPremise* newl = malloc(sizeof(ElmOfPremise));
             newl->premise=premise;
             newl->next=NULL;
@@ -30,7 +30,7 @@ Rule* addPremise(Rule* rule, void* premise){
 
 //Fonction to add or update the conclusion field of a rule
 Rule* createConclusion(Rule* rule, void* conclusion){
-    if(rule!=NULL && isInFactList(rule->facts, conclusion)){
+    if(rule!=NULL && isPresentInFactList(rule->facts, conclusion)){
         rule->conclusion=conclusion;
     }
     return rule;

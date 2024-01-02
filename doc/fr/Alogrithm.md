@@ -14,7 +14,9 @@ Dans cette section, vous pouvez retrouver tous les algorithmes des sous programm
 * `createFactList(cmpValue(Type, Type):Function)` renvoie une liste de fait (`FactList`) vide avec la méthode de comparaison (`cmpValue`) choisie.
 * `createElmOfFact()` renvoie un élément vide d'une liste de fait (`FactList`).
 * `head(elm:FactList)` permet l'accès au premier élément de la liste.
+* `last_id(elm:FactList)` permet l'accès au dernier `id` donné de type `LongInteger`.
 * `fact(elm:ElmOfFact)` permet l'accession au champ `fact` de `elm`.
+* `id(elm:ElmOfFact)` permet l'accès à l'`id` de l'élément.
 * `next(elm:ElmOfFact)` permet l'accession au suivant de `elm`.
 
 ---
@@ -39,12 +41,12 @@ End
 ````
 
 ---
-### `remouveAllFacts`
+### `removeAllFacts`
 Cette fonction permet de libérer la mémoire utilisée par une `FactList` en cas de besoin, par exemple en cas d'erreur.
 * `list` est la liste que l'on souhaite vider.
 >La fonction renvoie la liste de fait modifiée.
 ````
-function remouveAllFacts(list:FactList):FactList
+function removeAllFacts(list:FactList):FactList
 Start
     point:ElmOfFact <- head(list)
     While not isEmpty(point) Do
@@ -54,7 +56,7 @@ Start
     Done
     head(list) = UNDEFINED
     last_id(list) = -1
-    remouveAllFacts <- point
+    removeAllFacts <- point
 End
 ````
 
@@ -80,23 +82,45 @@ End
 ````
 
 ---
-### `isInFactList`
-Cette fonction permet de savoir si un élément appartient à une liste de fait (`FactList`) récursivement.
+### `isAlreadyInFactList`
+Cette fonction permet de savoir si un élément appartient à une liste de fait (`FactList`) récursivement en fonction de sa valeur.
 * `list` est la liste de fait ou l'on cherche notre fait.
 * `fact` est le fait que l'on cherche.
 >La fonction renvoie un `Bool`
 ````
-function isInFactList(list:FactList, fact:Type):Bool
+function isAlreadyInFactList(list:FactList, fact:Type):Bool
 Start
-    If isEmpty(head(list)) Then
-        isInFactList <- False
+    If isEmpty(head(list)) OR isEmpty(fact) Then
+        isAlreadyInFactList <- False
     EndIf
     If isEqual(fact(head(list)),fact,cmpValue(list)) Then
-        isInFactList <- True
+        isAlreadyInFactList <- True
     Else
         next:Factlist <- fact
         head(next) <- next(head(list))
-        isInFactList <- isInFactList(next, fact)
+        isAlreadyInFactList <- isAlreadyInFactList(next, fact)
+    EndIf
+End
+````
+
+---
+### `isPresentInFactList`
+Cette fonction permet de savoir si un élément appartient à une liste de fait (`FactList`) récursivement en fonction de son emplacement mémoire.
+* `list` est la liste de fait ou l'on cherche notre fait.
+* `fact` est le fait que l'on cherche.
+>La fonction renvoie un `Bool`
+````
+function isPresentInFactList(list:FactList, fact:Type):Bool
+Start
+    If isEmpty(head(list)) OR isEmpty(fact) Then
+        isAlreadyInFactList <- False
+    EndIf
+    If fact(head(list)) = fact Then
+        isAlreadyInFactList <- True
+    Else
+        next:Factlist <- fact
+        head(next) <- next(head(list))
+        isPresentInFactList <- isPresentInFactList(next, fact)
     EndIf
 End
 ````
@@ -113,7 +137,7 @@ End
 * `createRule()` Renvoie un élément vide d'une règle (`Rule`).
 * `premise(elm:Rule)` permet l'accession au champ `premise` de `elm`.
 * `conclusion(elm:Rule)` permet l'accession au champ `conclusion` de `elm`.
-* `next(elm:ElmOfPremise)` permet l'accession au suivant de `elm`.
+* `facts(elm:Rule)` permet l'accession à la liste de fait qui à permis de construire la règle. 
 
 ---
 ### `addPremise`
@@ -125,7 +149,7 @@ Cette fonction permet d'ajouter un élément à la premise d'une règle.
 ````
 function addPremise(rule:Rule, premise:Type):Rule
 Stat
-    If not isEmpty(premise) AND not isEmpty(rule) AND isInFactList(facts(rule),premise) Then
+    If not isEmpty(premise) AND not isEmpty(rule) AND isPresentInFactList(facts(rule),premise) Then
         newl:ElmOfPremise <- createElmOfPremise()
         premise(newl) <- premise
         next(newl) <- UNDEFINED
@@ -151,7 +175,7 @@ Cette fonction permet de mettre à jour la conclusion d'une règle.
 ````
 function createConclusion(rule:Rule, conclusion:Type):Rule
 Start
-    If not isEmpty(rule) AND isInFactList(facts(rule), conclusion) Then
+    If not isEmpty(rule) AND isPresentInFactList(facts(rule), conclusion) Then
         conclusion(rule) <- conclusion
     EndIf
     createConclusion <- rule
@@ -223,7 +247,10 @@ End
 
 ---
 ### Les fonctions de bases
+* `createBC(facts:FactList)` renvoie une base de connaissance avec `facts` comme liste de faits associée.
 * `head(elm:BC)` permet l'accès au premier élément de la liste.
+* `tail(elm:BC)` permet l'accès au dernier élément de la liste.
+* `fact(elm:BC)` permet d'acces à la liste de fait qui à servie a construire la base de connaissance.
 * `createElmOfBC()` Renvoie un élément vide d'une base de connaissance (`BC`).
 * `rule(elm:ElmOfBC)` permet l'accession au champ `rule` de `elm`.
 * `next(elm:ElmOfBC)` permet l'accession au suivant de `elm`.
@@ -265,7 +292,7 @@ Cette fonction permet de réaliser une copie d'une base de connaissance.
 ````
 function copyOfBC(bc:BC):BC
 Start 
-    new_bc:BC <- createBC()
+    new_bc:BC <- createBC(facts(bc))
     point:ElmOfBC <- head(bc)
     While not isEmpty(point) Do
         new_rule:Rule <- createRule(facts(bc))

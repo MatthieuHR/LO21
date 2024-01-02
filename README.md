@@ -47,4 +47,5 @@ Enfin, vous avez à votre disposition tous les fichiers `Header` dans le dossier
 * [Fonctionnement du système expert](doc/fr/Functioning.md)
 * [Algorithmes des sous-programmes](doc/fr/Alogrithm.md)
 * [Jeu de tests et commentaires](doc/fr/Test.md)
+* [Toutes les fonctions implémentées en C](doc/fr/Function.md)
 

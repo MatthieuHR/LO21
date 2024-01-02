@@ -7,7 +7,51 @@ Dans cette section, nous allons vous expliciter le fonctionnement de notre **sys
 ## Préliminaire
 
 ---
-Avant de faire fonctionner notre système expert, il faut créer deux choses éssentiels :
+Avant tous il faut definir de quelle type sera notre donnée. Pour cela il vous sufis de suivre l'éxemple suivan:
+`````c
+#include <stdlib.h>
+#include <BC.h>
+
+typedef struc{
+    int value_1;
+    ...
+    int value_n;
+}myType;
+
+int main(){
+    myType* elm = malloc(sizeof(myType));
+    elm->value_1 = 3;
+    ...
+    elm->value_n = 12;
+}
+`````
+Ici `elm` est utilisable par notre système expert.
+
+Il vous faut aussi définir un pointeur de fonction pour comparer les éléments que l'on insère. Pour cela il fous sufis de suivre cette exemple :
+`````c
+#include <stdlib.h>
+#include <BC.h>
+
+int getSUMValue(myType* var){
+    return var->value_1 + ... + var->value_n;
+}
+
+Bool cmp(void* p1, void* p2){
+    if(getSUMValue(p1) == getValue(p2)){
+        return True;
+    }else{
+        return False;
+    }
+}
+
+int main(){
+    Bool (*fnPointer)(void*,void*);
+    fnPointer = cmp;
+}
+`````
+Maintenenat `fnPointer` est utilisable par les conctions necessitant un pointeur de fonction.
+
+Mais avant de faire fonctionner notre système expert, il faut créer deux choses éssentiels :
 * une **liste de fait**
 * une **base de connaissances**
 
@@ -22,12 +66,13 @@ Une liste de fait est la base de tout système expert, elle permet de définir l
 Dans notre système expert toutes les conclusions et prémises sont tirée de cette liste de fait et doivent donc **être créée en premier**. Le type de la liste de fait est `FactList`.
 
 Pour vous aider à sa création, vous avez à votre disposition plusieurs fonctions :
-* `createFactList()` pour créer une liste de fait vide (sans éléments).
+* `createFactList(Bool (*cmpValue)(void*, void*))` pour créer une liste de fait vide avec `cmpValue` qui est un pointeur sur la fonction de comparaison que vous avez définie.
 * `addFact(FactList list,*void fact)` pour ajouter une propriété(`fact`) a une liste de fait(`list`). Vous pouvez utiliser la meme variable `fact` en changent ça valeur sans problems.
-* `remouveAllFacts(FactList list)` pour supprimer tous les fait d'une liste de fait.
+* `removeAllFacts(FactList list)` pour supprimer tous les fait d'une liste de fait.
 
 Il y a aussi des fonctions qui intéragissent avec le type `FactList` :
-* `isInFactList(FactList list, void* fact)` qui vérifie si l'élément est dans la liste de fait et revoie un `*void`. 
+* `isAlreadyInFactList(FactList list, void* fact)` qui vérifie si l'élément est dans la liste de fait avec le pointeur de fonction et revoie un `*void`. 
+* `isPresentInFactList(FactList list, void* fact);` qui vérifie si l'élément est dans la liste de fait avec l'emplacement mémoire et revoie un `*void`
 * `getById(FactList list, long id)` qui renvoie l'élément associer a l'`id`;.
 
 >Pour plus de détail sur les fonctions merci de regarder les algorithms commenter [ici](Alogrithm.md)
@@ -38,7 +83,7 @@ Il y a aussi des fonctions qui intéragissent avec le type `FactList` :
 Une fois notre liste de fait créer il nous faut établir des relations entre les différents faits. Nous allons alors réaliser des règles que nous allons ensuite stocker dans une base de connaissance.
 
 Commençons par créer une règle. Le type d'une **règle** est `Rule` et ces fonctions sont disponibles pour aider à les créer :
-* `createEmptyRule()` qui créer une règle vide.
+* `createEmptyRule(FactList facts)` qui créer une règle vide avec une liste de fait associée (`facts`).
 * `addPremise(Rule* rules,void* premise)` qui ajoute une prémise tiré d'une liste de fait à la liste de prémises.
 * `createConclusion(Rule* rule, void* conclusion)` qui permet de définir une conclusion tirée d'une liste de fait.
 * `removePremise(Rule* rule,void* premise)` qui retire une prémise si elle est présente.
@@ -55,7 +100,7 @@ Il y a aussi des fonctions qui intéragissent avec le type `Rule` :
 Une fois notre règle créée, il ne reste plus qu'à ajouter cette règle à une base de connaissance. Regardons comment créer une base de connaissance de type `BC`.
 
 Voici les fonctions qui permettent sa conception :
-* `createEmptyBC()` pour créer une base de connaissance vide.
+* `createEmptyBC(FactList facts)` pour créer une base de connaissance vide avec une liste de faits associée.
 * `addRuleToBC(BC bc,Rule* rule)` pour ajouter une règle à la base de connaissance.
 * `BC copyOfBC(BC bc)` pour renvoyer une copie une base de connaissance.
 
@@ -64,6 +109,9 @@ Il y a aussi des fonctions qui intéragissent avec le type `BC` :
 
 >Pour plus de détail sur les fonctions merci de regarder les algorithms commenter [ici](Alogrithm.md)
 
+>[!WARNING]
+> 
+> Les listes de faits (`FactList`) sont comparer quand on apllique des ajouts d'éléments pour s'assurer qu'ils sont issue de la même liste. Veillez donc à toujours utiliser la même liste de faits.
 ## Fonctionnement du système expert
 
 ---

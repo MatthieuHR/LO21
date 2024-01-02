@@ -16,18 +16,18 @@ ElmOfFact* createElmOfFact() {
 }
 
 //Fonction to get the fact in a FactList and NULL if the fact is not in a Factlist
-Bool isInFactList(FactList list, void* fact){
-    if(list.head==NULL){return False;}
+Bool isAlreadyInFactList(FactList list, void* fact){
+    if(fact==NULL || list.head==NULL){return False;}
     if(isEqual(list.head->fact,fact,list.cmpValue)){return True;}
     else {
         FactList next = {list.head->next,list.last_id,list.cmpValue};
-        return isInFactList(next,fact);
+        return isAlreadyInFactList(next, fact);
     }
 }
 
 //Function to add a fact(Property) in tail to a FactList
 FactList addFact(FactList list, void* fact){
-    if(!isEmptyProperty(fact) && isInFactList(list,fact) == NULL) {
+    if(!isEmptyProperty(fact) && !isAlreadyInFactList(list, fact)) {
         ElmOfFact* newl = createElmOfFact();
         newl->fact=fact;
         newl->next=list.head;
@@ -39,7 +39,7 @@ FactList addFact(FactList list, void* fact){
 }
 
 //Function to free() all element of a FactList
-FactList remouveAllFacts(FactList list){
+FactList removeAllFacts(FactList list){
     ElmOfFact* point = list.head;
     while (point != NULL){
         list.head = point;
@@ -60,5 +60,15 @@ void* getById(FactList list, long id){
         return point->fact;
     }
     return NULL;
+}
+
+Bool isPresentInFactList(FactList list, void* fact){
+    if(fact == NULL || list.head == NULL){return False;}
+    if(list.head->fact==fact){return True;}
+    else{
+        FactList new = list;
+        new.head = list.head->next;
+        return isPresentInFactList(new,fact);
+    }
 }
 
