@@ -17,3 +17,4 @@ BC createEmptyBC(FactList facts);
 BC addRuleToBC(BC bc, Rule rule);
 Rule getHeadRule(BC bc);
 BC copyOfBC(BC bc);
+FactList freeBC(BC bc);

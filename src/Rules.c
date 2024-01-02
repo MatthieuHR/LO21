@@ -1,10 +1,9 @@
 #include "../include/Rules.h"
 #include "stdlib.h"
-#include "stdio.h"
 
 //Function to create an empty Rule with all pointer initialise on NULL
 Rule createEmptyRule(FactList facts){
-    Rule newl = malloc(sizeof (Rule));
+    Rule newl = (Rule)malloc(sizeof (PreRule));
     newl->conclusion=NULL;
     newl->premise.tail=NULL;
     newl->premise.head=NULL;
@@ -14,27 +13,16 @@ Rule createEmptyRule(FactList facts){
 
 //Function to add a Property in the premise field to a Rule
 Rule addPremise(Rule rule, void* premise){
-    printf("b");
         if(!isEmptyProperty(premise) && rule!=NULL && isPresentInFactList(rule->facts, premise)){
-            printf("b");
-            ElmOfPremise* new = (ElmOfPremise*)malloc(sizeof(ElmOfPremise));
-            printf("b");
+            ElmOfPremise* new = malloc(sizeof(ElmOfPremise));
             new->premise=premise;
-            printf("b");
             new->next=NULL;
-            printf("b");
             if(rule->premise.head==NULL){
-                printf("c");
                 rule->premise.head=new;
-                printf("c");
                 rule->premise.tail=new;
-                printf("c");
             }else{
-                printf("b");
                 rule->premise.tail->next = new;
-                printf("b");
                 rule->premise.tail=new;
-                printf("b");
             }
     }
     return rule;
@@ -122,12 +110,16 @@ FactList getFactListOfRule(Rule rule){
     else{return rule->facts;}
 }
 
-FactList freeFactList(FactList list){
-    if(list != NULL){
-        if(list->head != NULL){
-            list = removeAllFacts(list);
+FactList freeRule(Rule rule){
+    if(rule != NULL && rule->premise.head!=NULL){
+        ElmOfPremise* point = rule->premise.head;
+        while (point!=NULL){
+            ElmOfPremise* temp = point;
+            point=point->next;
+            free(temp);
         }
-        free(list);
+        FactList rtn = rule->facts;
+        free(rule);
+        return rtn;
     }
-    return NULL;
 }

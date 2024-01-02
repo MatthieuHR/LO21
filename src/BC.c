@@ -4,7 +4,7 @@
 //Function to create an empty BC
 BC createEmptyBC(FactList facts){
     if(facts->head!=NULL){
-        BC new = malloc(sizeof(BC));
+        BC new = (BC)malloc(sizeof(PreBC));
         new->tail=NULL;
         new->head=NULL;
         new->facts = facts;
@@ -19,7 +19,7 @@ BC addRuleToBC(BC bc, Rule rule){
         ElmOfBC* newl = malloc(sizeof (ElmOfBC));
         newl->rule=rule;
         newl->next=NULL;
-        if(bc->head == bc->tail){
+        if(bc->head == NULL){
             bc->head = newl;
             bc->tail = newl;
         }else{
@@ -58,4 +58,20 @@ BC copyOfBC(BC bc){
 
 FactList getFactListOfBC(BC bc){
     return bc->facts;
+}
+
+FactList freeBC(BC bc){
+    if(bc!=NULL && bc->head!=NULL){
+        ElmOfBC* point = bc->head;
+        while (point!=NULL){
+            ElmOfBC* temp = point;
+            freeRule(temp->rule);
+            point=point->next;
+            free(temp);
+        }
+        FactList rtn = bc->facts;
+        free(bc);
+        return rtn;
+    }
+    return NULL;
 }

@@ -28,3 +28,4 @@ Bool isPremiseEmpty(Rule rule);//work
 ElmOfPremise* getHeadOfPremise(Rule rule);//work
 void* getConclusion(Rule rule);//work
 FactList getFactListOfRule(Rule rule);
+FactList freeRule(Rule rule);

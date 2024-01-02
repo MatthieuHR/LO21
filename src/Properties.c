@@ -1,5 +1,5 @@
 #include "../include/Properties.h"
-#include "stdlib.h"
+#include <stdlib.h>
 
 //Function to test if a Property is empty (based on selected criteria)
 Bool isEmptyProperty(void* prop){

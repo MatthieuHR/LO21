@@ -1,10 +1,10 @@
-#include "../include/Rules.h"
+/*#include "../include/Rules.h"
 #include "stdlib.h"
 #include "stdio.h"
 
-typedef int elm;
+typedef int coucou;
 
-int getValue(elm* var){
+int getValue(coucou* var){
     return *var;
 }
 
@@ -16,7 +16,7 @@ Bool cmpValue(void* p1,void* p2){
     }
 }
 
-void print(elm* var){
+void print(coucou* var){
     printf("%d\n",*var);
 }
 
@@ -26,7 +26,7 @@ int main(){
     FactList facts = createFactList(fnPointer);
 
     for (int i = 0; i <= 4; ++i) {
-        elm* aFact = malloc(sizeof(elm));
+        coucou* aFact = malloc(sizeof(coucou));
         *aFact = i;
         facts = addFact(facts,aFact);
     }
@@ -39,19 +39,33 @@ int main(){
         printf("Pass\n");
     }
 
+
+
     for (int j =0; j < 4; ++j) {
-        printf("a");
-        elm* add;
-        printf("a");
+        coucou* add;
         add = getById(aRule->facts,j);
-        printf("a");
         aRule = addPremise(aRule, add);
-        printf("a\n");
     }
     aRule = createConclusion(aRule, getById(aRule->facts,4));
     print(getHeadOfPremise(aRule)->premise);
     print(getHeadOfPremise(aRule)->next->premise);
     print(getConclusion(aRule));
 
+    aRule = removePremise(aRule, getById(aRule->facts,0));
+
+    if(!factInPremise(aRule, getById(aRule->facts,0))){
+        printf("Pass\n");
+    }
+
+    if(factInPremise(aRule, getById(aRule->facts,2))){
+        printf("Pass\n");
+    }
+
+    FactList end = freeRule(aRule);
+    end = freeFactList(end);
+    if(end == NULL){
+        printf("Final Pass\n");
+    }
+
     return 0;
-}
+}*/

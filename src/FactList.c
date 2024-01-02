@@ -4,7 +4,7 @@
 //Function to create an empty FactList
 FactList createFactList(Bool (*cmpValue)(void*, void*)){
     if(cmpValue!=NULL){
-        FactList newl = malloc(sizeof(FactList));
+        FactList newl = (FactList)malloc(sizeof(PreFactList));
         newl->head=NULL;
         newl->last_id=-1;
         newl->cmpValue = cmpValue;
@@ -81,5 +81,15 @@ Bool isPresentInFactList(FactList list, void* fact){
         new.head = new.head->next;
         return isPresentInFactList(&new,fact);
     }
+}
+
+FactList freeFactList(FactList list){
+    if(list != NULL){
+        if(list->head != NULL){
+            list = removeAllFacts(list);
+        }
+        free(list);
+    }
+    return NULL;
 }
 
