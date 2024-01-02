@@ -11,8 +11,8 @@ Dans cette section, vous pouvez retrouver tous les algorithmes des sous programm
 
 ---
 ### Les fonctions de bases
+* `createFactList(cmpValue(Type, Type):Function)` renvoie une liste de fait (`FactList`) vide avec la méthode de comparaison (`cmpValue`) choisie.
 * `createElmOfFact()` renvoie un élément vide d'une liste de fait (`FactList`).
-* `affectFiel(fact:Type)` renvoie un fait utilisable par une liste de fait (`FactList`) à partir du `fact`.
 * `head(elm:FactList)` permet l'accès au premier élément de la liste.
 * `fact(elm:ElmOfFact)` permet l'accession au champ `fact` de `elm`.
 * `next(elm:ElmOfFact)` permet l'accession au suivant de `elm`.
@@ -27,16 +27,14 @@ Cette fonction sert à ajouter un élément dans une `FactList`.
 ````
 function addFact(list:FactList, fact:Type):FactList
 Start
-    newl:ElmOfFact <- createElmOfFact()
-    fact(newl) <- affectfiel(fact)
-    If isEmpty(fact(newl)) Then
-        addFact <- EMTPY
+    if not isEmpty(fact) AND isInFactlist(list, fact) == UNDEFINED) Then
+        newl:ElmOfFact <- createElmOfFact()
+        fact(newl) <- fact
+        next(newl) <- head(list)
+        id(newl) <- last_id(list) + 1
+        head(list) = newl;
+        last_id(list) = last_id(list) + 1
     EndIf
-    next(newl) = EMPTY
-    If not isEmpty(list) Then
-        next(newl) <- list
-    EndIf
-    addFact <- newl
 End
 ````
 
@@ -49,12 +47,57 @@ Cette fonction permet de libérer la mémoire utilisée par une `FactList` en ca
 function remouveAllFacts(list:FactList):FactList
 Start
     point:ElmOfFact <- head(list)
-    While not isNull(point) Do
+    While not isEmpty(point) Do
         head(list) <- point
         point <- next(point)
         free(point)
     Done
+    head(list) = UNDEFINED
+    last_id(list) = -1
     remouveAllFacts <- point
+End
+````
+
+---
+### `getById`
+Cette fonction permet de récupérer un élément d'une liste de fait en fonction de son `id`.
+* `list` est la liste de fait dont on souhaite extraire un élément.
+* `id` est l'identifiant unique dont on veux la structure associé.
+* `point` est un pointeur pour parcourir la list.
+>La fonction renvoie un fait de type `Type`.
+````
+function getById(list:FactList, id:LongInteger):Type
+Start
+    If not isEmpty(head(list)) AND id <= last_id(list) Then
+        point:ElmOfFact <- head(list)
+        While not (id(point) = id) Do
+            point <- next(point)
+        Done
+        getById <- fact(point)
+    EndIf
+    getById <- UNDEFINED
+End
+````
+
+---
+### `isInFactList`
+Cette fonction permet de savoir si un élément appartient à une liste de fait (`FactList`) récursivement.
+* `list` est la liste de fait ou l'on cherche notre fait.
+* `fact` est le fait que l'on cherche.
+>La fonction renvoie un `Bool`
+````
+function isInFactList(list:FactList, fact:Type):Bool
+Start
+    If isEmpty(head(list)) Then
+        isInFactList <- False
+    EndIf
+    If isEqual(fact(head(list)),fact,cmpValue(list)) Then
+        isInFactList <- True
+    Else
+        next:Factlist <- fact
+        head(next) <- next(head(list))
+        isInFactList <- isInFactList(next, fact)
+    EndIf
 End
 ````
 ## Les algorithmes avec des `Rule`
@@ -78,23 +121,22 @@ Cette fonction permet d'ajouter un élément à la premise d'une règle.
 * `rule` est la règle à laquelle on veut modifier la prémisse.
 * `premise` est un fait qui provient d'une liste de fait (`FactList`) et que l'on souhaite ajouter à la prémisse de la règle.
 * `newl` est le nouvel élément de la prémisse.
-* `point` est un pointeur pour parcourir la liste afin de faire un ajout en queue.
 >La fonction renvoie la règle modifiée.
 ````
 function addPremise(rule:Rule, premise:Type):Rule
 Stat
-    If not isEmpty(premise) Then
+    If not isEmpty(premise) AND not isEmpty(rule) AND isInFactList(facts(rule),premise) Then
         newl:ElmOfPremise <- createElmOfPremise()
         premise(newl) <- premise
         next(newl) <- UNDEFINED
-        If isEmpty(rule) Then
-            rule <- createEmptyRule()
+        If isEmpty(head(premise(rule))) Then
+            head(premise(rule)) = newl
+            tail(premise(rule)) = newl
         EndIf
         If isEmpty(premise(rule)) Then
-            head(premise(rule)) <- newl
+            next(tail(premise(rule))) <- newl
+            (tail(premise(rule)) <- newl
         EndIf
-        next(newl) <- tail(premise(rule)
-        tail(premise(rule)) <- newl
     EndIf
     addPremise <- rule
 End
@@ -109,10 +151,7 @@ Cette fonction permet de mettre à jour la conclusion d'une règle.
 ````
 function createConclusion(rule:Rule, conclusion:Type):Rule
 Start
-    If not isEmpty(conclusion) Then
-        If not isEmpty(conclusion(rule)) Then
-            free(conclusion(rule))
-        EndIf
+    If not isEmpty(rule) AND isInFactList(facts(rule), conclusion) Then
         conclusion(rule) <- conclusion
     EndIf
     createConclusion <- rule
@@ -122,21 +161,20 @@ End
 ---
 ### `factInPremise`
 Cette fonction sert à définir récursivement si un fait est dans une prémisse de règle.
-* `premise` est la prémisse provenant d'une règle (`Rule`) dont on veut savoir si le fait y est contenu.
+* `rule` est la règle dont on veut savoir si le fait y est contenu dans la prémisse.
 * `prop` est le fait que l'on cherche.
 >La fonction renvoie `True` si la propriété est comprise, `False` sinon.
 ````
-function factInPremise(premise:Premise, prop:Type):Bool
+function factInPremise(premise:Rule, prop:Type):Bool
 Start
-    If isEmpty(premise) Then
+    If isEmpty(rule) OR isEmpty(head(premise(rule))) OR isEmpty(prop) Then
         factInPremise <- False
     EndIf
-    If premise(head(premise)) = prop Then
+    If premise(head(premise(rule))) = prop Then
         factInPremise <- True
     Endif
-    new:Premise <- createPremise()
-    head(new) <- next(head(premise)
-    tail(new) <- tail(premise)
+    new:Rule <- rule
+    head(premise(new) <- next(head(premise(rule)))
     factInPremise <- factInPremise(new, prop)
 End
 ````
@@ -146,28 +184,35 @@ End
 Cette fonction permet de retirer un fait de la prémisse.
 * `rule` est la règle à laquelle on veut modifier la prémisse.
 * `premise` est un fait qui provient d'une liste de fait (`FactList`) et que l'on souhaite retirer à la prémisse de la règle.
-* `point` est un pointeur pour parcourir la liste.
+* `now` est l'élément que l'on compare actuellement (sauf pour la tete de liste).
+* `prev` est l'élément avant `now`.
 >La fonction renvoie la règle modifiée.
 ````
 function removePremise(rule:Rule, premise:Type):Rule
 Start
-    If not isEmpty(premise(Rule)) Then
-        point:ElmOfPremise <- head(premise(rule))
-        If premise(point) = premise Then
-            head(premise(rule)) <- next(point)
-            free(point)
-        Else
-            If not isEmpty(next(point)) Then
-                While not isEmpty(next(point)) Do
-                    If premise(next(point)) = premise Then
-                        tmp:ElmOfPremise <- next(point)
-                        next(point) <- next(next(point))
-                        free(tmp)
-                        removePremise <- rule
-                    EndIf
-                    point <- next(point)
-                Done
+    If not isEmpty(rule) AND not isEmpty(premise) Then
+        prev:ElmOfPremise <- head(premise(rule))
+        now:ElmOfPremise <- next(prev)
+        If premise = premise(prev) Then
+            If head(premise(rule)) = tail(premise(rule)) Then
+                free(prev)
+                head(premise(rule)) = NULL
+                tail(premise(rule)) = NULL
+            Else
+                free(prev)
+                head(premise(rule)) <- now
             EndIf
+            removePremise <- rule
+        Else
+            While not isEmpty(now)) Do
+                If premise(now) = premise Then
+                    next(prev) = next(now)
+                    free(now)
+                    removePremise <- rule
+                EndIf
+                prev <- now
+                now <- next(now)
+            Done
         EndIf
     EndIf
     removePremise <- rule
@@ -189,25 +234,23 @@ Cette fonction permet d'ajouter une règle à une base de connaissance.
 * `bc` est la base de connaissance à laquelle on veut ajouter une règle.
 * `rule` est une règle que l'on souhaite ajouter.
 * `newl` est le nouvel élément de la base de connaissance.
-* `point` est un pointeur pour parcourir la liste afin de faire un ajout en queue.
 >La fonction renvoie la base de connaissance modifiée.
 ```
 function addRuleToBC(bc:BC, rule:Rule):BC
 Start
-    newl:ElmOfBC
-    rule(newl) <- rule
-    next(newl) <- UNDEFINED
-    If not isEmpty(bc) Then
-        point:ElmOfBC <- head(bc)
-        While not isEmpty(next(point)) Do
-            point <- next(point)
-        Done
-        next(point) <- newl
-        addRuleToBC <- bc
-    Else
-        head(bc) <- newl
-        addRuleToBC <- bc
+    If not isEmpty(premise(rule)) AND not isEmpty(conclusion(rule)) AND head(facts(rule)) = head(facts(bc)) Then
+        newl:ElmOfBC <- createElmOfBC()
+        rule(newl) <- rule
+        next(rule) <- UNDEFINED
+        If head(bc) = tail(bc) Then 
+            head(bc) <- newl
+            tail(bc) <- newl
+        Else
+            next(tail(bc)) <- newl
+            tail(bc) <- newl
+        EndIf
     EndIf
+    addRuleToBC <- bc 
 End
 ```
 
@@ -225,13 +268,13 @@ Start
     new_bc:BC <- createBC()
     point:ElmOfBC <- head(bc)
     While not isEmpty(point) Do
-        new_rule:Rule <- createRule()
-        premise:ElmOfPremise <- premise(rule(point))
+        new_rule:Rule <- createRule(facts(bc))
+        conclusion(new_rule) <- conclusion(rule(point))
+        premise:ElmOfPremise <- head(premise(rule(point)))
         While not isEmpty(premise) Do
             new_rule <- addPremise(new_rule, premise(premise))
             premise <- next(premise)
         Done
-        conclusion(new_rule) <- conclusion(rule(point))
         new_bc <- addRuleToBC(new_bc, new_rule)
         point <- next(point)
     Done

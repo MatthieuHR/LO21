@@ -15,5 +15,5 @@ typedef struct {
 FactList createFactList(Bool (*cmpValue)(void*, void*));//work
 FactList addFact(FactList list, void* fact);//work
 FactList remouveAllFacts(FactList list);//work
-void* isInFactList(FactList list, void* fact);//work
+Bool isInFactList(FactList list, void* fact);//work
 void* getById(FactList list, long id);//work

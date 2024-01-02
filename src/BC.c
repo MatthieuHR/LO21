@@ -38,7 +38,6 @@ BC copyOfBC(BC bc){
     ElmOfBC* point = bc.head;
     while (point!=NULL){
         Rule* new_rule = createEmptyRule(bc.facts);
-        new_rule->facts=bc.facts;
         new_rule->conclusion=point->rule->conclusion;
         ElmOfPremise* premise = point->rule->premise.head;
         while (premise!=NULL){

@@ -16,9 +16,9 @@ ElmOfFact* createElmOfFact() {
 }
 
 //Fonction to get the fact in a FactList and NULL if the fact is not in a Factlist
-void* isInFactList(FactList list, void* fact){
-    if(list.head==NULL){return NULL;}
-    if(isEqual(list.head->fact,fact,list.cmpValue)){return list.head->fact;}
+Bool isInFactList(FactList list, void* fact){
+    if(list.head==NULL){return False;}
+    if(isEqual(list.head->fact,fact,list.cmpValue)){return True;}
     else {
         FactList next = {list.head->next,list.last_id,list.cmpValue};
         return isInFactList(next,fact);
