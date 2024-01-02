@@ -52,7 +52,8 @@ Start
     While not isEmpty(point) Do
         head(list) <- point
         point <- next(point)
-        free(point)
+        free(fact(head(list)))
+        free(head(list)
     Done
     head(list) = UNDEFINED
     last_id(list) = -1

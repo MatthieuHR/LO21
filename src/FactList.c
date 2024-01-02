@@ -3,8 +3,15 @@
 
 //Function to create an empty FactList
 FactList createFactList(Bool (*cmpValue)(void*, void*)){
-    FactList newl = {NULL,-1,cmpValue};
-    return newl;
+    if(cmpValue!=NULL){
+        FactList newl = malloc(sizeof(FactList));
+        newl->head=NULL;
+        newl->last_id=-1;
+        newl->cmpValue = cmpValue;
+        return newl;
+    }else{
+        return NULL;
+    }
 }
 
 ElmOfFact* createElmOfFact() {
@@ -17,11 +24,12 @@ ElmOfFact* createElmOfFact() {
 
 //Fonction to get the fact in a FactList and NULL if the fact is not in a Factlist
 Bool isAlreadyInFactList(FactList list, void* fact){
-    if(fact==NULL || list.head==NULL){return False;}
-    if(isEqual(list.head->fact,fact,list.cmpValue)){return True;}
+    if(fact==NULL || list->head==NULL){return False;}
+    if(list->cmpValue(list->head->fact,fact)){return True;}
     else {
-        FactList next = {list.head->next,list.last_id,list.cmpValue};
-        return isAlreadyInFactList(next, fact);
+        PreFactList next = *list;
+        next.head=next.head->next;
+        return isAlreadyInFactList(&next,fact);
     }
 }
 
@@ -30,45 +38,48 @@ FactList addFact(FactList list, void* fact){
     if(!isEmptyProperty(fact) && !isAlreadyInFactList(list, fact)) {
         ElmOfFact* newl = createElmOfFact();
         newl->fact=fact;
-        newl->next=list.head;
-        newl->id = list.last_id+1;
-        list.head=newl;
-        list.last_id+=1;
+        newl->next=list->head;
+        newl->id = list->last_id+1;
+        list->head=newl;
+        list->last_id+=1;
     }
     return list;
 }
 
 //Function to free() all element of a FactList
 FactList removeAllFacts(FactList list){
-    ElmOfFact* point = list.head;
+    ElmOfFact* point = list->head;
     while (point != NULL){
-        list.head = point;
+        list->head = point;
         point = point->next;
-        free(list.head);
+        free(list->head->fact);
+        free(list->head);
     }
-    list.head=NULL;
-    list.last_id=-1;
+    list->head=NULL;
+    list->last_id=-1;
     return list;
 }
 
 void* getById(FactList list, long id){
-    if(list.head != NULL && id <= list.last_id){
-        ElmOfFact* point = list.head;
-        while (point->id!=id){
+    if(list != NULL && id <= list->last_id){
+        ElmOfFact* point = list->head;
+        while (point != NULL){
+            if(point->id==id){
+                return point->fact;
+            }
             point=point->next;
         }
-        return point->fact;
     }
     return NULL;
 }
 
 Bool isPresentInFactList(FactList list, void* fact){
-    if(fact == NULL || list.head == NULL){return False;}
-    if(list.head->fact==fact){return True;}
+    if(fact == NULL || list->head == NULL){return False;}
+    if(list->head->fact==fact){return True;}
     else{
-        FactList new = list;
-        new.head = list.head->next;
-        return isPresentInFactList(new,fact);
+        PreFactList new = *list;
+        new.head = new.head->next;
+        return isPresentInFactList(&new,fact);
     }
 }
 

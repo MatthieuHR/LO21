@@ -6,7 +6,6 @@ set(CMAKE_C_STANDARD 11)
 add_executable(LO21 main.c
         src/Rules.c
         include/Rules.h
-        test/TestRules.c
         src/BC.c
         include/BC.h
         src/FactList.c
@@ -15,5 +14,8 @@ add_executable(LO21 main.c
         src/Properties.c
         include/Properties.h
         src/Rules.c
-        test/TestRules.c
+        src/ExpertSys.c
+        include/ExpertSys.h
+        test/FactListTest.c
+        test/RuleTest.c
 )

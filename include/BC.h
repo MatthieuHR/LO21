@@ -1,7 +1,7 @@
 #include "Rules.h"
 
 typedef struct elm3{
-    Rule* rule;
+    Rule rule;
     struct elm3* next;
 }ElmOfBC;
 
@@ -9,9 +9,11 @@ typedef struct {
     ElmOfBC* head;
     ElmOfBC* tail;
     FactList facts;
-}BC;
+}PreBC;
+
+typedef PreBC* BC;
 
 BC createEmptyBC(FactList facts);
-BC addRuleToBC(BC bc, Rule* rule);
-Rule* getHeadRule(BC bc);
+BC addRuleToBC(BC bc, Rule rule);
+Rule getHeadRule(BC bc);
 BC copyOfBC(BC bc);
