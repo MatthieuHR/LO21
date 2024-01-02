@@ -11,12 +11,14 @@ Après une analise rapide du sujet, nous avons remarqué qu'un parcours récursi
 
 De plus nous avons aussi remarqué que les algorithms ne tirait pas d'avantages en termes de performances entre des listes simplement chainées et doublement chainées. Seul l'algorithme de suppression dans une liste est plus simple avec une liste doublement chainée.
 
+Nous avons aussi remarquer qu'un accès en queue pour les listes serait intérésent car il est imposer pour certaines fonctions de faire un ajout en queue.
+
 
 ## Choix final
 
 ---
-### Représentation des listes
-Pour représenter les listes le plus logique nous à semblés de garder des listes simplement chainées car des listes doublements chainées n'apporte que peu d'avantages.
+### Représentation des listes et autres implémentations.
+Pour représenter les listes le plus logique nous à semblés de garder des listes simplement chainées car des listes doublements chainées n'apporte que peu d'avantages. Nous précison plus loins la structure de chaque liste et ce qui nous à motiver a faire ce choix.
 
 Cependant malgres le fait que garder des structures des listes les plus simples possible apporte des avantages nous avons décidés que chaque liste devras contenir une liste de fait pour s'assurer que chaque élément intéragise bien avec ça liste de fait.
 
@@ -30,6 +32,8 @@ Nous avons longuement réfléchi à comment implémenter un fait sans qu celui-c
 
 C'est pour quoi nous n'avons attribuer aucun type défini à cette donner. A la place nous laison l'utilisateur choisir quelle donnée il souhaite utilisé et comment il définie l'égaliter entre cette donné avec un pointeur de fonction.
 
+>[!NOTE]
+>
 >La donnée est alors représenter en C par un pointeur sur void : `void*`
 
 Nous avons tous de meme des fonctions qui intéragisent avec ce type non définie :

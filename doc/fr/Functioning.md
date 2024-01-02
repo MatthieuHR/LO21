@@ -112,6 +112,11 @@ Il y a aussi des fonctions qui intéragissent avec le type `BC` :
 >[!WARNING]
 > 
 > Les listes de faits (`FactList`) sont comparer quand on apllique des ajouts d'éléments pour s'assurer qu'ils sont issue de la même liste. Veillez donc à toujours utiliser la même liste de faits.
+
+
+>[!TIP]
+> 
+> Vous pouvez retrouver [ici](Function.md) toutes les fonctions et leurs utilitées et éventuellement plus de détail.
 ## Fonctionnement du système expert
 
 ---
@@ -141,11 +146,6 @@ Une fois que la pile est vide le programme nous retourne sa liste de conclusion 
 
 ---
 ### Les codes d'erreur
-
-
-## Les fonctions utiles
-
----
 
 
 
