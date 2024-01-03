@@ -1,3 +1,6 @@
+#ifndef DB_H
+#define DB_H
+
 #include "Rules.h"
 
 typedef struct elm3{
@@ -13,11 +16,13 @@ typedef struct {
 
 typedef PreDB* DB;
 
-DB createEmptyBC(FactList facts);
-DB addRuleToBC(DB bc, Rule rule);
-ElmOfDB* getHeadRule(DB bc);
+DB createEmptyDB(FactList facts);
+DB addRuleToDB(DB db, Rule rule);
+ElmOfDB* getHeadRule(DB db);
 ElmOfDB* getNextRule(ElmOfDB* elm);
 Rule getRule(ElmOfDB* elm);
-DB copyOfBC(DB bc);
-FactList freeBC(DB bc);
-FactList getFactListOfDB(DB bc);
+DB copyOfDB(DB db);
+FactList freeDB(DB db);
+FactList getFactListOfDB(DB db);
+
+#endif /* DB_H */

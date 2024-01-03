@@ -1,9 +1,12 @@
+#ifndef FACTLIST_H
+#define FACTLIST_H
+
 #include "Properties.h"
 
-typedef struct elm{
+typedef struct elm4{
     long id;
     void* fact;
-    struct elm* next;
+    struct elm4* next;
 }ElmOfFact;
 
 typedef struct {
@@ -21,3 +24,5 @@ FactList freeFactList(FactList list);
 Bool isAlreadyInFactList(FactList list, void* fact);//work
 Bool isPresentInFactList(FactList list, void* fact);
 void* getById(FactList list, long id);//work
+
+#endif // FACTLIST_H

@@ -1,3 +1,6 @@
+#ifndef RULES_H
+#define RULES_H
+
 #include "FactList.h"
 
 typedef struct elm1{
@@ -31,3 +34,5 @@ void* getPremise(ElmOfPremise* elm);//work
 void* getConclusion(Rule rule);//work
 FactList getFactListOfRule(Rule rule);
 FactList freeRule(Rule rule);
+
+#endif // RULES_H

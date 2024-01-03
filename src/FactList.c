@@ -1,7 +1,12 @@
 #include "../include/FactList.h"
 #include "stdlib.h"
 
-//Function to create an empty FactList
+/**
+ * Function to create an empty FactList.
+ * 
+ * @param cmpValue A function pointer to the comparison function used to compare values in the FactList.
+ * @return A pointer to the newly created FactList, or NULL if cmpValue is NULL.
+ */
 FactList createFactList(Bool (*cmpValue)(void*, void*)){
     if(cmpValue!=NULL){
         FactList newl = (FactList)malloc(sizeof(PreFactList));
@@ -14,6 +19,11 @@ FactList createFactList(Bool (*cmpValue)(void*, void*)){
     }
 }
 
+/**
+ * Creates a new element of a fact list.
+ * 
+ * @return The newly created element.
+ */
 ElmOfFact* createElmOfFact() {
     ElmOfFact* newl = malloc(sizeof(ElmOfFact));
     newl->fact = NULL;
@@ -22,7 +32,13 @@ ElmOfFact* createElmOfFact() {
     return newl;
 }
 
-//Fonction to get the fact in a FactList and NULL if the fact is not in a Factlist
+/**
+ * Checks if a given fact is already present in a FactList by compare its value with the values of the facts in the FactList.
+ * 
+ * @param list The FactList to search in.
+ * @param fact The fact to check for.
+ * @return True if the fact is already in the FactList, False otherwise.
+ */
 Bool isAlreadyInFactList(FactList list, void* fact){
     if(fact==NULL || list->head==NULL){return False;}
     if(list->cmpValue(list->head->fact,fact)){return True;}
@@ -33,7 +49,13 @@ Bool isAlreadyInFactList(FactList list, void* fact){
     }
 }
 
-//Function to add a fact(Property) in tail to a FactList
+/**
+ * Function to add a fact (Property) to the tail of a FactList.
+ *
+ * @param list The FactList to add the fact to.
+ * @param fact The fact (Property) to be added.
+ * @return The updated FactList with the fact added or not.
+ */
 FactList addFact(FactList list, void* fact){
     if(!isEmptyProperty(fact) && !isAlreadyInFactList(list, fact)) {
         ElmOfFact* newl = createElmOfFact();
@@ -46,7 +68,12 @@ FactList addFact(FactList list, void* fact){
     return list;
 }
 
-//Function to free() all element of a FactList
+/**
+ * Function to remove all elements from a FactList and free the memory.
+ * 
+ * @param list The FactList to be modified.
+ * @return The modified FactList with all elements removed.
+ */
 FactList removeAllFacts(FactList list){
     ElmOfFact* point = list->head;
     while (point != NULL){
@@ -60,6 +87,13 @@ FactList removeAllFacts(FactList list){
     return list;
 }
 
+/**
+ * Retrieves a fact from the given fact list based on its ID.
+ *
+ * @param list The fact list to search in.
+ * @param id The ID of the fact to retrieve.
+ * @return A pointer to the fact with the specified ID, or NULL if not found.
+ */
 void* getById(FactList list, long id){
     if(list != NULL && id <= list->last_id){
         ElmOfFact* point = list->head;
@@ -73,6 +107,13 @@ void* getById(FactList list, long id){
     return NULL;
 }
 
+/**
+ * Checks if a given fact is present in a FactList by memory comparison.
+ *
+ * @param list The FactList to search in.
+ * @param fact The fact to search for.
+ * @return True if the fact is present in the list, False otherwise.
+ */
 Bool isPresentInFactList(FactList list, void* fact){
     if(fact == NULL || list->head == NULL){return False;}
     if(list->head->fact==fact){return True;}
@@ -83,6 +124,12 @@ Bool isPresentInFactList(FactList list, void* fact){
     }
 }
 
+/**
+ * Frees the memory occupied by a FactList.
+ * 
+ * @param list The FactList to be freed.
+ * @return NULL.
+ */
 FactList freeFactList(FactList list){
     if(list != NULL){
         if(list->head != NULL){
