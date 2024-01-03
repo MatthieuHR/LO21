@@ -3,11 +3,11 @@
 typedef struct elm3{
     Rule rule;
     struct elm3* next;
-}ElmOfBC;
+}ElmOfDB;
 
 typedef struct {
-    ElmOfBC* head;
-    ElmOfBC* tail;
+    ElmOfDB* head;
+    ElmOfDB* tail;
     FactList facts;
 }PreDB;
 

@@ -1,4 +1,4 @@
-#include "../include/BC.h"
+#include "../include/DB.h"
 #include "stdlib.h"
 
 //Function to create an empty DB
@@ -16,7 +16,7 @@ DB createEmptyBC(FactList facts){
 //Function to add a Rule to a DB
 DB addRuleToBC(DB bc, Rule rule){
     if(bc!=NULL && !isPremiseEmpty(rule) && getConclusion(rule)!=NULL && rule->facts->head == bc->facts->head){
-        ElmOfBC* newl = malloc(sizeof (ElmOfBC));
+        ElmOfDB* newl = malloc(sizeof (ElmOfDB));
         newl->rule=rule;
         newl->next=NULL;
         if(bc->head == NULL){
@@ -41,7 +41,7 @@ Rule getHeadRule(DB bc){
 
 DB copyOfBC(DB bc){
     DB new_bc = createEmptyBC(bc->facts);
-    ElmOfBC* point = bc->head;
+    ElmOfDB* point = bc->head;
     while (point!=NULL){
         Rule new_rule = createEmptyRule(bc->facts);
         new_rule->conclusion=point->rule->conclusion;
@@ -62,9 +62,9 @@ FactList getFactListOfBC(DB bc){
 
 FactList freeBC(DB bc){
     if(bc!=NULL && bc->head!=NULL){
-        ElmOfBC* point = bc->head;
+        ElmOfDB* point = bc->head;
         while (point!=NULL){
-            ElmOfBC* temp = point;
+            ElmOfDB* temp = point;
             freeRule(temp->rule);
             point=point->next;
             free(temp);

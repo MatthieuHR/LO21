@@ -7,7 +7,7 @@ Dans cette section, nous allons vous expliciter le fonctionnement de notre **sys
 ## Préliminaire
 
 ---
-Avant tous il faut definir de quelle type sera notre donnée. Pour cela il vous sufis de suivre l'éxemple suivan:
+Avant tout, il faut définir de quel type sera notre donnée. Pour cela il vous suffit de suivre l'éxemple suivant :
 `````c
 #include <stdlib.h>
 #include <DB.h>
@@ -27,7 +27,7 @@ int main(){
 `````
 Ici `elm` est utilisable par notre système expert.
 
-Il vous faut aussi définir un pointeur de fonction pour comparer les éléments que l'on insère. Pour cela il fous sufis de suivre cette exemple :
+Il vous faut aussi définir un pointeur de fonction pour comparer les éléments que l'on insère. Pour cela, il vous suffit de suivre cet exemple :
 `````c
 #include <stdlib.h>
 #include <DB.h>
@@ -49,7 +49,7 @@ int main(){
     fnPointer = cmp;
 }
 `````
-Maintenenat `fnPointer` est utilisable par les conctions necessitant un pointeur de fonction.
+Maintenant `fnPointer` est utilisable par les fonctions nécessitant un pointeur de fonction.
 
 Mais avant de faire fonctionner notre système expert, il faut créer deux choses éssentiels :
 * une **liste de fait**
@@ -73,7 +73,7 @@ Pour vous aider à sa création, vous avez à votre disposition plusieurs foncti
 Il y a aussi des fonctions qui intéragissent avec le type `FactList` :
 * `isAlreadyInFactList(FactList list, void* fact)` qui vérifie si l'élément est dans la liste de fait avec le pointeur de fonction et revoie un `*void`. 
 * `isPresentInFactList(FactList list, void* fact);` qui vérifie si l'élément est dans la liste de fait avec l'emplacement mémoire et revoie un `*void`
-* `getById(FactList list, long id)` qui renvoie l'élément associer a l'`id`;.
+* `getById(FactList list, long id)` qui renvoie l'élément associé à l'`id`;.
 
 >Pour plus de détail sur les fonctions merci de regarder les algorithms commenter [ici](Alogrithm.md)
 
@@ -85,8 +85,8 @@ Une fois notre liste de fait créer il nous faut établir des relations entre le
 Commençons par créer une règle. Le type d'une **règle** est `Rule` et ces fonctions sont disponibles pour aider à les créer :
 * `createEmptyRule(FactList facts)` qui créer une règle vide avec une liste de fait associée (`facts`).
 * `addPremise(Rule* rules,void* premise)` qui ajoute une prémise tiré d'une liste de fait à la liste de prémises.
-* `createConclusion(Rule* rule, void* conclusion)` qui permet de définir une conclusion tirée d'une liste de fait.
-* `removePremise(Rule* rule,void* premise)` qui retire une prémise si elle est présente.
+* `setConclusion(Rule* rule, void* conclusion)` qui permet de définir une conclusion tirée d'une liste de fait.
+* `removeFromPremise(Rule* rule,void* premise)` qui retire une prémise si elle est présente.
 
 
 Il y a aussi des fonctions qui intéragissent avec le type `Rule` :
@@ -111,12 +111,12 @@ Il y a aussi des fonctions qui intéragissent avec le type `DB` :
 
 >[!WARNING]
 > 
-> Les listes de faits (`FactList`) sont comparer quand on apllique des ajouts d'éléments pour s'assurer qu'ils sont issue de la même liste. Veillez donc à toujours utiliser la même liste de faits.
+> Les listes de faits (`FactList`) sont comparées quand on applique des ajouts d'éléments pour s'assurer qu'ils sont issue de la même liste. Veillez donc à toujours utiliser la même liste de faits.
 
 
 >[!TIP]
 > 
-> Vous pouvez retrouver [ici](Function.md) toutes les fonctions et leurs utilitées et éventuellement plus de détail.
+> Vous pouvez retrouver [ici](Function.md) toutes les fonctions et leurs utilities et éventuellement plus de détail.
 ## Fonctionnement du système expert
 
 ---

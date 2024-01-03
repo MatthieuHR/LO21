@@ -29,7 +29,7 @@ Rule addPremise(Rule rule, void* premise){
 }
 
 //Fonction to add or update the conclusion field of a rule
-Rule createConclusion(Rule rule, void* conclusion){
+Rule setConclusion(Rule rule, void* conclusion){
     if(rule!=NULL && isPresentInFactList(rule->facts, conclusion)){
         rule->conclusion=conclusion;
     }
@@ -48,7 +48,7 @@ Bool factInPremise(Rule rule, void* prop){
 }
 
 //Function to remove(free) a Property in the premise field of a Rule
-Rule removePremise(Rule rule, void* premise){
+Rule removeFromPremise(Rule rule, void* premise){
     if(rule != NULL && !isEmptyProperty(premise)){
         if(rule->premise.head != NULL){
             ElmOfPremise* prev = rule->premise.head;

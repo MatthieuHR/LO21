@@ -46,12 +46,12 @@ int main(){
         add = getById(aRule->facts,j);
         aRule = addPremise(aRule, add);
     }
-    aRule = createConclusion(aRule, getById(aRule->facts,4));
+    aRule = setConclusion(aRule, getById(aRule->facts,4));
     print(getHeadOfPremise(aRule)->premise);
     print(getHeadOfPremise(aRule)->next->premise);
     print(getConclusion(aRule));
 
-    aRule = removePremise(aRule, getById(aRule->facts,0));
+    aRule = removeFromPremise(aRule, getById(aRule->facts,0));
 
     if(!factInPremise(aRule, getById(aRule->facts,0))){
         printf("Pass\n");

@@ -7,8 +7,8 @@ set(CMAKE_C_STANDARD 11)
 add_executable(LO21 main.c
         src/Rules.c
         include/Rules.h
-        src/BC.c
-        include/BC.h
+        src/DB.c
+        include/DB.h
         src/FactList.c
         include/FactList.h
         include/define.h

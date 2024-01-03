@@ -11,34 +11,33 @@ Après une analise rapide du sujet, nous avons remarqué qu'un parcours récursi
 
 De plus nous avons aussi remarqué que les algorithms ne tirait pas d'avantages en termes de performances entre des listes simplement chainées et doublement chainées. Seul l'algorithme de suppression dans une liste est plus simple avec une liste doublement chainée.
 
-Nous avons aussi remarquer qu'un accès en queue pour les listes serait intérésent car il est imposer pour certaines fonctions de faire un ajout en queue.
+Nous avons aussi remarqué qu'un accès en queue pour les listes serait intéressant, car il est imposé pour certaines fonctions de faire un ajout en queue.
 
 
 ## Choix final
 
 ---
 ### Représentation des listes et autres implémentations.
-Pour représenter les listes le plus logique nous à semblés de garder des listes simplement chainées car des listes doublements chainées n'apporte que peu d'avantages. Nous précison plus loins la structure de chaque liste et ce qui nous à motiver a faire ce choix.
+Pour représenter les listes le plus logique nous à semblés de garder des listes simplement chainées, car des listes doublements chainées n'apportent que peu d'avantages. Nous précisons plus loins la structure de chaque liste et ce qui nous à motiver à faire ce choix.
 
-Cependant malgres le fait que garder des structures des listes les plus simples possible apporte des avantages nous avons décidés que chaque liste devras contenir une liste de fait pour s'assurer que chaque élément intéragise bien avec ça liste de fait.
+Cependant, malgré le fait que garder des structures des listes les plus simples possibles apporte des avantages, nous avons décidés que chaque liste devra contenir une liste de fait pour s'assurer que chaque élément interagisse bien avec ça liste de fait.
 
-En parlant de liste de fait, nous avons décider de rajouter un type `FactList` qui n'était pas demander mais qui sert a contenir tous les faits pour les prémisses et conclusions. Ce type est aussi utile pour vérifier que les base de connaissances et règles se base sur les meme faits.
+En parlant de liste de fait, nous avons décidé de rajouter un type `FactList` qui n'était pas demandé, mais qui sert à contenir tous les faits pour les prémisses et conclusions. Ce type est aussi utile pour vérifier que les base de connaissances et règles se base sur les meme faits.
 
-Nous avons aussi rajouter le type `Bool` pour booléan qui fonctionne comme un `1` et `0` en C ou `True` vaux `1` et `False` vaut `0`.
+Nous avons aussi rajouté le type `Bool` pour booléan qui fonctionne comme un `1` et `0` en C ou `True` vaux `1` et `False` il vaut `0`.
 
 ---
 ### Implementation de la donnée "fait"
-Nous avons longuement réfléchi à comment implémenter un fait sans qu celui-ci soit handicapent si on voulait y ajouter des informations. 
+Nous avons longuement réfléchi à implémenter un fait sans que celui-ci soit handicapent si on voulait y ajouter des informations. 
 
-C'est pour quoi nous n'avons attribuer aucun type défini à cette donner. A la place nous laison l'utilisateur choisir quelle donnée il souhaite utilisé et comment il définie l'égaliter entre cette donné avec un pointeur de fonction.
+C'est pour quoi nous n'avons attribué aucun type défini à cette donnée. À la place, nous laissons l'utilisateur choisir quelle donnée il souhaite utiliser et comment il définit l'égalité entre cette donnée avec un pointeur de fonction.
 
 >[!NOTE]
 >
->La donnée est alors représenter en C par un pointeur sur void : `void*`
+>La donnée est alors représentée en C par un pointeur sur void : `void*`
 
-Nous avons tous de meme des fonctions qui intéragisent avec ce type non définie :
+Nous avons tous de meme une fonction qui interagissent avec ce type non défini :
 * `isEmptyProperty(fact)` qui dit si le fait est vide.
-* `isEqual(fact1, fact2)` qui dit si les deux faits sont égaux.
 
 
 ## Types implémentés
@@ -72,7 +71,7 @@ Et représente un élément d'une liste de type `FactList`.
 
 Ce type est une liste de `ElmOfPremise` de taille infixe. 
 
-Il posède 2 champs :
+Il possède 2 champs :
 * `head` qui permet d'accéder au premier élément.
 * `tail` qui permet d'accéder au dernier élément.
 
@@ -100,7 +99,7 @@ Et représente une règle à satisfaire.
 ---
 ### `DB`
 
-Ce type est une liste de `ElmOfBC` de taille infixe. 
+Ce type est une liste de `ElmOfDB` de taille infixe. 
 
 Il est composé de 3 champs :
 * `head` qui permet d'accéder au premier élément.
@@ -110,7 +109,7 @@ Il est composé de 3 champs :
 Une `DB` est liste de règle (`Rule`) afin de pouvoir faire résonner notre système expert.
 
 ---
-### `ElmOfBC`
+### `ElmOfDB`
 
 Ce type est composé de deux champs :
 * `rule` qui est de type `Rule` et qui représente une règle.
@@ -120,6 +119,8 @@ Et représente un élément d'une liste de type `DB`.
 
 
 ## Les structures implémenters et explication
+Nous avons décidé qu'en `C` tous les types implémentés seraient des pointeurs sur des structures. Cela permet de ne pas avoir à faire de copie de structure et donc de gagner en performance. Cela permet aussi de retourner `NULL` quand les conditions ne sont pas respectées, comme en créant une structure avec sa fonction associée.
+
 
 ---
 ### Fichier `FactList.h`
@@ -135,19 +136,21 @@ typedef struct {
     ElmOfFact* head;
     int last_id;
     Bool (*cmpValue)(void *, void*);
-}FactList;
-````
-Ici l'`id` sert pour les utilisateurs humains car il n'est pas utiliser dans les sous programmes.
+}PreFactList;
 
-`*cmpValue` est un pointeur de fonction renseigner par l'utilisateur qui permet de vérifie si deux élément du type qu'il à choisi sont égaux. Cette fonction ne sert qu'à eviter de mettre deux fois le meme fait dans une liste de fait.
+typedef PreFactList* FactList;
+````
+Ici l'`id` sert pour les utilisateurs humains, car il n'est pas utilisé dans les sous programmes.
+
+`*cmpValue` est un pointeur de fonction renseigné par l'utilisateur qui permet de vérifier si deux éléments du type qu'il a choisi sont égaux. Cette fonction ne sert qu'à éviter de mettre deux fois le meme fait dans une liste de fait.
 
 ---
 ### Fichier `Rules.h`
 La structure `ElmOfPremise` sert à définir un élément de la liste qui a pour type `Premise` et qui est seulement un pointeur sur un **fait**. Dans ce cas l'élément passer au champ `premise` doit provenir d'une `FactList`.
 ````c
-typedef struct elm1{
+typedef struct elm{
     void* premise;
-    struct elm1* next;
+    struct elm* next;
 }ElmOfPremise;
 
 typedef struct {
@@ -155,31 +158,35 @@ typedef struct {
     ElmOfPremise* tail;
 }Premise;
 ````
-La structure `Rule` sert à définir un règle. Le champs `facts` esrt à vérifié que les éléménts de la prémise proviennent de la meme liste de fait qui a servie à créer la règle.
+La structure `Rule` sert à définir une règle. Le champ `facts` est à vérifier que les éléménts de la prémise proviennent de la meme liste de fait qui a servi à créer la règle.
 ````c
 typedef struct{
     Premise premise;
     void* conclusion;
     FactList facts;
-} Rule;
+} PreRule;
+
+typedef PreRule* Rule;
 ````
 
 ---
 ### Fichier `DB.h`
-La structure `ElmOfBC` représente un élément d'une **Base de Connaissance**. Une **Base de Connaissance** est une liste de règle représentée par le type `DB`.
+La structure `ElmOfDB` représente un élément d'une **Base de Connaissance**. Une **Base de Connaissance** est une liste de règle représentée par le type `DB`.
 ````c
-typedef struct elm3{
-    Rule* rule;
-    struct elm3* next;
-}ElmOfBC;
+typedef struct elm{
+    Rule rule;
+    struct elm* next;
+}ElmOfDB;
 
 typedef struct {
-    ElmOfBC* head;
-    ElmOfBC* tail;
+    ElmOfDB* head;
+    ElmOfDB* tail;
     FactList facts;
-}DB;
+}PreDB;
+
+typedef PreDB* DB;
 ````
-Ici encore le champs `facts` sert a vérifier que les règles ajouté dans la base connaissance soits isue de la même liste de fait.
+Ici encore le champ `facts` sert à vérifier que les règles ajoutées dans la base connaissance soient issue de la même liste de fait.
 
 ---
 

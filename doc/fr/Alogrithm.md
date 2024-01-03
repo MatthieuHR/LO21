@@ -5,7 +5,7 @@ Dans cette section, vous pouvez retrouver tous les algorithmes des sous programm
 
 >Avant de commencer la fonction `isEmpty(elm:type)` permet de savoir si un élément est vide (`UNDEFINED`) peu importe le type `type`.
 > 
-> `Type` servira à indentifier le type d'un **fait**.
+> `Type` servira à identifier le type d'un **fait**.
 
 ## Les algorithmes avec des `FactList`
 
@@ -37,6 +37,7 @@ Start
         head(list) = newl;
         last_id(list) = last_id(list) + 1
     EndIf
+    addFact <- list
 End
 ````
 
@@ -65,7 +66,7 @@ End
 ### `getById`
 Cette fonction permet de récupérer un élément d'une liste de fait en fonction de son `id`.
 * `list` est la liste de fait dont on souhaite extraire un élément.
-* `id` est l'identifiant unique dont on veux la structure associé.
+* `id` est l'identifiant unique dont on veut la structure associée.
 * `point` est un pointeur pour parcourir la list.
 >La fonction renvoie un fait de type `Type`.
 ````
@@ -73,10 +74,11 @@ function getById(list:FactList, id:LongInteger):Type
 Start
     If not isEmpty(head(list)) AND id <= last_id(list) Then
         point:ElmOfFact <- head(list)
-        While not (id(point) = id) Do
-            point <- next(point)
+        While not isEmpty(point) Do
+            If id(point) = id Then
+                getById <- fact(point)*
+            EndIf
         Done
-        getById <- fact(point)
     EndIf
     getById <- UNDEFINED
 End
@@ -125,6 +127,24 @@ Start
     EndIf
 End
 ````
+
+---
+### `freeFactList`
+Cette fonction permet de libérer la mémoire utilisée par une `FactList` en cas de besoin, par exemple en cas d'erreur ou à la fin du programme.
+* `list` est la liste que l'on souhaite vider.
+* `point` est un pointeur pour parcourir la list.
+>La fonction renvoie la liste de fait vide (`UNDEFINED`).
+````
+function freeFactList(list:FactList):FactList
+Start
+    If not isEmpty(list) AND not isEmpty(head(list)) Then
+        list <- removeAllFacts(list)
+    EndIf
+    free(list)
+    EndIf
+    freeFactList <- UNDEFINED
+End
+````
 ## Les algorithmes avec des `Rule`
 
 ---
@@ -138,7 +158,7 @@ End
 * `createRule()` Renvoie un élément vide d'une règle (`Rule`).
 * `premise(elm:Rule)` permet l'accession au champ `premise` de `elm`.
 * `conclusion(elm:Rule)` permet l'accession au champ `conclusion` de `elm`.
-* `facts(elm:Rule)` permet l'accession à la liste de fait qui à permis de construire la règle. 
+* `facts(elm:Rule)` permet l'accession à la liste de fait qui a permis de construire la règle. 
 
 ---
 ### `addPremise`
@@ -168,18 +188,18 @@ End
 ````
 
 ---
-### `createConclusion`
+### `setConclusion`
 Cette fonction permet de mettre à jour la conclusion d'une règle.
 * `rule` est la règle à laquelle on veut modifier la conclusion.
 * `conclusion` est un fait qui provient d'une liste de fait (`FactList`) et que l'on souhaite utiliser comme conclusion de la règle.
 >La fonction renvoie la règle modifiée.
 ````
-function createConclusion(rule:Rule, conclusion:Type):Rule
+function setConclusion(rule:Rule, conclusion:Type):Rule
 Start
     If not isEmpty(rule) AND isPresentInFactList(facts(rule), conclusion) Then
         conclusion(rule) <- conclusion
     EndIf
-    createConclusion <- rule
+    setConclusion <- rule
 End
 ````
 
@@ -205,7 +225,7 @@ End
 ````
 
 ---
-### `removePremise`
+### `removeFromPremise`
 Cette fonction permet de retirer un fait de la prémisse.
 * `rule` est la règle à laquelle on veut modifier la prémisse.
 * `premise` est un fait qui provient d'une liste de fait (`FactList`) et que l'on souhaite retirer à la prémisse de la règle.
@@ -213,9 +233,9 @@ Cette fonction permet de retirer un fait de la prémisse.
 * `prev` est l'élément avant `now`.
 >La fonction renvoie la règle modifiée.
 ````
-function removePremise(rule:Rule, premise:Type):Rule
+function removeFromPremise(rule:Rule, premise:Type):Rule
 Start
-    If not isEmpty(rule) AND not isEmpty(premise) Then
+    If not isEmpty(rule) AND not isEmpty(premise) AND not isEmpty(head(premise(rule))) Then
         prev:ElmOfPremise <- head(premise(rule))
         now:ElmOfPremise <- next(prev)
         If premise = premise(prev) Then
@@ -227,23 +247,45 @@ Start
                 free(prev)
                 head(premise(rule)) <- now
             EndIf
-            removePremise <- rule
+            removeFromPremise <- rule
         Else
             While not isEmpty(now)) Do
                 If premise(now) = premise Then
                     next(prev) = next(now)
                     free(now)
-                    removePremise <- rule
+                    removeFromPremise <- rule
                 EndIf
                 prev <- now
                 now <- next(now)
             Done
         EndIf
     EndIf
-    removePremise <- rule
+    removeFromPremise <- rule
 End
 ````
 
+---
+### `freeRule`
+Cette fonction permet de libérer la mémoire utilisée par une règle en cas de besoin, par exemple en cas d'erreur ou à la fin du programme.
+* `rule` est la règle que l'on souhaite vider.
+* `point` est un pointeur pour parcourir la règle.
+* `premise` est un pointeur pour parcourir la prémisse.
+> La fonction renvoie la liste de fait (`FactList`) associée.
+````
+function freeRule(rule:Rule):Rule
+Start
+    If not isEmpty(rule) AND not isEmpty(head(premise(rule))) Then
+        point:ElmOfPremise <- head(premise(rule))
+        While not isEmpty(point) Do
+            temp:ElmOfPremise <- point
+            point <- next(point)
+            free(temp)
+        Done
+        rtn:FactList <- facts(rule)
+        free(rule)
+        freeRule <- rtn
+End
+````
 ## Les algorithmes avec des `DB`
 
 ---
@@ -251,10 +293,10 @@ End
 * `createBC(facts:FactList)` renvoie une base de connaissance avec `facts` comme liste de faits associée.
 * `head(elm:DB)` permet l'accès au premier élément de la liste.
 * `tail(elm:DB)` permet l'accès au dernier élément de la liste.
-* `fact(elm:DB)` permet d'acces à la liste de fait qui à servie a construire la base de connaissance.
+* `fact(elm:DB)` permet d'accès à la liste de fait qui a servi à construire la base de connaissance.
 * `createElmOfBC()` Renvoie un élément vide d'une base de connaissance (`DB`).
-* `rule(elm:ElmOfBC)` permet l'accession au champ `rule` de `elm`.
-* `next(elm:ElmOfBC)` permet l'accession au suivant de `elm`.
+* `rule(elm:ElmOfDB)` permet l'accession au champ `rule` de `elm`.
+* `next(elm:ElmOfDB)` permet l'accession au suivant de `elm`.
 
 ---
 ### `addRuleToBC`
@@ -267,7 +309,7 @@ Cette fonction permet d'ajouter une règle à une base de connaissance.
 function addRuleToBC(bc:DB, rule:Rule):DB
 Start
     If not isEmpty(premise(rule)) AND not isEmpty(conclusion(rule)) AND head(facts(rule)) = head(facts(bc)) Then
-        newl:ElmOfBC <- createElmOfBC()
+        newl:ElmOfDB <- createElmOfBC()
         rule(newl) <- rule
         next(rule) <- UNDEFINED
         If head(bc) = tail(bc) Then 
@@ -294,7 +336,7 @@ Cette fonction permet de réaliser une copie d'une base de connaissance.
 function copyOfBC(bc:DB):DB
 Start 
     new_bc:DB <- createBC(facts(bc))
-    point:ElmOfBC <- head(bc)
+    point:ElmOfDB <- head(bc)
     While not isEmpty(point) Do
         new_rule:Rule <- createRule(facts(bc))
         conclusion(new_rule) <- conclusion(rule(point))
@@ -307,5 +349,30 @@ Start
         point <- next(point)
     Done
     copyOfBC <- new_bc
+End
+````
+
+---
+### `freeBC`
+Cette fonction permet de libérer la mémoire utilisée par une base de connaissance en cas de besoin, par exemple en cas d'erreur ou à la fin du programme.
+* `bc` est la base de connaissance que l'on souhaite vider.
+* `point` est un pointeur pour parcourir la base de connaissance `bc`.
+* `rule` est un pointeur pour parcourir les règles de `bc`.
+> La fonction renvoie la liste de fait (`FactList`) associée.
+
+````
+function freeBC(bc:DB):DB
+Start
+    If not isEmpty(bc) AND not isEmpty(head(bc)) Then
+        point:ElmOfDB <- head(bc)
+        While not isEmpty(point) Do
+            temp:ElmOfDB <- point
+            freeRule(rule(temp))
+            point <- next(point)
+            free(temp)
+        Done
+        rtn:FactList <- fact(bc)
+        free(bc)
+        freeBC <- rtn
 End
 ````

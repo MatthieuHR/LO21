@@ -39,7 +39,7 @@ int main() {
         ruleB = addPremise(ruleB, getById(ruleB->facts,i+3));
     }
     ruleA = createConclusion(ruleA, getById(ruleA->facts,2));
-    ruleB = createConclusion(ruleB, getById(ruleB->facts,5));
+    ruleB = setConclusion(ruleB, getById(ruleB->facts,5));
 
     DB aBC = createEmptyBC(facts);
     aBC = addRuleToBC(aBC,ruleA);
