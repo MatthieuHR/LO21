@@ -99,12 +99,12 @@ Il y a aussi des fonctions qui intéragissent avec le type `Rule` :
 Une fois notre règle créée, il ne reste plus qu'à ajouter cette règle à une base de connaissance. Regardons comment créer une base de connaissance de type `DB`.
 
 Voici les fonctions qui permettent sa conception :
-* `createEmptyBC(FactList facts)` pour créer une base de connaissance vide avec une liste de faits associée.
-* `addRuleToBC(DB bc,Rule rule)` pour ajouter une règle à la base de connaissance.
-* `DB copyOfBC(DB bc)` pour renvoyer une copie une base de connaissance.
+* `createEmptyDB(FactList facts)` pour créer une base de connaissance vide avec une liste de faits associée.
+* `addRuleToDB(DB DB,Rule rule)` pour ajouter une règle à la base de connaissance.
+* `DB copyOfDB(DB DB)` pour renvoyer une copie une base de connaissance.
 
 Il y a aussi des fonctions qui intéragissent avec le type `DB` :
-* `getFactListOfDB(DB bc)` qui renvoie la liste de fait associée à la base de connaissance de type `FactList`.
+* `getFactListOfDB(DB db)` qui renvoie la liste de fait associée à la base de connaissance de type `FactList`.
 * `removeARule(DB db, Rule rule)` qui permet d'enlever une règle de la base de connaissance. Attention, la règle n'est pas libérée de la mémoire, il faut donc la récupérer avant de l'enlever pour éviter de la perdre en mémoire.
 
 >Pour plus de détail sur les fonctions merci de regarder les algorithms commenter [ici](Alogrithm.md)
@@ -127,7 +127,7 @@ Il y a aussi des fonctions qui intéragissent avec le type `DB` :
 Pour libérer la mémoire utilisée par notre système expert, il faut utiliser les fonctions suivantes :
 * `freeFactList(FactList list)` pour libérer la mémoire utilisée par une liste de fait.
 * `freeRule(Rule rule)` pour libérer la mémoire utilisée par une règle.
-* `freeDB(DB bc)` pour libérer la mémoire utilisée par une base de connaissance.
+* `freeDB(DB db)` pour libérer la mémoire utilisée par une base de connaissance.
 >Pour plus de détail sur les fonctions merci de regarder les algorithms commenter [ici](Function.md)
 
 ---
@@ -139,7 +139,7 @@ Pour parcourir une **règle**, il faut utiliser les fonctions suivantes :
 * `getPremise(ElmOfPremise* elm)` pour récupérer le fait de l'élément de la prémisse.
 
 Pour parcourir une **base de connaissance**, il faut utiliser les fonctions suivantes :
-* `getHeadRule(DB bc)` pour récupérer la tête de la liste de règles.
+* `getHeadRule(DB db)` pour récupérer la tête de la liste de règles.
 * `getNextRule(ElmOfDB* elm)` pour récupérer l'élément suivant de la liste de règles.
 * `getRule(ElmOfDB* elm)` pour récupérer la règle de l'élément de la base de connaissance.
 
@@ -150,7 +150,7 @@ Pour parcourir une **base de connaissance**, il faut utiliser les fonctions suiv
 
 Pour récupérer une **liste de fait**, il faut utiliser les fonctions suivantes :
 * `getFactListOfRule(Rule* rule)` pour récupérer la liste de fait associée à la règle.
-* `getFactListOfDB(DB bc)` pour récupérer la liste de fait associée à la base de connaissance.
+* `getFactListOfDB(DB db)` pour récupérer la liste de fait associée à la base de connaissance.
 
 >Pour plus de détail sur les fonctions merci de regarder les algorithms commenter [ici](Function.md)
 
@@ -167,7 +167,7 @@ Avant de faire fonctionner notre système expert merci de créer 3 liste de fait
 
 Il faudra aussi créer une base de connaissance.
 
->À chaque utilisation la base de connaissance est alter, il faut donc la recréer à chaque fois où la copier avec la fonction `copyOfBC`.
+>À chaque utilisation la base de connaissance est alter, il faut donc la recréer à chaque fois où la copier avec la fonction `copyOfDB`.
 
 ---
 ### Pendant l'exécution

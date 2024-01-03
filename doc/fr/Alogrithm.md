@@ -292,82 +292,82 @@ End
 
 ---
 ### Les fonctions de bases
-* `createBC(facts:FactList)` renvoie une base de connaissance avec `facts` comme liste de faits associée.
+* `createDB(facts:FactList)` renvoie une base de connaissance avec `facts` comme liste de faits associée.
 * `head(elm:DB)` permet l'accès au premier élément de la liste.
 * `tail(elm:DB)` permet l'accès au dernier élément de la liste.
 * `fact(elm:DB)` permet d'accès à la liste de fait qui a servi à construire la base de connaissance.
-* `createElmOfBC()` Renvoie un élément vide d'une base de connaissance (`DB`).
+* `createElmOfDB()` Renvoie un élément vide d'une base de connaissance (`DB`).
 * `rule(elm:ElmOfDB)` permet l'accession au champ `rule` de `elm`.
 * `next(elm:ElmOfDB)` permet l'accession au suivant de `elm`.
 
 ---
-### `addRuleToBC`
+### `addRuleToDB`
 Cette fonction permet d'ajouter une règle à une base de connaissance.
-* `bc` est la base de connaissance à laquelle on veut ajouter une règle.
+* `db` est la base de connaissance à laquelle on veut ajouter une règle.
 * `rule` est une règle que l'on souhaite ajouter.
 * `newl` est le nouvel élément de la base de connaissance.
 >La fonction renvoie la base de connaissance modifiée.
 ```
-function addRuleToBC(bc:DB, rule:Rule):DB
+function addRuleToDB(db:DB, rule:Rule):DB
 Start
-    If not isEmpty(premise(rule)) AND not isEmpty(conclusion(rule)) AND head(facts(rule)) = head(facts(bc)) Then
-        newl:ElmOfDB <- createElmOfBC()
+    If not isEmpty(premise(rule)) AND not isEmpty(conclusion(rule)) AND head(facts(rule)) = head(facts(db)) Then
+        newl:ElmOfDB <- createElmOfDB()
         rule(newl) <- rule
         next(rule) <- UNDEFINED
-        If head(bc) = tail(bc) Then 
-            head(bc) <- newl
-            tail(bc) <- newl
+        If head(db) = tail(db) Then 
+            head(db) <- newl
+            tail(db) <- newl
         Else
-            next(tail(bc)) <- newl
-            tail(bc) <- newl
+            next(tail(db)) <- newl
+            tail(db) <- newl
         EndIf
     EndIf
-    addRuleToBC <- bc 
+    addRuleToDB <- db 
 End
 ```
 
 ---
-### `copyOfBC`
+### `copyOfDB`
 Cette fonction permet de réaliser une copie d'une base de connaissance.
-* `bc` est la base de connaissance que l'on souhaite copier.
-* `point` est un pointeur pour parcourir la base de connaissance `bc`.
-* `new_rule` est l'ensemble de nouvelles règles que l'on ajoute à `bc`.
-* `premise` est l'ensemble des premise des règles de `bc`.
->La fonction revoit la copie de la bc.
+* `db` est la base de connaissance que l'on souhaite copier.
+* `point` est un pointeur pour parcourir la base de connaissance `db`.
+* `new_rule` est l'ensemble de nouvelles règles que l'on ajoute à `db`.
+* `premise` est l'ensemble des premise des règles de `db`.
+>La fonction revoit la copie de la db.
 ````
-function copyOfBC(bc:DB):DB
+function copyOfDB(db:DB):DB
 Start 
-    new_bc:DB <- createBC(facts(bc))
-    point:ElmOfDB <- head(bc)
+    new_db:DB <- createDB(facts(db))
+    point:ElmOfDB <- head(db)
     While not isEmpty(point) Do
-        new_rule:Rule <- createRule(facts(bc))
+        new_rule:Rule <- createRule(facts(db))
         conclusion(new_rule) <- conclusion(rule(point))
         premise:ElmOfPremise <- head(premise(rule(point)))
         While not isEmpty(premise) Do
             new_rule <- addPremise(new_rule, premise(premise))
             premise <- next(premise)
         Done
-        new_bc <- addRuleToBC(new_bc, new_rule)
+        new_db <- addRuleToDB(new_db, new_rule)
         point <- next(point)
     Done
-    copyOfBC <- new_bc
+    copyOfDB <- new_db
 End
 ````
 
 ---
-### `freeBC`
+### `freeDB`
 Cette fonction permet de libérer la mémoire utilisée par une base de connaissance en cas de besoin, par exemple en cas d'erreur ou à la fin du programme.
-* `bc` est la base de connaissance que l'on souhaite vider.
-* `point` est un pointeur pour parcourir la base de connaissance `bc`.
-* `rule` est un pointeur pour parcourir les règles de `bc`.
+* `db` est la base de connaissance que l'on souhaite vider.
+* `point` est un pointeur pour parcourir la base de connaissance `db`.
+* `rule` est un pointeur pour parcourir les règles de `db`.
 > La fonction renvoie la liste de fait (`FactList`) associée.
 
 ````
-function freeBC(bc:DB):DB
+function freeDB(db:DB):DB
 Start
-    If not isEmpty(bc) Then
+    If not isEmpty(db) Then
         If not isEmpty(head(db)) Then
-            point:ElmOfDB <- head(bc)
+            point:ElmOfDB <- head(db)
             While not isEmpty(point) Do
                 temp:ElmOfDB <- point
                 freeRule(rule(temp))
@@ -375,9 +375,9 @@ Start
                 free(temp)
             Done
         Done
-        rtn:FactList <- fact(bc)
-        free(bc)
-        freeBC <- rtn
+        rtn:FactList <- fact(bd)
+        free(db)
+        freeDB <- rtn
 End
 ````
 
