@@ -24,5 +24,6 @@ Rule getRule(ElmOfDB* elm);
 DB copyOfDB(DB db);
 FactList freeDB(DB db);
 FactList getFactListOfDB(DB db);
+DB removeARule(DB db,Rule rule);
 
 #endif /* DB_H */

@@ -33,7 +33,7 @@
      */
     DB addRuleToDB(DB db, Rule rule){
         if(db!=NULL && !isPremiseEmpty(rule) && getConclusion(rule)!=NULL && rule->facts->head == db->facts->head){
-            ElmOfDB* newl = malloc(sizeof (ElmOfDB));
+            ElmOfDB* newl = (ElmOfDB*)malloc(sizeof (ElmOfDB));
             newl->rule=rule;
             newl->next=NULL;
             if(db->head == NULL){
@@ -100,16 +100,15 @@
      *         If the database is NULL or empty, returns NULL.
      */
     FactList freeDB(DB db){
-        if(db!=NULL && db->head!=NULL){
-            if(db->facts==NULL){
-                return NULL;
-            }
-            ElmOfDB* point = db->head;
-            while (point!=NULL){
-                ElmOfDB* temp = point;
-                freeRule(temp->rule);
-                point=point->next;
-                free(temp);
+        if(db!=NULL){
+            if(db->head!=NULL){
+                ElmOfDB* point = db->head;
+                while (point!=NULL){
+                    ElmOfDB* temp = point;
+                    freeRule(temp->rule);
+                    point=point->next;
+                    free(temp);
+                }
             }
             FactList rtn = db->facts;
             free(db);
@@ -155,4 +154,28 @@
             return elm->rule;
         }
         return NULL;
+    }
+
+    DB removeARule(DB db,Rule rule){
+        if(db!=NULL && rule!=NULL && db->head!=NULL){
+            ElmOfDB* point = db->head;
+            ElmOfDB* prev = NULL;
+            while (point!=NULL){
+                if(point->rule==rule){
+                    if(prev==NULL){
+                        db->head=point->next;
+                        if(db->head==NULL){
+                            db->tail=NULL;
+                        }
+                    }else{
+                        prev->next=point->next;
+                    }
+                    free(point);
+                    return db;
+                }
+                prev=point;
+                point=point->next;
+            }
+        }
+        return db;
     }

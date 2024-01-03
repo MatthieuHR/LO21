@@ -167,13 +167,14 @@ FactList getFactListOfRule(Rule rule){
  * @return The FactList associated with the Rule, or NULL if the Rule is NULL or has no premise.
  */
 FactList freeRule(Rule rule){
-    if(rule != NULL && rule->premise.head!=NULL){
-        if(rule->facts==NULL){return NULL;}
-        ElmOfPremise* point = rule->premise.head;
-        while (point!=NULL){
-            ElmOfPremise* temp = point;
-            point=point->next;
-            free(temp);
+    if(rule != NULL){
+        if(rule->premise.head!=NULL){
+            ElmOfPremise* point = rule->premise.head;
+            while (point!=NULL){
+                ElmOfPremise* temp = point;
+                point=point->next;
+                free(temp);
+            }
         }
         FactList rtn = rule->facts;
         free(rule);

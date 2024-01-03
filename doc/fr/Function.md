@@ -72,6 +72,8 @@ Cette partie sera traitée en fonctions des fichiers `.h` et chaque fichier succ
 
 `Rule getRule(ElmOfDB* rule)` : permet d'obtenir la règle (`Rule`) d'un élément de base de connaissance (`rule`). La fonction renvoie un pointeur sur la règle de type `Rule`. Renvoie `NULL` si `rule` est `NULL`.
 
+`Rule removeARule(DB db, Rule rule)` : permet de supprimer une règle (`rule`) d'une base de connaissance (`db`). La fonction renvoie quoi qu'il arrive `db` modifier ou non. La fonction ne fait rien si la règle est vide ou la base de donnée.
+
 `DB copyDB(DB db)` : permet de copier une base de connaissance (`db`). La fonction renvoie un pointeur sur la base de connaissance de type `DB`. La fonction ne copie pas la liste de fait associée à la base de connaissance.
 
 `FactList freeDB(DB db)` : permet de libérer la mémoire allouée à une base de connaissance. La fonction `free()` tous les éléments de la base de connaissance. Renvoie la liste de fait associée à la base de connaissance.

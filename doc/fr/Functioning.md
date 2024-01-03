@@ -84,15 +84,15 @@ Une fois notre liste de fait créer il nous faut établir des relations entre le
 
 Commençons par créer une règle. Le type d'une **règle** est `Rule` et ces fonctions sont disponibles pour aider à les créer :
 * `createEmptyRule(FactList facts)` qui créer une règle vide avec une liste de fait associée (`facts`).
-* `addPremise(Rule* rules,void* premise)` qui ajoute une prémise tiré d'une liste de fait à la liste de prémises.
-* `setConclusion(Rule* rule, void* conclusion)` qui permet de définir une conclusion tirée d'une liste de fait.
-* `removeFromPremise(Rule* rule,void* premise)` qui retire une prémise si elle est présente.
+* `addPremise(Rule rules,void* premise)` qui ajoute une prémise tiré d'une liste de fait à la liste de prémises.
+* `setConclusion(Rule rule, void* conclusion)` qui permet de définir une conclusion tirée d'une liste de fait.
+* `removeFromPremise(Rule rule,void* premise)` qui retire une prémise si elle est présente.
 
 
 Il y a aussi des fonctions qui intéragissent avec le type `Rule` :
-* `isPremiseEmpty(Rule* rule)` qui renvoie un `Bool` et dit si la prémise est vide.
-* `getConclusion(Rule* rule)` qui renvoie la conclusion de type `void*`.
-* `getFactListOfRule(Rule* rule)` qui renvoie la liste de fait associée à la règle de type `FactList`.
+* `isPremiseEmpty(Rule rule)` qui renvoie un `Bool` et dit si la prémise est vide.
+* `getConclusion(Rule rule)` qui renvoie la conclusion de type `void*`.
+* `getFactListOfRule(Rule rule)` qui renvoie la liste de fait associée à la règle de type `FactList`.
 
 >Pour plus de détail sur les fonctions merci de regarder les algorithms commenter [ici](Alogrithm.md)
 
@@ -100,11 +100,12 @@ Une fois notre règle créée, il ne reste plus qu'à ajouter cette règle à un
 
 Voici les fonctions qui permettent sa conception :
 * `createEmptyBC(FactList facts)` pour créer une base de connaissance vide avec une liste de faits associée.
-* `addRuleToBC(DB bc,Rule* rule)` pour ajouter une règle à la base de connaissance.
+* `addRuleToBC(DB bc,Rule rule)` pour ajouter une règle à la base de connaissance.
 * `DB copyOfBC(DB bc)` pour renvoyer une copie une base de connaissance.
 
 Il y a aussi des fonctions qui intéragissent avec le type `DB` :
 * `getFactListOfDB(DB bc)` qui renvoie la liste de fait associée à la base de connaissance de type `FactList`.
+* `removeARule(DB db, Rule rule)` qui permet d'enlever une règle de la base de connaissance. Attention, la règle n'est pas libérée de la mémoire, il faut donc la récupérer avant de l'enlever pour éviter de la perdre en mémoire.
 
 >Pour plus de détail sur les fonctions merci de regarder les algorithms commenter [ici](Alogrithm.md)
 

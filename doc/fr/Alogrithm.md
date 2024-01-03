@@ -274,12 +274,14 @@ Cette fonction permet de libérer la mémoire utilisée par une règle en cas de
 ````
 function freeRule(rule:Rule):Rule
 Start
-    If not isEmpty(rule) AND not isEmpty(head(premise(rule))) Then
-        point:ElmOfPremise <- head(premise(rule))
-        While not isEmpty(point) Do
-            temp:ElmOfPremise <- point
-            point <- next(point)
-            free(temp)
+    If not isEmpty(rule) Then
+        If not isEmpty(head(premise(rule))) Then
+            point:ElmOfPremise <- head(premise(rule))
+            While not isEmpty(point) Do
+                temp:ElmOfPremise <- point
+                point <- next(point)
+                free(temp)
+            Done
         Done
         rtn:FactList <- facts(rule)
         free(rule)
@@ -363,16 +365,52 @@ Cette fonction permet de libérer la mémoire utilisée par une base de connaiss
 ````
 function freeBC(bc:DB):DB
 Start
-    If not isEmpty(bc) AND not isEmpty(head(bc)) Then
-        point:ElmOfDB <- head(bc)
-        While not isEmpty(point) Do
-            temp:ElmOfDB <- point
-            freeRule(rule(temp))
-            point <- next(point)
-            free(temp)
+    If not isEmpty(bc) Then
+        If not isEmpty(head(db)) Then
+            point:ElmOfDB <- head(bc)
+            While not isEmpty(point) Do
+                temp:ElmOfDB <- point
+                freeRule(rule(temp))
+                point <- next(point)
+                free(temp)
+            Done
         Done
         rtn:FactList <- fact(bc)
         free(bc)
         freeBC <- rtn
+End
+````
+
+---
+### `removeARule`
+Cette fonction permet de retirer une règle d'une base de connaissance.
+* `db` est la base de connaissance à laquelle on veut retirer une règle.
+* `rule` est une règle que l'on souhaite retirer.
+* `now` est l'élément que l'on compare actuellement.
+* `prev` est l'élément avant `now`. et est indéfinie au début
+>La fonction renvoie la base de connaissance modifiée.
+````
+function removeARule(db:DB, rule:Rule):DB
+Start
+    If not isEmpty(db) AND not isEmpty(rule) AND not isEmpty(head(db)) Then
+        prev:ElmOfDB <- UNDEFINED
+        now:ElmOfDB <- head(db)
+        While not isEmpty(now) Do
+            If rule(now) = rule Then
+                If prev = UNDEFINED Then
+                    head(db) <- next(now)
+                    If head(db) = UNDEFINED Then
+                        tail(db) <- UNDEFINED
+                    EndIf
+                Else
+                    next(prev) <- next(now)
+                EndIf
+                free(point)
+                removeARule <- db
+            EndIf
+            prev <- now
+            now <- next(now)
+        Done
+    removeARule <- db
 End
 ````
