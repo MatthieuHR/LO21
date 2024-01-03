@@ -1,10 +1,10 @@
 #include "../include/BC.h"
 #include "stdlib.h"
 
-//Function to create an empty CB
-CB createEmptyBC(FactList facts){
+//Function to create an empty DB
+DB createEmptyBC(FactList facts){
     if(facts->head!=NULL){
-        CB new = (CB)malloc(sizeof(PreCB));
+        DB new = (DB)malloc(sizeof(PreDB));
         new->tail=NULL;
         new->head=NULL;
         new->facts = facts;
@@ -13,8 +13,8 @@ CB createEmptyBC(FactList facts){
     return NULL;
 }
 
-//Function to add a Rule to a CB
-CB addRuleToBC(CB bc, Rule rule){
+//Function to add a Rule to a DB
+DB addRuleToBC(DB bc, Rule rule){
     if(bc!=NULL && !isPremiseEmpty(rule) && getConclusion(rule)!=NULL && rule->facts->head == bc->facts->head){
         ElmOfBC* newl = malloc(sizeof (ElmOfBC));
         newl->rule=rule;
@@ -30,8 +30,8 @@ CB addRuleToBC(CB bc, Rule rule){
     return bc;
 }
 
-//Function to get the first Rule of a CB
-Rule getHeadRule(CB bc){
+//Function to get the first Rule of a DB
+Rule getHeadRule(DB bc){
     if(bc->tail!=NULL){
         return bc->head->rule;
     }else{
@@ -39,8 +39,8 @@ Rule getHeadRule(CB bc){
     }
 }
 
-CB copyOfBC(CB bc){
-    CB new_bc = createEmptyBC(bc->facts);
+DB copyOfBC(DB bc){
+    DB new_bc = createEmptyBC(bc->facts);
     ElmOfBC* point = bc->head;
     while (point!=NULL){
         Rule new_rule = createEmptyRule(bc->facts);
@@ -56,11 +56,11 @@ CB copyOfBC(CB bc){
     return new_bc;
 }
 
-FactList getFactListOfBC(CB bc){
+FactList getFactListOfBC(DB bc){
     return bc->facts;
 }
 
-FactList freeBC(CB bc){
+FactList freeBC(DB bc){
     if(bc!=NULL && bc->head!=NULL){
         ElmOfBC* point = bc->head;
         while (point!=NULL){

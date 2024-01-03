@@ -244,15 +244,15 @@ Start
 End
 ````
 
-## Les algorithmes avec des `CB`
+## Les algorithmes avec des `DB`
 
 ---
 ### Les fonctions de bases
 * `createBC(facts:FactList)` renvoie une base de connaissance avec `facts` comme liste de faits associée.
-* `head(elm:CB)` permet l'accès au premier élément de la liste.
-* `tail(elm:CB)` permet l'accès au dernier élément de la liste.
-* `fact(elm:CB)` permet d'acces à la liste de fait qui à servie a construire la base de connaissance.
-* `createElmOfBC()` Renvoie un élément vide d'une base de connaissance (`CB`).
+* `head(elm:DB)` permet l'accès au premier élément de la liste.
+* `tail(elm:DB)` permet l'accès au dernier élément de la liste.
+* `fact(elm:DB)` permet d'acces à la liste de fait qui à servie a construire la base de connaissance.
+* `createElmOfBC()` Renvoie un élément vide d'une base de connaissance (`DB`).
 * `rule(elm:ElmOfBC)` permet l'accession au champ `rule` de `elm`.
 * `next(elm:ElmOfBC)` permet l'accession au suivant de `elm`.
 
@@ -264,7 +264,7 @@ Cette fonction permet d'ajouter une règle à une base de connaissance.
 * `newl` est le nouvel élément de la base de connaissance.
 >La fonction renvoie la base de connaissance modifiée.
 ```
-function addRuleToBC(bc:CB, rule:Rule):CB
+function addRuleToBC(bc:DB, rule:Rule):DB
 Start
     If not isEmpty(premise(rule)) AND not isEmpty(conclusion(rule)) AND head(facts(rule)) = head(facts(bc)) Then
         newl:ElmOfBC <- createElmOfBC()
@@ -291,9 +291,9 @@ Cette fonction permet de réaliser une copie d'une base de connaissance.
 * `premise` est l'ensemble des premise des règles de `bc`.
 >La fonction revoit la copie de la bc.
 ````
-function copyOfBC(bc:CB):CB
+function copyOfBC(bc:DB):DB
 Start 
-    new_bc:CB <- createBC(facts(bc))
+    new_bc:DB <- createBC(facts(bc))
     point:ElmOfBC <- head(bc)
     While not isEmpty(point) Do
         new_rule:Rule <- createRule(facts(bc))

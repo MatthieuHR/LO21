@@ -98,7 +98,7 @@ Ce type est composé de deux champs :
 Et représente une règle à satisfaire.
 
 ---
-### `CB`
+### `DB`
 
 Ce type est une liste de `ElmOfBC` de taille infixe. 
 
@@ -107,7 +107,7 @@ Il est composé de 3 champs :
 * `tail` qui permet d'accéder au dernier élément.
 * * `facts` qui est la liste de fait (`FactList`) sur laquelle se base la base de connaissance.
 
-Une `CB` est liste de règle (`Rule`) afin de pouvoir faire résonner notre système expert.
+Une `DB` est liste de règle (`Rule`) afin de pouvoir faire résonner notre système expert.
 
 ---
 ### `ElmOfBC`
@@ -116,7 +116,7 @@ Ce type est composé de deux champs :
 * `rule` qui est de type `Rule` et qui représente une règle.
 * `next` qui représente l'élément suivant de la liste.
 
-Et représente un élément d'une liste de type `CB`.
+Et représente un élément d'une liste de type `DB`.
 
 
 ## Les structures implémenters et explication
@@ -165,8 +165,8 @@ typedef struct{
 ````
 
 ---
-### Fichier `CB.h`
-La structure `ElmOfBC` représente un élément d'une **Base de Connaissance**. Une **Base de Connaissance** est une liste de règle représentée par le type `CB`.
+### Fichier `DB.h`
+La structure `ElmOfBC` représente un élément d'une **Base de Connaissance**. Une **Base de Connaissance** est une liste de règle représentée par le type `DB`.
 ````c
 typedef struct elm3{
     Rule* rule;
@@ -177,7 +177,7 @@ typedef struct {
     ElmOfBC* head;
     ElmOfBC* tail;
     FactList facts;
-}CB;
+}DB;
 ````
 Ici encore le champs `facts` sert a vérifier que les règles ajouté dans la base connaissance soits isue de la même liste de fait.
 

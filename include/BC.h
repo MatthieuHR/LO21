@@ -9,12 +9,12 @@ typedef struct {
     ElmOfBC* head;
     ElmOfBC* tail;
     FactList facts;
-}PreCB;
+}PreDB;
 
-typedef PreCB* CB;
+typedef PreDB* DB;
 
-CB createEmptyBC(FactList facts);
-CB addRuleToBC(CB bc, Rule rule);
-Rule getHeadRule(CB bc);
-CB copyOfBC(CB bc);
-FactList freeBC(CB bc);
+DB createEmptyBC(FactList facts);
+DB addRuleToBC(DB bc, Rule rule);
+Rule getHeadRule(DB bc);
+DB copyOfBC(DB bc);
+FactList freeBC(DB bc);
