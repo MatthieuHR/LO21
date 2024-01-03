@@ -10,7 +10,7 @@ Dans cette section, nous allons vous expliciter le fonctionnement de notre **sys
 Avant tous il faut definir de quelle type sera notre donnée. Pour cela il vous sufis de suivre l'éxemple suivan:
 `````c
 #include <stdlib.h>
-#include <BC.h>
+#include <CB.h>
 
 typedef struc{
     int value_1;
@@ -30,7 +30,7 @@ Ici `elm` est utilisable par notre système expert.
 Il vous faut aussi définir un pointeur de fonction pour comparer les éléments que l'on insère. Pour cela il fous sufis de suivre cette exemple :
 `````c
 #include <stdlib.h>
-#include <BC.h>
+#include <CB.h>
 
 int getSUMValue(myType* var){
     return var->value_1 + ... + var->value_n;
@@ -97,15 +97,15 @@ Il y a aussi des fonctions qui intéragissent avec le type `Rule` :
 
 >Pour plus de détail sur les fonctions merci de regarder les algorithms commenter [ici](Alogrithm.md)
 
-Une fois notre règle créée, il ne reste plus qu'à ajouter cette règle à une base de connaissance. Regardons comment créer une base de connaissance de type `BC`.
+Une fois notre règle créée, il ne reste plus qu'à ajouter cette règle à une base de connaissance. Regardons comment créer une base de connaissance de type `CB`.
 
 Voici les fonctions qui permettent sa conception :
 * `createEmptyBC(FactList facts)` pour créer une base de connaissance vide avec une liste de faits associée.
-* `addRuleToBC(BC bc,Rule* rule)` pour ajouter une règle à la base de connaissance.
-* `BC copyOfBC(BC bc)` pour renvoyer une copie une base de connaissance.
+* `addRuleToBC(CB bc,Rule* rule)` pour ajouter une règle à la base de connaissance.
+* `CB copyOfBC(CB bc)` pour renvoyer une copie une base de connaissance.
 
-Il y a aussi des fonctions qui intéragissent avec le type `BC` :
-* `getHeadRule(BC bc)` qui donne la première règle d'une base de connaissance.
+Il y a aussi des fonctions qui intéragissent avec le type `CB` :
+* `getHeadRule(CB bc)` qui donne la première règle d'une base de connaissance.
 
 >Pour plus de détail sur les fonctions merci de regarder les algorithms commenter [ici](Alogrithm.md)
 

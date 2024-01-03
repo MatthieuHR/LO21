@@ -1,10 +1,10 @@
 #include "../include/BC.h"
 #include "stdlib.h"
 
-//Function to create an empty BC
-BC createEmptyBC(FactList facts){
+//Function to create an empty CB
+CB createEmptyBC(FactList facts){
     if(facts->head!=NULL){
-        BC new = (BC)malloc(sizeof(PreBC));
+        CB new = (CB)malloc(sizeof(PreCB));
         new->tail=NULL;
         new->head=NULL;
         new->facts = facts;
@@ -13,8 +13,8 @@ BC createEmptyBC(FactList facts){
     return NULL;
 }
 
-//Function to add a Rule to a BC
-BC addRuleToBC(BC bc, Rule rule){
+//Function to add a Rule to a CB
+CB addRuleToBC(CB bc, Rule rule){
     if(bc!=NULL && !isPremiseEmpty(rule) && getConclusion(rule)!=NULL && rule->facts->head == bc->facts->head){
         ElmOfBC* newl = malloc(sizeof (ElmOfBC));
         newl->rule=rule;
@@ -30,8 +30,8 @@ BC addRuleToBC(BC bc, Rule rule){
     return bc;
 }
 
-//Function to get the first Rule of a BC
-Rule getHeadRule(BC bc){
+//Function to get the first Rule of a CB
+Rule getHeadRule(CB bc){
     if(bc->tail!=NULL){
         return bc->head->rule;
     }else{
@@ -39,8 +39,8 @@ Rule getHeadRule(BC bc){
     }
 }
 
-BC copyOfBC(BC bc){
-    BC new_bc = createEmptyBC(bc->facts);
+CB copyOfBC(CB bc){
+    CB new_bc = createEmptyBC(bc->facts);
     ElmOfBC* point = bc->head;
     while (point!=NULL){
         Rule new_rule = createEmptyRule(bc->facts);
@@ -56,11 +56,11 @@ BC copyOfBC(BC bc){
     return new_bc;
 }
 
-FactList getFactListOfBC(BC bc){
+FactList getFactListOfBC(CB bc){
     return bc->facts;
 }
 
-FactList freeBC(BC bc){
+FactList freeBC(CB bc){
     if(bc!=NULL && bc->head!=NULL){
         ElmOfBC* point = bc->head;
         while (point!=NULL){

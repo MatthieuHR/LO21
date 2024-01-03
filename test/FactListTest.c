@@ -1,4 +1,4 @@
-/*#include "../include//FactList.h"
+#include "../include//FactList.h"
 #include "stdlib.h"
 #include "stdio.h"
 
@@ -22,7 +22,7 @@ void print(elm* var){
     printf("%d\n",var->value);
 }
 
-int testFactList(){
+int main(){
     Bool (*fnPointer)(void*, void*);
     fnPointer = cmpValue;
     FactList facts = createFactList(fnPointer);
@@ -70,4 +70,4 @@ int testFactList(){
         printf("Pass");
     }
     return 0;
-}*/
+}

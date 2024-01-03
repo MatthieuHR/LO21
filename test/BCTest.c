@@ -1,4 +1,4 @@
-#include "../include/BC.h"
+/*#include "../include/CB.h"
 #include "stdlib.h"
 #include "stdio.h"
 
@@ -41,13 +41,13 @@ int main() {
     ruleA = createConclusion(ruleA, getById(ruleA->facts,2));
     ruleB = createConclusion(ruleB, getById(ruleB->facts,5));
 
-    BC aBC = createEmptyBC(facts);
+    CB aBC = createEmptyBC(facts);
     aBC = addRuleToBC(aBC,ruleA);
     aBC = addRuleToBC(aBC,ruleB);
     print(getHeadRule(aBC)->premise.head->premise);
     print(aBC->head->next->rule->conclusion);
 
-    BC copyBC = copyOfBC(aBC);
+    CB copyBC = copyOfBC(aBC);
     print(getHeadRule(copyBC)->premise.head->premise);
     print(copyBC->head->next->rule->conclusion);
 
@@ -67,3 +67,4 @@ int main() {
 
     return 0;
 }
+*/
