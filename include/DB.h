@@ -15,6 +15,9 @@ typedef PreDB* DB;
 
 DB createEmptyBC(FactList facts);
 DB addRuleToBC(DB bc, Rule rule);
-Rule getHeadRule(DB bc);
+ElmOfDB* getHeadRule(DB bc);
+ElmOfDB* getNextRule(ElmOfDB* elm);
+Rule getRule(ElmOfDB* elm);
 DB copyOfBC(DB bc);
 FactList freeBC(DB bc);
+FactList getFactListOfDB(DB bc);

@@ -31,9 +31,9 @@ DB addRuleToBC(DB bc, Rule rule){
 }
 
 //Function to get the first Rule of a DB
-Rule getHeadRule(DB bc){
-    if(bc->tail!=NULL){
-        return bc->head->rule;
+ElmOfDB* getHeadRule(DB bc){
+    if(bc != NULL && bc->tail!=NULL){
+        return bc->head;
     }else{
         return NULL;
     }
@@ -62,6 +62,9 @@ FactList getFactListOfBC(DB bc){
 
 FactList freeBC(DB bc){
     if(bc!=NULL && bc->head!=NULL){
+        if(bc->facts==NULL){
+            return NULL;
+        }
         ElmOfDB* point = bc->head;
         while (point!=NULL){
             ElmOfDB* temp = point;
@@ -72,6 +75,27 @@ FactList freeBC(DB bc){
         FactList rtn = bc->facts;
         free(bc);
         return rtn;
+    }
+    return NULL;
+}
+
+FactList getFactListOfDB(DB bc){
+    if(bc!=NULL){
+        return bc->facts;
+    }
+    return NULL;
+}
+
+ElmOfDB* getNextRule(ElmOfDB* elm){
+    if(elm!=NULL){
+        return elm->next;
+    }
+    return NULL;
+}
+
+Rule getRule(ElmOfDB* elm){
+    if(elm!=NULL){
+        return elm->rule;
     }
     return NULL;
 }

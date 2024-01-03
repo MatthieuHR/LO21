@@ -26,6 +26,8 @@ Bool factInPremise(Rule rule, void* prop);//work
 Rule removeFromPremise(Rule rule, void* premise);//work
 Bool isPremiseEmpty(Rule rule);//work
 ElmOfPremise* getHeadOfPremise(Rule rule);//work
+ElmOfPremise* nextOfPremise(ElmOfPremise* elm);//work
+void* getPremise(ElmOfPremise* elm);//work
 void* getConclusion(Rule rule);//work
 FactList getFactListOfRule(Rule rule);
 FactList freeRule(Rule rule);

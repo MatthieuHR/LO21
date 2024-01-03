@@ -90,10 +90,9 @@ Commençons par créer une règle. Le type d'une **règle** est `Rule` et ces fo
 
 
 Il y a aussi des fonctions qui intéragissent avec le type `Rule` :
-* `factInPremise(Premise premise, void* prop)` qui vérifie si un fait(`prop`) est dans la prémise et renvoie un `Bool`.
 * `isPremiseEmpty(Rule* rule)` qui renvoie un `Bool` et dit si la prémise est vide.
-* `getHeadOfPremise(Rule* rule)` qui renvoie le premier élément de la prémise de type `ElmOfPremise*`.
 * `getConclusion(Rule* rule)` qui renvoie la conclusion de type `void*`.
+* `getFactListOfRule(Rule* rule)` qui renvoie la liste de fait associée à la règle de type `FactList`.
 
 >Pour plus de détail sur les fonctions merci de regarder les algorithms commenter [ici](Alogrithm.md)
 
@@ -105,7 +104,7 @@ Voici les fonctions qui permettent sa conception :
 * `DB copyOfBC(DB bc)` pour renvoyer une copie une base de connaissance.
 
 Il y a aussi des fonctions qui intéragissent avec le type `DB` :
-* `getHeadRule(DB bc)` qui donne la première règle d'une base de connaissance.
+* `getFactListOfDB(DB bc)` qui renvoie la liste de fait associée à la base de connaissance de type `FactList`.
 
 >Pour plus de détail sur les fonctions merci de regarder les algorithms commenter [ici](Alogrithm.md)
 
@@ -117,6 +116,44 @@ Il y a aussi des fonctions qui intéragissent avec le type `DB` :
 >[!TIP]
 > 
 > Vous pouvez retrouver [ici](Function.md) toutes les fonctions et leurs utilities et éventuellement plus de détail.
+
+
+## Fonctions utiles
+
+---
+### Les fonctions de libération de mémoire 
+
+Pour libérer la mémoire utilisée par notre système expert, il faut utiliser les fonctions suivantes :
+* `freeFactList(FactList list)` pour libérer la mémoire utilisée par une liste de fait.
+* `freeRule(Rule rule)` pour libérer la mémoire utilisée par une règle.
+* `freeDB(DB bc)` pour libérer la mémoire utilisée par une base de connaissance.
+>Pour plus de détail sur les fonctions merci de regarder les algorithms commenter [ici](Function.md)
+
+---
+### Les fonctions pour parcourir les listes 
+
+Pour parcourir une **règle**, il faut utiliser les fonctions suivantes :
+* `getHeadOfPremise(Rule rule)` pour récupérer la tête de la liste de prémises.
+* `getNextOfPremise(ElmOfPremise* rule)` pour récupérer l'élément suivant de la liste de prémises.
+* `getPremise(ElmOfPremise* elm)` pour récupérer le fait de l'élément de la prémisse.
+
+Pour parcourir une **base de connaissance**, il faut utiliser les fonctions suivantes :
+* `getHeadRule(DB bc)` pour récupérer la tête de la liste de règles.
+* `getNextRule(ElmOfDB* elm)` pour récupérer l'élément suivant de la liste de règles.
+* `getRule(ElmOfDB* elm)` pour récupérer la règle de l'élément de la base de connaissance.
+
+>Pour plus de détail sur les fonctions merci de regarder les algorithms commenter [ici](Function.md)
+
+---
+### Les fonctions pour récupérer une liste de fait
+
+Pour récupérer une **liste de fait**, il faut utiliser les fonctions suivantes :
+* `getFactListOfRule(Rule* rule)` pour récupérer la liste de fait associée à la règle.
+* `getFactListOfDB(DB bc)` pour récupérer la liste de fait associée à la base de connaissance.
+
+>Pour plus de détail sur les fonctions merci de regarder les algorithms commenter [ici](Function.md)
+
+
 ## Fonctionnement du système expert
 
 ---

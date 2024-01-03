@@ -112,6 +112,7 @@ FactList getFactListOfRule(Rule rule){
 
 FactList freeRule(Rule rule){
     if(rule != NULL && rule->premise.head!=NULL){
+        if(rule->facts==NULL){return NULL;}
         ElmOfPremise* point = rule->premise.head;
         while (point!=NULL){
             ElmOfPremise* temp = point;
@@ -122,4 +123,15 @@ FactList freeRule(Rule rule){
         free(rule);
         return rtn;
     }
+    return NULL;
+}
+
+ElmOfPremise* nextOfPremise(ElmOfPremise* elm){
+    if(elm == NULL){return NULL;}
+    else{return elm->next;}
+}
+
+void* getPremise(ElmOfPremise* elm){
+    if(elm == NULL){return NULL;}
+    else{return elm->premise;}
 }
