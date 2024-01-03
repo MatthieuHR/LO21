@@ -24,7 +24,6 @@ Notre projet se présente sous la forme d'une bibliothèque dont voici l'arbores
         - fr
     - include
     - src
-    - test
     - exemple
         * Make
     * main.c

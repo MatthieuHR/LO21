@@ -89,16 +89,6 @@
     }
 
     /**
-     * Retrieves the list of facts associated with a given DB (DB).
-     *
-     * @param db The DB for which to retrieve the fact list.
-     * @return The fact list associated with the DB.
-     */
-    FactList getFactListOfDB(DB db){
-        return db->facts;
-    }
-
-    /**
      * @brief Frees the memory allocated for a database and returns the list of facts.
      * 
      * This function frees the memory allocated for a database and returns the list of facts.
