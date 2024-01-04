@@ -140,3 +140,61 @@ FactList freeFactList(FactList list){
     return NULL;
 }
 
+/**
+ * Function to remove a fact from a FactList.
+ *
+ * @param list The FactList to remove the fact from.
+ * @param fact The fact to be removed.
+ * @return The updated FactList with the fact removed or not.
+ */
+ FactList removeAFact(FactList list, void* fact){
+     if(list!=NULL && fact != NULL && list->head!=NULL){
+         ElmOfFact* point = list->head;
+            if(point->fact==fact) {
+                list->head = point->next;
+                free(point);
+            }else{
+                ElmOfFact* prev = point;
+                point = point->next;
+                while(point != NULL){
+                    if(point->fact==fact){
+                        prev->next = point->next;
+                        free(point);
+                        return list;
+                    }
+                    prev = point;
+                    point = point->next;
+                }
+            }
+     }
+    return list;
+ }
+
+ ElmOfFact* getHeadOfFactList(FactList list){
+     if(list != NULL){
+         return list->head;
+     }
+     return NULL;
+ }
+
+ ElmOfFact* getNextOfFactList(ElmOfFact* elm){
+     if(elm != NULL){
+         return elm->next;
+     }
+     return NULL;
+ }
+
+    long getId(ElmOfFact* elm){
+        if(elm != NULL){
+            return elm->id;
+        }
+        return -1;
+    }
+
+    void* getFact(ElmOfFact* elm){
+        if(elm != NULL){
+            return elm->fact;
+        }
+        return NULL;
+    }
+

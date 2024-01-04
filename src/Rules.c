@@ -60,10 +60,10 @@ Rule setConclusion(Rule rule, void* conclusion){
  * @param prop The Property to search for in the premise field.
  * @return True if the Property is found in the premise field, False otherwise.
  */
-Bool factInPremise(Rule rule, void* prop){
-    if(rule == NULL || rule->premise.head == NULL || prop == NULL){return False;}
+ElmOfPremise* factInPremise(Rule rule, void* prop){
+    if(rule == NULL || rule->premise.head == NULL || prop == NULL){return NULL;}
     if(rule->premise.head->premise==prop){
-        return True;
+        return rule->premise.head;
     }
     PreRule new = *rule;
     new.premise.head = new.premise.head->next;
@@ -79,29 +79,20 @@ Bool factInPremise(Rule rule, void* prop){
  */
 Rule removeFromPremise(Rule rule, void* premise){
     if(rule != NULL && !isEmptyProperty(premise)){
-        if(rule->premise.head != NULL){
-            ElmOfPremise* prev = rule->premise.head;
-            ElmOfPremise* now = prev->next;
-            if(premise==prev->premise){
-                if(rule->premise.head==rule->premise.tail){
-                    free(prev);
-                    rule->premise.head=NULL;
-                    rule->premise.tail=NULL;
+        if(rule->premise.head != NULL) {
+            ElmOfPremise* point = rule->premise.head;
+            if(point->premise == premise){
+                rule->premise.head = point->next;
+                free(point);
                 }else{
-                    free(prev);
-                    rule->premise.head=now;
-                }
-                return rule;
-            }else{
-                while(now!=NULL){
-                    if(now->premise==premise){
-                        prev->next=now->next;
-                        free(now);
-                        return rule;
+                    while (point->next != NULL && point->next->premise != premise){
+                        point = point->next;
                     }
-                    prev=now;
-                    now=now->next;
-                }
+                    if(point->next != NULL) {
+                        ElmOfPremise *temp = point->next;
+                        point->next = point->next->next;
+                        free(temp);
+                    }
             }
         }
     }

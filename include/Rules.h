@@ -25,7 +25,7 @@ typedef PreRule* Rule;
 Rule createEmptyRule(FactList facts);//work
 Rule addPremise(Rule rule, void* premise);//work
 Rule setConclusion(Rule rule, void* conclusion);//work
-Bool factInPremise(Rule rule, void* prop);//work
+ElmOfPremise* factInPremise(Rule rule, void* prop);//work
 Rule removeFromPremise(Rule rule, void* premise);//work
 Bool isPremiseEmpty(Rule rule);//work
 ElmOfPremise* getHeadOfPremise(Rule rule);//work
