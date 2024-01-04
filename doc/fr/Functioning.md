@@ -68,6 +68,7 @@ Dans notre système expert toutes les conclusions et prémises sont tirée de ce
 Pour vous aider à sa création, vous avez à votre disposition plusieurs fonctions :
 * `createFactList(Bool (*cmpValue)(void*, void*))` pour créer une liste de fait vide avec `cmpValue` qui est un pointeur sur la fonction de comparaison que vous avez définie.
 * `addFact(FactList list,*void fact)` pour ajouter une propriété(`fact`) a une liste de fait(`list`). Vous pouvez utiliser la meme variable `fact` en changent ça valeur sans problems.
+* `removeAFact(FactList list, void* fact)` pour supprimer une propriété(`fact`) d'une liste de fait(`list`).
 * `removeAllFacts(FactList list)` pour supprimer tous les fait d'une liste de fait.
 
 Il y a aussi des fonctions qui intéragissent avec le type `FactList` :
@@ -133,10 +134,17 @@ Pour libérer la mémoire utilisée par notre système expert, il faut utiliser 
 ---
 ### Les fonctions pour parcourir les listes 
 
+Pour parcourir une **liste de fait**, il faut utiliser les fonctions suivantes :
+* `getHeadOfFactList(FactList list)` pour récupérer la tête de la liste de fait.
+* `nextFact(ElmOfFactList* elm)` pour récupérer l'élément suivant de la liste de fait.
+* `getFact(ElmOfFactList* elm)` pour récupérer le fait de l'élément de la liste de fait.
+* `getId(ElmOfFactList* elm)` pour récupérer l'id de l'élément de la liste de fait.
+
 Pour parcourir une **règle**, il faut utiliser les fonctions suivantes :
 * `getHeadOfPremise(Rule rule)` pour récupérer la tête de la liste de prémises.
 * `getNextOfPremise(ElmOfPremise* rule)` pour récupérer l'élément suivant de la liste de prémises.
 * `getPremise(ElmOfPremise* elm)` pour récupérer le fait de l'élément de la prémisse.
+* `getCoclusion(Rule rule)` pour récupérer la conclusion de la règle.
 
 Pour parcourir une **base de connaissance**, il faut utiliser les fonctions suivantes :
 * `getHeadRule(DB db)` pour récupérer la tête de la liste de règles.

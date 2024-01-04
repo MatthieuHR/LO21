@@ -60,10 +60,10 @@ Rule setConclusion(Rule rule, void* conclusion){
  * @param prop The Property to search for in the premise field.
  * @return True if the Property is found in the premise field, False otherwise.
  */
-ElmOfPremise* factInPremise(Rule rule, void* prop){
-    if(rule == NULL || rule->premise.head == NULL || prop == NULL){return NULL;}
+Bool factInPremise(Rule rule, void* prop){
+    if(rule == NULL || rule->premise.head == NULL || prop == NULL){return False;}
     if(rule->premise.head->premise==prop){
-        return rule->premise.head;
+        return True;
     }
     PreRule new = *rule;
     new.premise.head = new.premise.head->next;

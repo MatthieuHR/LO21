@@ -25,7 +25,7 @@ FactList freeFactList(FactList list);
 Bool isAlreadyInFactList(FactList list, void* fact);//work
 Bool isPresentInFactList(FactList list, void* fact);
 ElmOfFact* getHeadOfFactList(FactList list);//work
-ElmOfFact* getNextOfFactList(ElmOfFact* elm);//work
+ElmOfFact* nextOfFactList(ElmOfFact* elm);//work
 void* getById(FactList list, long id);//work
 long getId(ElmOfFact*);//work
 void* getFact(ElmOfFact*);//work

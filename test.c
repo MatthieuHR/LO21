@@ -25,7 +25,7 @@ void printFactList(FactList list){
     while(now!=NULL){
         printf("%ld: ", getId(now));
         printValue(getFact(now));
-        now = getNextOfFactList(now);
+        now = nextOfFactList(now);
     }
     printf("\n");
 }
@@ -125,14 +125,14 @@ int main(){
     }
 
     for (int i=0; i<2; i++){
-        if(factInPremise(rule2, getById(getFactListOfRule(rule2),i)) != NULL){
+        if(!factInPremise(rule2, getById(getFactListOfRule(rule2),i))){
             printf("factInPremise() should return True if the element is in the premise\n");
             exit(1);
         }
     }
 
     for (int i=0; i<2; i++){
-        if(factInPremise(rule3, getById(getFactListOfRule(rule3),i)) != NULL){
+        if(!factInPremise(rule3, getById(getFactListOfRule(rule3),i))){
             printf("factInPremise() should return True if the element is in the premise\n");
             exit(1);
         }

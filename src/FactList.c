@@ -177,7 +177,7 @@ FactList freeFactList(FactList list){
      return NULL;
  }
 
- ElmOfFact* getNextOfFactList(ElmOfFact* elm){
+ ElmOfFact* nextOfFactList(ElmOfFact* elm){
      if(elm != NULL){
          return elm->next;
      }
