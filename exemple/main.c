@@ -30,41 +30,33 @@ Bool cmp(void* p1, void* p2){
 
 
 
+
+void printFactList(FactList list) {
+    ElmOfFact* current =list->head;
+    while (current!=NULL) {
+        printf("ID: %ld, Fact: %s\n",current->id, current->fact );
+        current =current->next;
+    }
+}
+
+
+
+
 void expertsystem(FactList allFacts, FactList factsToTest, FactList resultFacts, DB knowledgeBase){
-    printf("rentre1\n");
 
 
 
-        //verfie si la lsite est null
+
+        //boucle dans que tous les fait ne sont pas testé
         while (factsToTest->head != NULL) {
-            ElmOfFact *currentFact = factsToTest->head;
+            ElmOfFact *currentFact = getHeadOfFactList(factsToTest);
+
+
+            printf("\n caracteres a teste:\n");
+            printFactList(factsToTest);
 
 
 
-            //debug
-            ElmOfFact *current = factsToTest->head;
-            while (current != NULL) {
-
-                printf("ID: %ld, Fact: %s\n", current->id, current->fact);
-                current = current->next;
-            }
-
-
-
-            // enlève le fact tester de la liste des facts a tester
-            factsToTest = removeAFact(factsToTest, currentFact->fact);
-
-
-            //debug
-            printf("test\n");
-            printf("//////:: %s :://///\n", currentFact->fact);
-            current = factsToTest->head;
-            while (current != NULL) {
-
-                printf("ID: %ld, Fact: %s\n", current->id, current->fact);
-                current = current->next;
-            }
-            printf("rentre2\n");
 
             //prend le premier element de la qui possede une rule
             ElmOfDB *ruleNode = knowledgeBase->head;
@@ -87,14 +79,13 @@ void expertsystem(FactList allFacts, FactList factsToTest, FactList resultFacts,
                 while (premise != NULL) {
 
 
-                    printf("rentre dans la bouvle ou il test les prop\n");
-
+                    printf(" elements qui s'oppose  %s ,  %c  \n ",premise->premise,getValue(getFact(currentFact)));
 
                     // check si il y a l element est egale a un fait
-                    if (strcmp(premise->premise, currentFact->fact) == 0) {
+                    if (strcmp(premise->premise, getFact(currentFact) ) == 0) {
 
 
-                        printf("supprimme les elllemments %s / %s\n", currentFact->fact, premise->premise);
+                        printf("supprimme l'elements %s \n", currentFact->fact);
 
                         //supprime l'elements de la liste
                         currentRule = removeFromPremise(currentRule, currentFact->fact);
@@ -126,22 +117,12 @@ void expertsystem(FactList allFacts, FactList factsToTest, FactList resultFacts,
                 ruleNode = ruleNode->next;
 
             }
+            printDB(knowledgeBase);
 
             //passe au fact suivant de la liste des fact a tester
-
+            factsToTest = removeAFact(factsToTest, currentFact->fact);
         }
 }
-
-
-
-void printFactList(FactList list) {
-    ElmOfFact* current =list->head;
-    while (current!=NULL) {
-        printf("ID: %ld, Fact: %s\n",current->id, current->fact );
-        current =current->next;
-    }
-}
-
 
 
 
@@ -166,20 +147,16 @@ int main(){
     allFacts = addFact(allFacts,"H");
     allFacts = addFact(allFacts, "I" );
 
-    printf("Fact list:\n");
-    ElmOfFact* current =allFacts->head;
-    while (current!=NULL) {
-        printf("ID: %ld, Fact: %s\n", current->id, current->fact);
-        current = current->next;
-    }
+
 
     FactList factsToTest = createFactList(fnPointer);
 
     //Ajout des fait à testé dans la liste de fait a tester
+    factsToTest = addFact(factsToTest, "E");
     factsToTest = addFact(factsToTest, "I");
     factsToTest = addFact(factsToTest, "A");
     factsToTest = addFact( factsToTest, "B");
-    factsToTest = addFact(factsToTest, "E");
+
 
 
     // Creation de la liste des fait conclu
@@ -200,12 +177,26 @@ int main(){
     rule2 = setConclusion(rule2, "D");
 
 
+    Rule rule3 = createEmptyRule(allFacts);
+    rule3 = addPremise(rule3,"D");
+    rule3 = addPremise(rule3,"B");
+    rule3 = setConclusion(rule3, "H");
+
+    printf("Tout les fait existant:\n");
+    printFactList(allFacts);
+
+    printf("\n\nles differentes regles\n");
+    printRule(rule1);
+    printRule(rule2);
+    printRule(rule3);
+
     //... a continuer
 
     knowledgeBase = addRuleToDB(knowledgeBase, rule1);
     knowledgeBase = addRuleToDB(knowledgeBase, rule2);
+    knowledgeBase = addRuleToDB(knowledgeBase, rule3);
 
-    printf("//////////////////////////////////////////////////::::::\n");
+    printf("systeme expert:\n");
 
     expertsystem(allFacts, factsToTest, resultFacts, knowledgeBase);
 
