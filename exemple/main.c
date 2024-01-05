@@ -47,7 +47,7 @@ void expertsystem(FactList allFacts, FactList factsToTest, FactList resultFacts,
 
 
 
-        //boucle dans que tous les fait ne sont pas testé
+        //boucle tant que tous les fait ne sont pas testé
         while (factsToTest->head != NULL) {
             ElmOfFact *currentFact = getHeadOfFactList(factsToTest);
 
