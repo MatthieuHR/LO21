@@ -19,6 +19,7 @@
             new->tail=NULL;
             new->head=NULL;
             new->facts = facts;
+            new->last_id=-1;
             return new;
         }
         return NULL;
@@ -36,6 +37,7 @@
             ElmOfDB* newl = (ElmOfDB*)malloc(sizeof (ElmOfDB));
             newl->rule=rule;
             newl->next=NULL;
+            newl->id=db->last_id+1;
             if(db->head == NULL){
                 db->head = newl;
                 db->tail = newl;
@@ -43,6 +45,7 @@
                 db->tail->next=newl;
                 db->tail=newl;
             }
+            db->last_id++;
         }
         return db;
     }
@@ -178,4 +181,24 @@
             }
         }
         return db;
+    }
+
+    long getID(ElmOfDB* elm){
+        if(elm!=NULL){
+            return elm->id;
+        }
+        return -1;
+    }
+
+    Rule getRuleByIDd(DB db, long id){
+        if(db!=NULL && db->head!=NULL && id >= 0){
+            ElmOfDB* point = db->head;
+            while (point!=NULL){
+                if(point->id==id){
+                    return point->rule;
+                }
+                point=point->next;
+            }
+        }
+        return NULL;
     }
