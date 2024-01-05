@@ -87,7 +87,7 @@ void printFactList(FactList list) {
         
         FactList allFacts = createFactList(fnPointer);
 
-        // Ajout des faits à la liste de tous les faits
+        //Ajout des fait à la  liste de tout les faits
         allFacts =addFact(allFacts, "FactA");
         allFacts = addFact(allFacts,"FactB");
         allFacts = addFact(allFacts, "FactC" );
@@ -95,14 +95,14 @@ void printFactList(FactList list) {
         
         FactList factsToTest = createFactList(fnPointer);
 
-        //Ajout des faits à tester dans la liste de faits à tester
+        //Ajout des fait à testé dans la liste de fait a tester
         factsToTest = addFact(factsToTest, "FactA");
         factsToTest = addFact( factsToTest, "FactB");
 
-        // Création de la liste des faits résultants
+        // Creation de la liste des fait conclu
         FactList resultFacts = createFactList(fnPointer);
 
-        // Création de la base de connaissances vide
+        //Creation de la base de connaissance 
         BC knowledgeBase = createEmptyBC(allFacts);
 
         //Création et ajout de règles à la base de connaissances
@@ -111,7 +111,7 @@ void printFactList(FactList list) {
         rule1= addPremise(rule1,"FactB");
         rule1 = createConclusion(rule1, "FactC");
 
-        //...
+        //... a continuer
 
         knowledgeBase = addRuleToBC(knowledgeBase, rule1);
 
