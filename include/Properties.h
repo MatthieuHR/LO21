@@ -3,6 +3,6 @@
 
 #include "define.h"
 
-Bool isEmptyProperty(void* prop);
+Bool isUndefinedProperty(void* prop);
 
 #endif // PROPERTIES_H

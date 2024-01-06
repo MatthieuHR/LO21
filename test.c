@@ -102,7 +102,7 @@ int test(){
     for(int i=0; i<2; i++){
         rule = addPremise(rule, getById(getFactListOfRule(rule),i));
         rule2 = addPremise(rule2, getById(getFactListOfRule(rule2),i+3));
-        rule3 = addPremise(rule3, getById(getFactListOfRule(rule3),i+6));
+        rule3 = addFactInPremise(rule3, getById(getFactListOfRule(rule3),i+6));
     }
     rule = setConclusion(rule, getById(getFactListOfRule(rule),2));
     rule2 = setConclusion(rule2, getById(getFactListOfRule(rule2),5));
@@ -175,7 +175,7 @@ int test(){
 
     DB new = createEmptyDB(facts);
     new = addRuleToDB(new, rule3);
-    new = removeARule(new, rule3);
+    new = removeARuleAndFree(new, rule3);
     printf("New DB:\n");
     printDB(new);
     if (freeRule(rule3) == NULL){

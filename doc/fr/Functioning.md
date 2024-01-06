@@ -76,14 +76,16 @@ Dans notre système expert toutes les conclusions et prémisses sont tirée de c
 Pour vous aider à sa création, vous avez à votre disposition plusieurs fonctions :
 * `createFactList((*cmpValue)(void*, void*):Bool):FactList` pour créer une liste de fait vide avec `cmpValue` qui est un pointeur sur la fonction de comparaison que vous avez définie.
 * `addFact(list:FactList, fact:void*):FactList` pour ajouter une propriété (`fact`) a une liste de fait (`list`). Attention chaque fait doit avoir une adresse mémoire unique.
-* `removeAFact(list:FactList, fact:void*):FactList` pour supprimer une propriété (`fact`) d'une liste de fait (`list`).
+* `removeAFact(list:FactList, fact:void*):FactList` pour supprimer une propriété (`fact`) d'une liste de fait (`list`).*
+* `removeAFactAndFree(list:FactList, fact:void*):FactList` pour supprimer une propriété (`fact`) d'une liste de fait (`list`) et le fait. **Attention à ne pas si le fait est utilisé ailleurs**.
 * `removeAFactById(list:FactList, id:LongInteger):FactList` pour supprimer une propriété (`fact`) d'une liste de fait (`list`) par rapport à son `id`.
+* `removeAFactByIdAndFree(list:FactList, id:LongInteger):FactList` pour supprimer une propriété (`fact`) d'une liste de fait (`list`) par rapport à son `id` et le fait. **Attention à ne pas si le fait est utilisé ailleurs**.
 * `removeAllFacts(list:FactList):FactList` pour supprimer tous les fait d'une liste de fait.
 * `removeAllFactsAndFree(list:FactList):FactList` pour supprimer tous les fait d'une liste de fait et le fait. **Attention à ne pas si le fait est utilisé ailleurs**.
 
 Il y a aussi des fonctions qui intéragissent avec le type `FactList` :
 * `isAlreadyInFactList(list:FactList, fact:void*):Bool` qui vérifie si l'élément est dans la liste de fait avec le pointeur de fonction et revoie un `Bool`. 
- `isPresentInFactList(list:FactList, fact:void*):Bool` qui vérifie si l'élément est dans la liste de fait avec l'emplacement mémoire et revoie un `Bool`
+* `isPresentInFactList(list:FactList, fact:void*):Bool` qui vérifie si l'élément est dans la liste de fait avec l'emplacement mémoire et revoie un `Bool`
 * `getFactById(list:FactList, id:LongInteger):void*` qui renvoie l'élément associé à l'`id`;.
 
 >Pour plus de détail sur les fonctions merci de regarder les algorithms commenter [ici](Alogrithm.md)
@@ -95,14 +97,17 @@ Une fois notre liste de fait créer il nous faut établir des relations entre le
 
 Commençons par créer une règle. Le type d'une **règle** est `Rule` et ces fonctions sont disponibles pour aider à les créer :
 * `createEmptyRule(facts:FactList):Rule` qui créer une règle vide avec une liste de fait associée (`facts`).
-* `addPremise(rules:Rule, premise:void*):Rule` qui ajoute une prémise tiré d'une liste de fait à la liste de prémises.
+* `addFactInPremise(rules:Rule, premise:void*):Rule` qui ajoute une prémise tiré d'une liste de fait à la liste de prémises.
 * `setConclusion(rule:Rule, conclusion:void*):Rule` qui permet de définir une conclusion tirée d'une liste de fait.
 * `removeFromPremise(rule:Rule, premise:void*):Rule` qui retire une prémise si elle est présente.
 
 
 Il y a aussi des fonctions qui intéragissent avec le type `Rule` :
+* `isUndefinedRule(rule:Rule):Bool` qui renvoie un `Bool` et dit si la règle est définie ou non.
+* `isEmptyRule(rule:Rule):Bool` qui renvoie un `Bool` et dit si la règle est vide.
 * `isEqualsRule(rule1:Rule, rule2:Rule)Bool` qui renvoie un `Bool` et dit si les deux règles sont identiques.
 * `isPremiseEmpty(rule:Rule):Bool` qui renvoie un `Bool` et dit si la prémise est vide.
+* `isUndefinedConclusion(rule:Rule):Bool` qui renvoie un `Bool` et dit si la conclusion est vide.
 * `getConclusion(rule:Rule):void*` qui renvoie la conclusion, un fait.
 
 >Pour plus de détail sur les fonctions merci de regarder les algorithms commenter [ici](Alogrithm.md)
@@ -113,13 +118,19 @@ Voici les fonctions qui permettent sa conception :
 * `createEmptyDB(facts:FactList):DB` pour créer une base de connaissance vide avec une liste de faits associée.
 * `addRuleToDB(db:DB, rule:Rule):DB` pour ajouter une règle à la base de connaissance.
 * `removeARule(db:DB, rule:Rule):DB` qui permet d'enlever une règle de la base de connaissance. Attention, la règle n'est pas libérée de la mémoire, il faut donc la récupérer avant de l'enlever pour éviter de la perdre en mémoire.
+* `removeARuleAndFree(db:DB, rule:Rule):DB` qui permet d'enlever une règle de la base de connaissance. Attention, la règle n'est pas libérée de la mémoire, il faut donc la récupérer avant de l'enlever pour éviter de la perdre en mémoire.
 * `removeARuleById(db:DB, id:LongInteger):DB` qui permet d'enlever une règle de la base de connaissance par rapport à son `id`. Attention, la règle est libérée en mémoire.
+* `removeARuleByIdAndFree(db:DB, id:LongInteger):DB` qui permet d'enlever une règle de la base de connaissance par rapport à son `id`. Attention, la règle est libérée en mémoire.
 * `removeAllRules(db:DB):DB` qui permet d'enlever toutes les règles de la base de connaissance. Attention, les règles sont libérées en mémoire.
+* `removeAllRulesAndFree(db:DB):DB` qui permet d'enlever toutes les règles de la base de connaissance. Attention, les règles sont libérées en mémoire.
 * `DB copyOfDB(db:DB):DB` pour renvoyer une copie une base de connaissance.
 
 Il y a aussi des fonctions qui intéragissent avec le type `DB` :  
+* `isUndefinedDB(db:DB):Bool` qui renvoie un `Bool` et dit si la base de connaissance est définie ou non.
+* `isDBEmpty(db:DB):Bool` qui renvoie un `Bool` et dit si la base de connaissance est vide.
 * `isPresentInDB(db:DB, fact;void*):Bool` qui renvoie un `Bool` et dit si le fait est présent dans la base de connaissance par rapport à l'objet lui-même.
 * `isAlreadyInDB(db:DB, fact:void*):Bool` qui renvoie un `Bool` et dit si le fait est présent dans la base de connaissance par rapport à ses champs.
+* `isRuleAddable(db:DB, rule:Rule):Bool` qui renvoie un `Bool` et dit si la règle est ajoutable dans la base de connaissance.
 * `getRuleById(db:DB, id:LongInteger):Rule` qui renvoie la règle associée à l'id.
 
 >Pour plus de détail sur les fonctions merci de regarder les algorithms commenter [ici](Alogrithm.md)
@@ -208,10 +219,10 @@ Le programme va alors **dépiler** un élément et regarder si, pour chaque éle
     * sinon le programme continue sur l'élément suivant.
 * sinon le programme passe à la règle suivante.
 
-Une fois que la pile est vide le programme nous retourne sa liste de conclusion et un code de réussite (`0`).
-
----
-### Les codes d'erreur
+Une fois que la pile est vide le programme nous retourne sa liste de conclusion et un code de réussite (`0`) ou un code d'errer :
+* `1` si la base de connaissance est vide
+* `2` si la liste de fait à tester est vide
+* `3` si la liste de fait résultat est vide
 
 ---
 C'est tout pour cette section, vous pouvez passer à la section suivante : [Algorithmes des sous programmes](Algorithm.md).

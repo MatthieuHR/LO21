@@ -12,7 +12,7 @@ Cette partie sera traitée en fonctions des fichiers `.h` et chaque fichier succ
 ## Fichier `Properties.h`
 
 ---
-`Bool isEmptyProperty(void* prop)` : dit si un fait (`prop`) est vide, c'est-à-dire pointe sur `NULL`. Renvoie `True` si est vide, `False` sinon.
+`Bool isUndefinedProperty(void* prop)` : dit si un fait (`prop`) est vide, c'est-à-dire pointe sur `NULL`. Renvoie `True` si est vide, `False` sinon.
 
 
 ## Fichier `FactList.h`
@@ -38,7 +38,7 @@ Cette partie sera traitée en fonctions des fichiers `.h` et chaque fichier succ
 ---
 `Rule createEmptyRule(FactList facts)` : renvoie un objet de type `Rules` avec tous ces champs `NULL` sauf `facts` qui vaut le paramètre `facts`.
 
-`Rule addPremise(Rule rule, void* premise)` : permet d'ajouter un fait (`premise`) dans le champ `premise` d'une règle (`rule`). Le fait n'est pas ajouté s'il n'est pas dans la liste de fait. La fonction renvoie quoi qu'il arrive `rule` modifier ou non.
+`Rule addFactInPremise(Rule rule, void* premise)` : permet d'ajouter un fait (`premise`) dans le champ `premise` d'une règle (`rule`). Le fait n'est pas ajouté s'il n'est pas dans la liste de fait. La fonction renvoie quoi qu'il arrive `rule` modifier ou non.
 
 `Rule setConclusion(Rule rule, void* conclusion)` : permet de définir une conclusion (`conclusion`) dans le champ `conclusion` d'une règle (`rule`). La fonction renvoie quoi qu'il arrive `rule` modifier ou non. Le fait n'est pas ajouté s'il n'est pas dans la liste de fait ou vide (`NULL`).
 

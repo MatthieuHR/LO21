@@ -17,4 +17,5 @@ add_executable(LO21 exemple/main.c
         test.c
         test.c
         src/ExpertSys.c
+        src/define.c
 )

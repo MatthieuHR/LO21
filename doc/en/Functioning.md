@@ -84,7 +84,7 @@ Une fois notre liste de fait créer il nous faut établir des relations entre le
 
 Commençons par créer une règle. Le type d'une **règle** est `Rule` et ces fonctions sont disponibles pour aider à les créer :
 * `createEmptyRule(FactList facts)` qui créer une règle vide avec une liste de fait associée (`facts`).
-* `addPremise(Rule* rules,void* premise)` qui ajoute une prémise tiré d'une liste de fait à la liste de prémises.
+* `addFactInPremise(Rule* rules,void* premise)` qui ajoute une prémise tiré d'une liste de fait à la liste de prémises.
 * `setConclusion(Rule* rule, void* conclusion)` qui permet de définir une conclusion tirée d'une liste de fait.
 * `removeFromPremise(Rule* rule,void* premise)` qui retire une prémise si elle est présente.
 

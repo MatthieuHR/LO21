@@ -5,4 +5,6 @@ typedef enum {
     True=1, False=0
 } Bool;
 
+Bool isUndefined(void* elm);
+
 #endif // DEFINE_H

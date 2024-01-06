@@ -3,6 +3,6 @@
 
 #include "DB.h"
 
-void expertSystem(FactList factsToTest, FactList resultFacts, DB knowledgeBase);
+int expertSystem(FactList factsToTest, FactList resultFacts, DB db);
 
 #endif // EXPERTSYS_H

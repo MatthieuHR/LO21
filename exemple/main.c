@@ -16,8 +16,12 @@ void* my_struct_new() {
 }
 
 void my_struct_delete(void* self) {
-    free(((my_struct*)self)->name);
-    free(((my_struct*)self)->description);
+    if (((my_struct*)self)->name != NULL){
+        free(((my_struct *) self)->name);
+    }
+    if (((my_struct*)self)->description != NULL){
+        free(((my_struct *) self)->description);
+    }
     free(self);
 }
 
@@ -42,8 +46,8 @@ void my_struct_print(void* self) {
         printf("NULL\n");
         return;
     }
-    printf("name: %s\n", ((my_struct*)self)->name);
-    printf("description: %s\n", ((my_struct*)self)->description);
+    printf("name: %s\n", my_struct_get_name(self));
+    printf("description: %s\n", my_struct_get_description(self));
 }
 
 void printFactList(FactList fact_list) {
@@ -91,12 +95,25 @@ void printDB(DB db) {
 }
 
 Bool cmpMyStruct(void* self, void* other) {
+    if(self == NULL || other == NULL) {
+        return False;
+    }
     return strcmp(((my_struct*)self)->name, ((my_struct*)other)->name) == 0;
+}
+
+Bool isEmpty(void* self) {
+    if(!isUndefinedProperty(self)) {
+        if (((my_struct *) self)->name != NULL) {
+            return True;
+        }
+    }
+    return False;
 }
 
 int main(){
     Bool (*cmp)(void*, void*) = cmpMyStruct;
-    FactList my_fact_list = createFactList(cmp, my_struct_delete);
+    Bool (*empty)(void*) = isEmpty;
+    FactList my_fact_list = createFactList(cmp,empty, my_struct_delete);
 
     my_struct* my_struct1 = my_struct_new();
     my_struct_set_name(my_struct1, "Il est midi");
@@ -122,12 +139,12 @@ int main(){
     DB my_db = createEmptyDB(my_fact_list);
 
     Rule my_rule1 = createEmptyRule(my_fact_list);
-    my_rule1 = addPremise(my_rule1, my_struct1);
-    my_rule1 = addPremise(my_rule1, my_struct2);
+    my_rule1 = addFactInPremise(my_rule1, my_struct1);
+    my_rule1 = addFactInPremise(my_rule1, my_struct2);
     my_rule1 = setConclusion(my_rule1, my_struct3);
 
     Rule my_rule2 = createEmptyRule(my_fact_list);
-    my_rule2 = addPremise(my_rule2, my_struct3);
+    my_rule2 = addFactInPremise(my_rule2, my_struct3);
     my_rule2 = setConclusion(my_rule2, my_struct4);
 
     my_db = addRuleToDB(my_db, my_rule1);
@@ -136,14 +153,12 @@ int main(){
 
     char user_input = '\0';
     char trash = '\0';
-    char* user_char = NULL;
     long id;
     my_struct * user_my_struct = NULL;
     Rule user_rule = NULL;
-    FactList garbage = createFactList(cmp,my_struct_delete);
     FactList user_fact_list = NULL;
-    FactList factToTest = createFactList(cmp,my_struct_delete);
-    FactList result = createFactList(cmp,my_struct_delete);
+    FactList factToTest = createFactList(cmp,empty,my_struct_delete);
+    FactList result = createFactList(cmp,empty,my_struct_delete);
     DB copy = NULL;
 
     while (user_input != 'q') {
@@ -172,7 +187,7 @@ int main(){
                 scanf(" %c", &trash);
                 break;
             case '3':
-                while (user_input!='5') {
+                while (user_input != '5') {
                     printf("What do you want to do ?\n");
                     printf("1. Add a fact\n");
                     printf("2. Remove a fact\n");
@@ -187,8 +202,8 @@ int main(){
                     switch (user_input) {
                         case '1':
                             user_my_struct = my_struct_new();
-                            user_my_struct->name = malloc(sizeof(char)*100);
-                            user_my_struct->description = malloc(sizeof(char)*100);
+                            user_my_struct->name = malloc(sizeof(char) * 100);
+                            user_my_struct->description = malloc(sizeof(char) * 100);
                             printf("Enter the name of the fact: ");
                             scanf("%s", user_my_struct->name);
                             printf("\n");
@@ -208,10 +223,10 @@ int main(){
                             printf("Are you sure you want to remove all facts ? (y/n): ");
                             scanf(" %c", &user_input);
                             printf("\n");
-                            if (isEmptyDB(my_db) && user_input == 'y') {
-                                my_fact_list = removeAllFacts(my_fact_list);
+                            if (isUndefinedDB(my_db) && user_input == 'y') {
+                                my_fact_list = removeAllFactsAndFree(my_fact_list);
                                 printf("All facts have been removed\n");
-                            } else{
+                            } else {
                                 printf("The DB is not empty, you can't remove all facts\n");
                             }
                             printf("\nPRESS ANY KEY TO CONTINUE\n");
@@ -238,7 +253,7 @@ int main(){
                     printf("\n");
                     user_rule = getRuleByIDd(my_db, id);
                 }
-                while (user_input!='6' && user_rule!=NULL) {
+                while (user_input != '6' && user_rule != NULL) {
                     printf("What do you want to do ?\n");
                     printf("1. Add a premise\n");
                     printf("2. Remove a premise\n");
@@ -257,14 +272,13 @@ int main(){
                             printf("Enter the id of the fact you want to use as premise: ");
                             scanf("%ld", &id);
                             printf("\n");
-                            user_rule = addPremise(user_rule, getFactById(my_fact_list, id));
+                            user_rule = addFactInPremise(user_rule, getFactById(my_fact_list, id));
                             break;
                         case '2':
                             printPremise(getHeadOfPremise(user_rule));
                             printf("Enter the id of the fact you want to remove: ");
                             scanf("%ld", &id);
                             printf("\n");
-                            garbage = addFact(garbage, getFactById(my_fact_list, id));
                             user_rule = removeFromPremiseById(user_rule, id);
                             break;
                         case '3':
@@ -287,15 +301,33 @@ int main(){
                             break;
                     }
                 }
+                if (isPremiseEmpty(user_rule)) {
+                    printf("The premise is empty, the rule is not valid\n");
+                    my_db = removeARuleAndFree(my_db, user_rule);
+                    user_rule = NULL;
+                    printf("Rule removed from the DB\n");
+                    printf("\nPRESS ANY KEY TO CONTINUE\n");
+                    scanf(" %c", &trash);
+                    printf("\n");
+                }
+                if (isUndefinedConclusion(user_rule)) {
+                    printf("The conclusion is empty, the rule is not valid\n");
+                    my_db = removeARuleAndFree(my_db, user_rule);
+                    user_rule = NULL;
+                    printf("Rule removed from the DB\n");
+                    printf("\nPRESS ANY KEY TO CONTINUE\n");
+                    scanf(" %c", &trash);
+                    printf("\n");
+                }
                 break;
             case '5':
-                while (user_input!='5') {
+                while (user_input != '6') {
                     printf("What do you want to do ?\n");
                     printf("1. Add a rule\n");
                     printf("2. Remove a rule\n");
                     printf("3. Remove all rules\n");
                     printf("4. Print the DB\n");
-                    printf("5. Quit\n");
+                    printf("6. Quit\n");
 
                     printf("Your choice: ");
                     scanf(" %c", &user_input);
@@ -322,7 +354,7 @@ int main(){
                             scanf("%ld", &id);
                             printf("\n");
                             while (id != -1) {
-                                user_rule = addPremise(user_rule, getFactById(my_fact_list, id));
+                                user_rule = addFactInPremise(user_rule, getFactById(my_fact_list, id));
                                 printFactList(my_fact_list);
                                 printf("Enter the id of the fact you want to use as premise (-1 to stop): ");
                                 scanf("%ld", &id);
@@ -340,14 +372,14 @@ int main(){
                             printf("Enter the id of the fact you want to remove: ");
                             scanf("%ld", &id);
                             printf("\n");
-                            my_db = removeARuleById(my_db, id);
+                            my_db = removeARuleByIdAndFree(my_db, id);
                             break;
                         case '3':
                             printf("Are you sure you want to remove all rules ? (y/n): ");
                             scanf(" %c", &user_input);
                             printf("\n");
                             if (user_input == 'y') {
-                                my_db = removeAllRules(my_db);
+                                my_db = removeAllRulesAndFree(my_db);
                                 printf("All rules have been removed\n");
                             } else {
                                 printf("The rules have not been removed\n");
@@ -365,11 +397,18 @@ int main(){
                 }
                 break;
             case '6':
+                if (isEmptyFactList(my_fact_list) || isUndefinedDB(my_db)) {
+                    printf("The fact list or the DB is empty, you can't run the expert system\n");
+                    printf("\nPRESS ANY KEY TO CONTINUE\n");
+                    scanf(" %c", &trash);
+                    printf("\n");
+                    break;
+                }
                 printFactList(my_fact_list);
                 printf("Enter the id of the fact you want to test (-1 to stop): ");
                 scanf("%ld", &id);
                 printf("\n");
-                while (id != -1){
+                while (id != -1) {
                     factToTest = addFact(factToTest, getFactById(my_fact_list, id));
                     printFactList(my_fact_list);
                     printf("Enter the id of the fact you want to test (-1 to stop): ");
@@ -377,11 +416,22 @@ int main(){
                     printf("\n");
                 }
                 copy = copyOfDB(my_db);
-                expertSystem(factToTest,result,my_db);
+                int expt = expertSystem(factToTest, result, my_db);
+                if (expt == 1){printf("The DB is empty\n");}
+                if(expt == 2){printf("The fact list is empty\n");}
+                if(expt == 3){printf("The result list is empty\n");}
+                if(expt == 0){
+                    printf("The expert system hasn't been run\n");
+                    printf("PRESS ANY KEY TO CONTINUE\n");
+                    scanf(" %c", &trash);
+                    printf("\n");
+                }
+
                 printf("The result is:\n");
                 printFactList(result);
                 freeDB(my_db);
                 my_db = copy;
+                copy = NULL,
                 removeAllFacts(result);
                 removeAllFacts(factToTest);
                 printf("\nPRESS ANY KEY TO CONTINUE\n");
@@ -393,10 +443,8 @@ int main(){
         }
     }
     freeDB(my_db);
-    freeDB(copy);
     freeFactList(factToTest);
     freeFactList(result);
     freeFactList(my_fact_list);
-    freeFactList(garbage);
     return 0;
 }

@@ -37,7 +37,7 @@ C'est pour quoi nous n'avons attribué aucun type défini à cette donnée. À l
 >La donnée est alors représentée en C par un pointeur sur void : `void*`
 
 Nous avons tous de meme une fonction qui interagissent avec ce type non défini :
-* `isEmptyProperty(fact)` qui dit si le fait est vide.
+* `isUndefinedProperty(fact)` qui dit si le fait est vide.
 
 
 ## Types implémentés

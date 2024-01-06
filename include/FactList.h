@@ -13,25 +13,30 @@ typedef struct {
     ElmOfFact* head;
     long last_id;
     Bool (*cmpValue)(void *, void*);
+    Bool (*isEmpty)(void *);
     void (*freeValue)(void*);
 }PreFactList;
 
 typedef PreFactList* FactList;
 
-FactList createFactList(Bool (*cmpValue)(void*, void*), void(*freeValue)(void*));//work
-FactList addFact(FactList list, void* fact);//work
-FactList removeAllFactsAndFree(FactList list);//work
-FactList removeAllFacts(FactList list);//work
-FactList removeAFact(FactList list, void* fact);//work
-FactList removeAFactById(FactList list, long id);//work
-FactList freeFactList(FactList list);//work
-Bool isAlreadyInFactList(FactList list, void* fact);//work
-Bool isPresentInFactList(FactList list, void* fact);
-Bool isEmptyFactList(FactList list);
-ElmOfFact* getHeadOfFactList(FactList list);//work
-ElmOfFact* nextOfFactList(ElmOfFact* elm);//work
-void* getFactById(FactList list, long id);//work
-long getIdOfFact(ElmOfFact*);//work
-void* getFact(ElmOfFact*);//work
+FactList createFactList(Bool (*cmpValue)(void*, void*),Bool (*isEmpty)(void *) , void(*freeValue)(void*));//
+FactList addFact(FactList list, void* fact);//
+FactList removeAllFactsAndFree(FactList list);//
+FactList removeAllFacts(FactList list);//
+FactList removeAFact(FactList list, void* fact);//
+FactList removeAFactAndFree(FactList list, void* fact);//
+FactList removeAFactById(FactList list, long id);//
+FactList removeAFactByIdAndFree(FactList list, long id);//
+FactList freeFactList(FactList list);//
+Bool isAlreadyInFactList(FactList list, void* fact);//
+Bool isPresentInFactList(FactList list, void* fact);//
+Bool isEmptyFactList(FactList list);//
+Bool isUndefinedFactList(FactList list);//
+ElmOfFact* getHeadOfFactList(FactList list);//
+ElmOfFact* nextOfFactList(ElmOfFact* elm);//
+void* getFactById(FactList list, long id);//
+long getIdOfFact(ElmOfFact*);//
+void* getFact(ElmOfFact*);//
+Bool isEmptyProperty(FactList facts,void* prop);//
 
 #endif // FACTLIST_H

@@ -161,14 +161,14 @@ End
 * `facts(elm:Rule)` permet l'accession à la liste de fait qui a permis de construire la règle. 
 
 ---
-### `addPremise`
+### `addFactInPremise`
 Cette fonction permet d'ajouter un élément à la premise d'une règle.
 * `rule` est la règle à laquelle on veut modifier la prémisse.
 * `premise` est un fait qui provient d'une liste de fait (`FactList`) et que l'on souhaite ajouter à la prémisse de la règle.
 * `newl` est le nouvel élément de la prémisse.
 >La fonction renvoie la règle modifiée.
 ````
-function addPremise(rule:Rule, premise:Type):Rule
+function addFactInPremise(rule:Rule, premise:Type):Rule
 Stat
     If not isEmpty(premise) AND not isEmpty(rule) AND isPresentInFactList(facts(rule),premise) Then
         newl:ElmOfPremise <- createElmOfPremise()
@@ -183,7 +183,7 @@ Stat
             tail(premise(rule)) <- newl
         EndIf
     EndIf
-    addPremise <- rule
+    addFactInPremise <- rule
 End
 ````
 
@@ -342,7 +342,7 @@ Start
         conclusion(new_rule) <- conclusion(rule(point))
         premise:ElmOfPremise <- head(premise(rule(point)))
         While not isEmpty(premise) Do
-            new_rule <- addPremise(new_rule, premise(premise))
+            new_rule <- addFactInPremise(new_rule, premise(premise))
             premise <- next(premise)
         Done
         new_bc <- addRuleToBC(new_bc, new_rule)

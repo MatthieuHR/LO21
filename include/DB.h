@@ -18,21 +18,26 @@ typedef struct {
 
 typedef PreDB* DB;
 
-DB createEmptyDB(FactList facts);
-DB addRuleToDB(DB db, Rule rule);
-ElmOfDB* getHeadRule(DB db);
-ElmOfDB* getNextRule(ElmOfDB* elm);
+DB createEmptyDB(FactList facts);//
+DB addRuleToDB(DB db, Rule rule);//
+ElmOfDB* getHeadRule(DB db);//
+ElmOfDB* getNextRule(ElmOfDB* elm);//
 Rule getRuleByIDd(DB db, long id);
-Rule getRule(ElmOfDB* elm);
-long getIdOfRule(ElmOfDB* elm);
-DB copyOfDB(DB db);
-FactList freeDB(DB db);
-FactList getFactListOfDB(DB db);
-DB removeARule(DB db,Rule rule);
-DB removeARuleById(DB db, long id);
-DB removeAllRules(DB db);
-Bool isPresentInDB(DB db, Rule rule);
-Bool isAlreadyInDB(DB db, Rule rule);
-Bool isEmptyDB(DB db);
+Rule getRule(ElmOfDB* elm);//
+long getIdOfRule(ElmOfDB* elm);//
+DB copyOfDB(DB db);//
+FactList freeDB(DB db);//
+FactList getFactListOfDB(DB db);//
+DB removeARuleAndFree(DB db, Rule rule);//
+DB removeARuleByIdAndFree(DB db, long id);
+DB removeAllRulesAndFree(DB db);//
+DB removeARule(DB db, Rule rule);//
+DB removeARuleById(DB db, long id);//
+DB removeAllRules(DB db);//
+Bool isPresentInDB(DB db, Rule rule);//
+Bool isAlreadyInDB(DB db, Rule rule);//
+Bool isUndefinedDB(DB db);//
+Bool isDBEmpty(DB db);//
+Bool isRuleAddable(Rule rule);//
 
 #endif /* DB_H */
