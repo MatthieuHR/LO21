@@ -18,13 +18,17 @@ Nous avons aussi remarqué qu'un accès en queue pour les listes serait intéres
 
 ---
 ### Représentation des listes et autres implémentations.
-Pour représenter les listes le plus logique nous à semblés de garder des listes simplement chainées, car des listes doublements chainées n'apportent que peu d'avantages. Nous précisons plus loins la structure de chaque liste et ce qui nous à motiver à faire ce choix.
+Pour représenter les listes le plus logique nous à semblés de garder des listes **simplement chainées**, car des listes doublements chainées n'apportent que peu d'avantages. Nous précisons plus loins la structure de chaque liste et ce qui nous à motiver à faire ce choix.
 
-Cependant, malgré le fait que garder des structures des listes les plus simples possibles apporte des avantages, nous avons décidés que chaque liste devra contenir une liste de fait pour s'assurer que chaque élément interagisse bien avec ça liste de fait.
+Cependant, malgré le fait que garder des structures des listes les plus simples possibles apporte des avantages, nous avons décidés que chaque liste devra contenir une **liste de fait** pour s'assurer que chaque élément interagisse bien avec ça liste de fait.
+
+>[!NOTE]
+> 
+> Nous ne voulions pas imposer la création d'une base connaissance avant de créer les règles et la liste de fait, car nous estimions que l'un peut exister sans l'autre.
 
 En parlant de liste de fait, nous avons décidé de rajouter un type `FactList` qui n'était pas demandé, mais qui sert à contenir tous les faits pour les prémisses et conclusions. Ce type est aussi utile pour vérifier que les base de connaissances et règles se base sur les meme faits et éviter de perdre tous les faits en mémoire.
 
-Nous avons aussi rajouté le type `Bool` pour booléan qui fonctionne comme un `1` et `0` en C ou `True` vaux `1` et `False` il vaut `0`.
+Nous avons aussi rajouté le type `Boolean` pour booléan qui fonctionne comme un `1` et `0` en C ou `True` vaux `1` et `False` il vaut `0`.
 
 ---
 ### Implementation de la donnée "fait"
@@ -37,26 +41,28 @@ C'est pour quoi nous n'avons attribué aucun type défini à cette donnée. À l
 >La donnée est alors représentée en C par un pointeur sur void : `void*`
 
 Nous avons tous de meme une fonction qui interagissent avec ce type non défini :
-* `isUndefinedProperty(fact)` qui dit si le fait est vide.
+* `isUndefinedProperty(fact)` qui dit si le fait est indéfinie.
 
 
 ## Types implémentés
 
-Voici un récapitulatif des types implémenté et leurs utilités (sans distinctions entre pointeur et type). Nous avons aussi décréter que toutes ces structures pourait être indéfinie (`NULL` en C).
+Voici un récapitulatif des types implémenté et leurs utilités (sans distinctions entre pointeur et type). Nous avons aussi décrété que toutes ces structures portrait être indéfinie (`NULL` en C).
 
 ---
 ### `FactList`
 
-Ce type est une **pile** de `ElmOfFact` de taille non défnit.
+Ce type est une **pile** de `ElmOfFact` de taille non définit.
 
-Il y a 3 champs :
+Il y a cinq champs :
 * `head` le première élement de la liste.
-* `last_id` qui est le dernier `id` donnée à un `ElmOfFact`. Par défaut ça valeur est à -1 quand aucun `id` n'a été distribuer.
-* `cmpValue` qui est une fonction de comparaison entre deux **faits**
+* `last_id` qui est le dernier `id` donnée à un `ElmOfFact`. Par défaut sa valeur est à -1 quand aucun `id` n'a été distribuer.
+* `cmpValue` qui est une fonction de comparaison entre deux faits
+* `isEmpy` qui est une fonction qui dit si la liste est vide.
+* `freeValue` qui est une fonction qui libère la mémoire d'un fait
 
-Une `FactList` est une liste de **fait** qui servent de base pour les autres types.
+Une `FactList` est une liste de faits qui servent de base pour les autres types.
 
-Nous avons choisi cette implémenattion car la structure d'une **pile** est sufisante dans ce cas car aucune obligation d'implémentation était spécifier. De plus seul les champs essentiels sont présent. Le champs `last_id` pourrait être remplacé par une accession à l'`id` du premier élément de la liste mais cela complique le code et le champs `last_id` aura toujours une valeur ce qui évite des vérifications.
+Nous avons choisi cette implementation car la structure d'une **pile** est suffisante dans ce cas, comme aucune obligation d'implémentation était spécifiée et cela rend les algorithmes plus simples. De plus seuls les champs essentiels sont présents. Le champ `last_id` pourrait être remplacé par une accession à l'`id` du premier élément de la liste, mais cela complique le code et le champ `last_id` aura toujours une valeur ce qui évite des vérifications avec un access à la tete de liste.
 
 ---
 ### `ElmOfFact`
@@ -66,23 +72,23 @@ Ce type est composé de trois champs :
 * `fact` qui est de type `Property` et qui représente un **fait**, une donnée.
 * `next` qui représente l'élément suivant de la liste.
 
-Un `ElmOfFact` représente un élément d'une liste de type `FactList`.
+Un `ElmOfFact` représenté un élément d'une liste de type `FactList`.
 
-Nous avons choisi cette implémentation car une liste simplement chainée sufit. Le champs `id` est juste là pour rendre plus pratique l'utilisation de la structure `FactList` par un humain car aucune fonction ne s'ent sert comme référence.
+Nous avons choisi cette implémentation, car une liste simplement chainée suit. Le champ `id` est juste là pour rendre plus pratique l'utilisation de la structure `FactList` par un humain, comme aucune fonction ne se sert comme référence.
 
 ---
 ### `Premise`
 
-Ce type est une liste de `ElmOfPremise` de taille non  définit. 
+Ce type est une liste de `ElmOfPremise` de taille non définit. 
 
 Il possède deux champs :
 * `head` qui permet d'accéder au premier élément.
 * `tail` qui permet d'accéder au dernier élément.
-* `last_id` qui est le dernier `id` donnée à un `ElmOfPremise` et vaut `-1` quand aucun élément n'a été ajoutée.
+* `last_id` qui est le dernier `id` donnée à un `ElmOfPremise` et il vaut `-1` quand aucun élément n'a été ajoutée.
 
 Une `Premise` est une liste de fait (`Property`) lier par la condition `ET`.
 
-Nous avons choisi cette implémentation car un accès en queue est utile pour les obligation liées au projet ce qui permet de faire un ajout en queue en `o(1)`. De plus nous gardon un accès en tête car la liste est simplement chainée.
+Nous avons choisi cette implémentation, car un accès en queue est utile pour les obligations liées au projet ce qui permet de faire un ajout en queue en `o(1)`. De plus nous gardons un accès en tête, puisque la liste est simplement chainée.
 
 ---
 ### `ElmOfPremise`
@@ -92,21 +98,21 @@ Ce type est composé de deux champs :
 * `id` qui est l'identifiant unique de cet élément.
 * `next` qui représente l'élément suivant de la liste.
 
-Un `ElmOfPremise` représente un élément d'une liste de type `Premise`.
+Un `ElmOfPremise` représenté un élément d'une liste de type `Premise`.
 
-Nous avons choisi cette implémentation car rien de plus est necessaire pour cette partie.
+Nous avons choisi cette implémentation, car rien de plus est nécessaire pour cette partie.
 
 ---
 ### `Rule`
 
 Ce type est composé de trois champs :
 * `premise` de type `Premise` qui représente un ensemble de conditions à satisfaire.
-* `conclusion` de type `Property` qui est le résultat si la premise est satisfaite.
+* `conclusion` de type `Property` qui est le résultat si la prémisse est satisfaite.
 * `facts` qui est la liste de fait (`FactList`) sur laquelle se base la règle
 
 Et représente une règle à satisfaire.
 
-Nous avons choisi cette représentation car l'accès à la liste de fait est intérésent pour ne pas perdre en mémoire tous les faits existants.
+Nous avons choisi cette représentation, car l'accès à la liste de fait est intéressant pour ne pas perdre en mémoire tous les faits existants.
 
 ---
 ### `DB`
@@ -116,12 +122,12 @@ Ce type est une liste de `ElmOfDB` de taille non définit.
 Il est composé de quatre champs :
 * `head` qui permet d'accéder au premier élément.
 * `tail` qui permet d'accéder au dernier élément.
-* `last_id` qui est le dernier `id` donnée à un `ElmOfDB` et vaut `-1` quand aucun élément n'a été ajoutée.
+* `last_id` qui est le dernier `id` donnée à un `ElmOfDB` et il vaut `-1` quand aucun élément n'a été ajoutée.
 * `facts` qui est la liste de fait (`FactList`) sur laquelle se base la base de connaissance.
 
 Une `DB` est liste de règle (`Rule`) afin de pouvoir faire résonner notre système expert.
 
-Nous avons choisi cette implementation car un accès en queue est utile pour respecter les contraintes et que les `last_id` est partique pour simplifier les algoritmes. La fact list sert à savoir si les les règles et la base se base sur la même liste de fait ce qui permet de  faire plusieurs systèmes expert sans conflis.
+Nous avons choisi cette implementation car un accès en queue est utile pour respecter les contraintes et que les `last_id` est pratique pour simplifier les algorithmes. La fact list sert à savoir si les règles et la base se base sur la même liste de fait ce qui permet de faire plusieurs systèmes experts sans conflits.
 
 ---
 ### `ElmOfDB`
@@ -131,16 +137,16 @@ Ce type est composé de trois champs :
 * `next` qui représente l'élément suivant de la liste.
 * `id` qui est l'identifiant unique de cet élément
 
-Un `ElmOfDB` représente un élément d'une liste de type `DB`.
+Un `ElmOfDB` représenté un élément d'une liste de type `DB`.
 
-Nous avosn choisi cette représentation car une structure simple suffis.
-Le champs `id` est juste là pour rendre plus pratique l'utilisation de la structure `DB` par un humain car aucune fonction ne s'ent sert comme référence.
+Nous avons choisi cette représentation, car une structure simple suffit.
+Le champ `id` est juste là pour rendre plus pratique l'utilisation de la structure `DB` par un humain, comme aucune fonction ne se sert comme référence.
 
 
 ## Les structures implémenters et explication
 Nous avons décidé qu'en `C` tous les types implémentés seraient des pointeurs sur des structures. Cela permet de ne pas avoir à faire de copie de structure et donc de gagner en performance. Cela permet aussi de retourner `NULL` quand les conditions ne sont pas respectées, comme en créant une structure avec sa fonction associée.
 
-Vous remarquerez aussi que des type de forme `Pre...` sont présent pour faire le  lien entre les types C et algorithmique mais ne sont jamais utiliser dans les algorithmes ou programes C.
+Vous remarquerez aussi que des types du type de forme `Pre...` sont présentes pour faire le lien entre les types C et algorithmique, mais ne sont jamais utilisés dans les algorithmes ou programmes C.
 
 ---
 ### Fichier `FactList.h`
@@ -155,7 +161,7 @@ typedef struct elm{
 typedef struct {
     ElmOfFact* head;
     int last_id;
-    Bool (*cmpValue)(void *, void*);
+    Boolean (*cmpValue)(void *, void*);
 }PreFactList;
 
 typedef PreFactList* FactList;
@@ -179,7 +185,7 @@ typedef struct {
 }Premise;
 ````
 
-La structure `Rule` sert à définir une règle. Le champ `facts` est à vérifier que les éléménts de la prémise proviennent de la meme liste de fait qui a servi à créer la règle. Le champ `facts` est important car s'il n'était pas un pointeur on perdrait à chaque modification la tête ou queue de liste car par défaut le compilateur créer une copie.
+La structure `Rule` sert à définir une règle. Le champ `facts` est à vérifier que les éléménts de la prémise proviennent de la meme liste de fait qui a servi à créer la règle. Le champ `facts` est important, car s'il n'était pas un pointeur, on perdrait à chaque modification la tête ou queue de liste, comme par défaut le compilateur créer une copie.
 ````c
 typedef struct{
     Premise* premise;

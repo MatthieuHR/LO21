@@ -3,8 +3,8 @@
 
 typedef enum {
     True=1, False=0
-} Bool;
+} Boolean;
 
-Bool isUndefined(void* elm);
+Boolean isUndefined(void* elm);
 
 #endif // DEFINE_H

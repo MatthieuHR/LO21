@@ -11,7 +11,7 @@ Dans cette section, vous pouvez retrouver tous les algorithmes des sous programm
 
 >[!WARNING]
 >
->Les fonctions de bases ont changé de nom pour correspond à leur nom de champs. Certaines peuvent exister en C. Pour vérifier cela merci de vous référer au [guide des fonctions](Function.md).
+>Les fonctions de bases ont changé de nom pour correspondre à leur nom de champs. Certaines peuvent exister en C. Pour vérifier cela merci de vous référer au [guide des fonctions](Function.md).
 
 
 ## isEmpty
@@ -29,7 +29,7 @@ Dans cette section, nous allons vous exposer quand la fonction `isEmpty` renvoie
 
 ---
 ### Les fonctions de bases
-* `createFactList(cmpValue(Type, Type):Bool, isEmpty(Type):Bool, freeValue(Type):UNDEFINED)` renvoie une liste de fait (`FactList`) vide avec la méthode de comparaison (`cmpValue`), la méthode pour savoir si un élément est vide (`isEmpty`) et la méthode pour libérer la mémoire utilisée par un élément (`freeValue`).
+* `createFactList(cmpValue(Type, Type):Boolean, isEmpty(Type):Boolean, freeValue(Type):UNDEFINED)` renvoie une liste de fait (`FactList`) vide avec la méthode de comparaison (`cmpValue`), la méthode pour savoir si un élément est vide (`isEmpty`) et la méthode pour libérer la mémoire utilisée par un élément (`freeValue`).
 * `createElmOfFact()` renvoie un élément vide d'une liste de fait (`FactList`).
 * `head(elm:FactList)` permet l'accès au premier élément de la liste.
 * `last_id(elm:FactList)` permet l'accès au dernier `id` donné de type `LongInteger`.
@@ -45,9 +45,9 @@ Dans cette section, nous allons vous exposer quand la fonction `isEmpty` renvoie
 Cette fonction permet de savoir si un élément appartient à une liste de fait (`FactList`) récursivement en fonction de sa valeur.
 * `list` est la liste de fait ou l'on cherche notre fait.
 * `fact` est le fait que l'on cherche.
->La fonction renvoie un `Bool`
+>La fonction renvoie un `Boolean`
 ````
-function isAlreadyInFactList(list:FactList, fact:Type):Bool
+function isAlreadyInFactList(list:FactList, fact:Type):Boolean
 Start
     If isEmpty(list) OR isUndefined(fact) Then
         isAlreadyInFactList <- False
@@ -67,9 +67,9 @@ End
 Cette fonction permet de savoir si un élément appartient à une liste de fait (`FactList`) récursivement en fonction de son emplacement mémoire.
 * `list` est la liste de fait ou l'on cherche notre fait.
 * `fact` est le fait que l'on cherche.
->La fonction renvoie un `Bool`
+>La fonction renvoie un `Boolean`
 ````
-function isPresentInFactList(list:FactList, fact:Type):Bool
+function isPresentInFactList(list:FactList, fact:Type):Boolean
 Start
     If isEmpty(list) OR isUndefined(fact) Then
         isAlreadyInFactList <- False
@@ -184,7 +184,7 @@ Cette fonction permet de retirer un élément d'une `FactList` en fonction de so
 ````
 function removeAFactsById(list:FactList, id:LongInteger):FactList
 Start
-    If not isEmpty(list) AND not isUndefined(fact) Then
+    If not isEmpty(list) AND id >= AND id <= last_id(list) Then
         If id(head(list)) = id Then
             point:ElmOfFact <- head(list)
             head(list) <- next(head(list))
@@ -218,7 +218,7 @@ Cette fonction permet de retirer un élément d'une `FactList` en fonction de so
 ````
 function removeAFactsByIdAndFree(list:FactList, id:LongInteger):FactList
 Start
-    If not isEmpty(list) AND not isUndefined(fact) Then
+    If not isEmpty(list) AND id >= AND id <= last_id(list) Then
         If id(head(list)) = id Then
             point:ElmOfFact <- head(list)
             head(list) <- next(head(list))
@@ -297,7 +297,7 @@ Cette fonction permet de récupérer un élément d'une liste de fait en fonctio
 ````
 function getFactById(list:FactList, id:LongInteger):Type
 Start
-    If not isEmpty(head(list)) AND id <= last_id(list) Then
+    If not isEmpty(head(list)) AND id <= last_id(list) AND id >= 0 Then
         point:ElmOfFact <- head(list)
         While not isEmpty(point) Do
             If id(point) = id Then
@@ -351,7 +351,7 @@ Cette fonction permet de savoir si deux règles sont égales en comparants leurs
 * `point2` est un pointeur pour parcourir la prémisse de `rule2`.
 >La fonction renvoie `True` si les règles sont égales, `False` sinon.
 ````
-function isEqualsRule(rule1:Rule, rule2:Rule):Bool
+function isEqualsRule(rule1:Rule, rule2:Rule):Boolean
 Start
     If not isEmpty(rule1) ANS not isEmpty(rule2) && head(facts(rule1)) = head(facts(rule2)) AND conclusion(rule1) = conclusion(rule2) Then
         point1:ElmOfPremise <- head(premise(rule1))
@@ -381,7 +381,7 @@ Cette fonction sert à définir récursivement si un fait est dans une prémisse
 * `prop` est le fait que l'on cherche.
 >La fonction renvoie `True` si la propriété est comprise, `False` sinon.
 ````
-function factInPremise(premise:Rule, prop:Type):Bool
+function factInPremise(premise:Rule, prop:Type):Boolean
 Start
     If isUndefined(rule) OR isUndefined(head(premise(rule))) OR isUndefined(prop) Then
         factInPremise <- False
@@ -402,7 +402,7 @@ Cette fonction sert à définir récursivement si un fait est dans une prémisse
 * `prop` est le fait que l'on cherche.
 >La fonction renvoie `True` si la propriété est comprise, `False` sinon.
 ````
-function factInPremise(premise:Rule, prop:Type):Bool
+function factInPremise(premise:Rule, prop:Type):Boolean
 Start
     If isEmpty(rule) OR isEmpty(head(premise(rule))) OR isEmpty(prop) Then
         factInPremise <- False
@@ -418,7 +418,7 @@ End
 
 ---
 ### `addFactInPremise`
-Cette fonction permet d'ajouter un élément à la premise d'une règle.
+Cette fonction permet d'ajouter un élément à la prémisse d'une règle.
 * `rule` est la règle à laquelle on veut modifier la prémisse.
 * `premise` est un fait qui provient d'une liste de fait (`FactList`) et que l'on souhaite ajouter à la prémisse de la règle.
 * `newl` est le nouvel élément de la prémisse.
@@ -585,9 +585,9 @@ End
 ### `isRuleAddable`
 Cette fonction permet de savoir si une règle est ajoutable à une base de connaissance (`DB`).
 * `rule` est la règle que l'on souhaite ajouter.
->La fonction renvoie un `Bool` qui vaut `True` si la règle est ajoutable, `False` sinon.
+>La fonction renvoie un `Boolean` qui vaut `True` si la règle est ajoutable, `False` sinon.
 ````
-function isRuleAddable(rule:Rule):Bool
+function isRuleAddable(rule:Rule):Boolean
 Start
     isRuleAddable <- not isEmpty(rule) AND not isUndefined(fact(rule))
 End
@@ -596,12 +596,12 @@ End
 ---
 ### `isPresentInDB`
 Cette fonction permet de savoir si une règle appartient à une base de connaissance (`DB`) récursivement en fonction de son adresse mémoire.
-* `db` est la base de connaissance ou l'on cherche notre règle.
+* `db` est la base de connaissance où l'on cherche notre règle.
 * `rule` est la règle que l'on cherche.
 * `point` est un pointeur pour parcourir la base de connaissance `db`.
->La fonction renvoie un `Bool` qui vaut `True` si la règle est déjà présente, `False` sinon.
+>La fonction renvoie un `Boolean` qui vaut `True` si la règle est déjà présente, `False` sinon.
 ````
-function isPresentInDB(db:DB, rule:Rule):Bool
+function isPresentInDB(db:DB, rule:Rule):Boolean
 Start
     If not isEmpty(db) AND not isEmpty(rule) AND not isEmpty(head(db)) Then
         point:ElmOfDB <- head(db)
@@ -619,12 +619,12 @@ End
 ---
 ### `isAlreadyInDB`
 Cette fonction permet de savoir si une règle appartient à une base de connaissance (`DB`) récursivement en fonction de ses champs de valeurs.
-* `db` est la base de connaissance ou l'on cherche notre règle.
+* `db` est la base de connaissance où l'on cherche notre règle.
 * `rule` est la règle que l'on cherche.
 * `point` est un pointeur pour parcourir la base de connaissance `db`.
->La fonction renvoie un `Bool` qui vaut `True` si la règle est déjà présente, `False` sinon.
+>La fonction renvoie un `Boolean` qui vaut `True` si la règle est déjà présente, `False` sinon.
 ````
-function isAlreadyInDB(db:DB, rule:Rule):Bool
+function isAlreadyInDB(db:DB, rule:Rule):Boolean
 Start
     If not isEmpty(db) AND not isEmpty(rule) AND not isEmpty(head(db)) Then
         point:ElmOfDB <- head(db)
@@ -921,7 +921,7 @@ Cette fonction permet de réaliser une copie d'une base de connaissance.
 * `db` est la base de connaissance que l'on souhaite copier.
 * `point` est un pointeur pour parcourir la base de connaissance `db`.
 * `new_rule` est l'ensemble de nouvelles règles que l'on ajoute à `db`.
-* `premise` est l'ensemble des premise des règles de `db`.
+* `premise` est l'ensemble des prémisses des règles de `db`.
 >La fonction revoit la copie de la db.
 ````
 function copyOfDB(db:DB):DB
@@ -978,6 +978,8 @@ Cette fonction permet de réaliser un système expert.
 * `factsToTset` est la liste de fait à tester.
 * `resultFacts` est la liste de fait résultat.
 * `db` est la base de connaissance.
+* `current_fact` est le fait que l'on compare actuellement.
+* 
 >La fonction revoit un entier en fonction de sa réussite ou échec.
 ````
 function expertSystem(factsToTest:FactList, resultFacts:FactList, db:DB):Integer
@@ -997,6 +999,7 @@ Start
         ruleNode:ElmOfDB <- head(db)
         
         While not isUndefined(ruleNode) Do
+        is_rule_find:Boolean <- False
             current_rule:Rule <- rule(ruleNode)
             current_node:ElmOfPremise <- head(premise(current_rule))
             previous_node:ElmOfPremise <- UNDEFINED
@@ -1012,6 +1015,8 @@ Start
                             next(previous_node) <- UNDEFINED
                         EndIf
                     EndIf
+                    current_node <- next(current_node)
+                    is_rule_find <- True
                     free(current_node)
                     current_node <- NULL
                     If isPremiseEmpty(current_rule) Then
@@ -1023,10 +1028,12 @@ Start
                     EndIf
                 Else
                     previous_node <- current_node
-                    current_node <- next(current_node)
                     ruleNode <- next(ruleNode)
                 EndIf
             Done
+            If not is_rule_find Then
+                ruleNode <- next(ruleNode)
+            EndIf
         Done
     factsToTest <- removeAFacts(factsToTest, current_fact)    
     Done
@@ -1035,4 +1042,4 @@ End
 ````
 
 ---
-C'est tout pour cette section, vous pouvez passer à la section suivante : [Guide des fonction (en C)](Test.md).
+C'est tout pour cette section, vous pouvez passer à la section suivante : [Fonction de test et commentaires)](Test.md).

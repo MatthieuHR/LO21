@@ -5,7 +5,7 @@ Dans cette section, nous allons vous expliciter le fonctionnement de notre **sys
 
 >[!NOTE]
 >
->Dans cette section le type de notre **fait** est représenter par `void*` pour faire l'analogie avec le C même si cela n'est pas correct algorithmiquement parlant.
+>Dans cette section le type de notre **fait** est représenté par `void*` pour faire l'analogie avec le C même si cela n'est pas correct algorithmiquement parlant.
 >
 >De plus toutes les fonctions sont nommée en fonction de leur implémentation C.
 
@@ -35,7 +35,7 @@ int main(){
 `````
 Ici `elm` est utilisable par notre système expert.
 
-Il vous faut aussi définir un pointeur de fonction pour comparer les éléments que l'on insère. Pour cela, il vous suffit de suivre cet exemple :
+Il vous faut aussi définir des pointeurs de fonction pour les différentes fonctions présentes dans les champs d'une liste de fait. Pour cela, il vous suffit de suivre cet exemple pour le champs `cmpValue` de la structure `FactList`:
 `````c
 #include <stdlib.h>
 #include <DB.h>
@@ -44,7 +44,7 @@ int getSUMValue(myType* var){
     return var->value_1 + ... + var->value_n;
 }
 
-Bool cmp(void* p1, void* p2){
+Boolean cmp(void* p1, void* p2){
     if(getSUMValue(p1) == getValue(p2)){
         return True;
     }else{
@@ -53,11 +53,11 @@ Bool cmp(void* p1, void* p2){
 }
 
 int main(){
-    Bool (*fnPointer)(void*,void*);
+    Boolean (*fnPointer)(void*,void*);
     fnPointer = cmp;
 }
 `````
-Maintenant `fnPointer` est utilisable par les fonctions nécessitant un pointeur de fonction.
+Maintenant `fnPointer` est utilisable par les fonctions nécessitant un pointeur de fonction. La meme méthode est applicable pour les autres champs de la structure `FactList`.
 
 Mais avant de faire fonctionner notre système expert, il faut créer deux choses éssentiels :
 * une **liste de fait**
@@ -74,7 +74,7 @@ Une liste de fait est la base de tout système expert, elle permet de définir l
 Dans notre système expert toutes les conclusions et prémisses sont tirée de cette liste de fait et doivent donc **être créée en premier**. Le type de la liste de fait est `FactList`.
 
 Pour vous aider à sa création, vous avez à votre disposition plusieurs fonctions :
-* `createFactList((*cmpValue)(void*, void*):Bool):FactList` pour créer une liste de fait vide avec `cmpValue` qui est un pointeur sur la fonction de comparaison que vous avez définie.
+* `createFactList((*cmpValue)(void*, void*):Boolean):FactList` pour créer une liste de fait vide avec `cmpValue` qui est un pointeur sur la fonction de comparaison que vous avez définie.
 * `addFact(list:FactList, fact:void*):FactList` pour ajouter une propriété (`fact`) a une liste de fait (`list`). Attention chaque fait doit avoir une adresse mémoire unique.
 * `removeAFact(list:FactList, fact:void*):FactList` pour supprimer une propriété (`fact`) d'une liste de fait (`list`).*
 * `removeAFactAndFree(list:FactList, fact:void*):FactList` pour supprimer une propriété (`fact`) d'une liste de fait (`list`) et le fait. **Attention à ne pas si le fait est utilisé ailleurs**.
@@ -84,8 +84,8 @@ Pour vous aider à sa création, vous avez à votre disposition plusieurs foncti
 * `removeAllFactsAndFree(list:FactList):FactList` pour supprimer tous les fait d'une liste de fait et le fait. **Attention à ne pas si le fait est utilisé ailleurs**.
 
 Il y a aussi des fonctions qui intéragissent avec le type `FactList` :
-* `isAlreadyInFactList(list:FactList, fact:void*):Bool` qui vérifie si l'élément est dans la liste de fait avec le pointeur de fonction et revoie un `Bool`. 
-* `isPresentInFactList(list:FactList, fact:void*):Bool` qui vérifie si l'élément est dans la liste de fait avec l'emplacement mémoire et revoie un `Bool`
+* `isAlreadyInFactList(list:FactList, fact:void*):Boolean` qui vérifie si l'élément est dans la liste de fait avec le pointeur de fonction et revoie un `Boolean`. 
+* `isPresentInFactList(list:FactList, fact:void*):Boolean` qui vérifie si l'élément est dans la liste de fait avec l'emplacement mémoire et revoie un `Boolean`
 * `getFactById(list:FactList, id:LongInteger):void*` qui renvoie l'élément associé à l'`id`;.
 
 >Pour plus de détail sur les fonctions merci de regarder les algorithms commenter [ici](Alogrithm.md)
@@ -103,11 +103,11 @@ Commençons par créer une règle. Le type d'une **règle** est `Rule` et ces fo
 
 
 Il y a aussi des fonctions qui intéragissent avec le type `Rule` :
-* `isUndefinedRule(rule:Rule):Bool` qui renvoie un `Bool` et dit si la règle est définie ou non.
-* `isEmptyRule(rule:Rule):Bool` qui renvoie un `Bool` et dit si la règle est vide.
-* `isEqualsRule(rule1:Rule, rule2:Rule)Bool` qui renvoie un `Bool` et dit si les deux règles sont identiques.
-* `isPremiseEmpty(rule:Rule):Bool` qui renvoie un `Bool` et dit si la prémise est vide.
-* `isUndefinedConclusion(rule:Rule):Bool` qui renvoie un `Bool` et dit si la conclusion est vide.
+* `isUndefinedRule(rule:Rule):Boolean` qui renvoie un `Boolean` et dit si la règle est définie ou non.
+* `isEmptyRule(rule:Rule):Boolean` qui renvoie un `Boolean` et dit si la règle est vide.
+* `isEqualsRule(rule1:Rule, rule2:Rule)Boolean` qui renvoie un `Boolean` et dit si les deux règles sont identiques.
+* `isPremiseEmpty(rule:Rule):Boolean` qui renvoie un `Boolean` et dit si la prémise est vide.
+* `isUndefinedConclusion(rule:Rule):Boolean` qui renvoie un `Boolean` et dit si la conclusion est vide.
 * `getConclusion(rule:Rule):void*` qui renvoie la conclusion, un fait.
 
 >Pour plus de détail sur les fonctions merci de regarder les algorithms commenter [ici](Alogrithm.md)
@@ -126,11 +126,11 @@ Voici les fonctions qui permettent sa conception :
 * `DB copyOfDB(db:DB):DB` pour renvoyer une copie une base de connaissance.
 
 Il y a aussi des fonctions qui intéragissent avec le type `DB` :  
-* `isUndefinedDB(db:DB):Bool` qui renvoie un `Bool` et dit si la base de connaissance est définie ou non.
-* `isDBEmpty(db:DB):Bool` qui renvoie un `Bool` et dit si la base de connaissance est vide.
-* `isPresentInDB(db:DB, fact;void*):Bool` qui renvoie un `Bool` et dit si le fait est présent dans la base de connaissance par rapport à l'objet lui-même.
-* `isAlreadyInDB(db:DB, fact:void*):Bool` qui renvoie un `Bool` et dit si le fait est présent dans la base de connaissance par rapport à ses champs.
-* `isRuleAddable(db:DB, rule:Rule):Bool` qui renvoie un `Bool` et dit si la règle est ajoutable dans la base de connaissance.
+* `isUndefinedDB(db:DB):Boolean` qui renvoie un `Boolean` et dit si la base de connaissance est définie ou non.
+* `isDBEmpty(db:DB):Boolean` qui renvoie un `Boolean` et dit si la base de connaissance est vide.
+* `isPresentInDB(db:DB, fact;void*):Boolean` qui renvoie un `Boolean` et dit si le fait est présent dans la base de connaissance par rapport à l'objet lui-même.
+* `isAlreadyInDB(db:DB, fact:void*):Boolean` qui renvoie un `Boolean` et dit si le fait est présent dans la base de connaissance par rapport à ses champs.
+* `isRuleAddable(db:DB, rule:Rule):Boolean` qui renvoie un `Boolean` et dit si la règle est ajoutable dans la base de connaissance.
 * `getRuleById(db:DB, id:LongInteger):Rule` qui renvoie la règle associée à l'id.
 
 >Pour plus de détail sur les fonctions merci de regarder les algorithms commenter [ici](Alogrithm.md)
@@ -142,7 +142,7 @@ Il y a aussi des fonctions qui intéragissent avec le type `DB` :
 
 >[!TIP]
 > 
-> Vous pouvez retrouver [ici](Function.md) toutes les fonctions implémenter en C et leurs utilities et éventuellement plus de détail.
+> Vous pouvez retrouver [ici](Function.md) toutes les fonctions implémenter en C et leurs utilities et plus de détail.
 
 
 ## Fonctions utiles
@@ -190,7 +190,7 @@ Pour récupérer une **liste de fait**, il faut utiliser les fonctions suivantes
 
 >[!NOTE]
 >
->Ces fonctions ne possède pas d'algorithms car sont des fonctions très basique.
+>Ces fonctions ne possèdent pas d'algorithmes, car sont des fonctions très basiques.
 
 
 ## Fonctionnement du système expert
@@ -198,7 +198,7 @@ Pour récupérer une **liste de fait**, il faut utiliser les fonctions suivantes
 ---
 ### Avant d'appeler le système expert
 
-Avant de faire fonctionner notre système expert merci de créer deux liste de fait :
+Avant de faire fonctionner notre système expert merci de créer deux listes de fait :
 * une qui contient les fait que l'on veut tester
 * une pour stocker le résultat du système expert 
 
@@ -209,7 +209,7 @@ Il faudra aussi créer une base de connaissance.
 ---
 ### Pendant l'exécution
 
-Commencer par lancer le système expert avec cette fonction : `expertSystem(factsToTest:FactList, resultFacts:FactList, knowledgeBase:DB)`
+Commencer par lancer le système expert avec cette fonction : `expertSystem(factsToTest:FactList, resultFacts:FactList, db:DB)`
 
 Lors de l'exécution la liste de fait `factsToTest` va nous servir de **pile** pour tester chercher les faits.
 
@@ -225,4 +225,4 @@ Une fois que la pile est vide le programme nous retourne sa liste de conclusion 
 * `3` si la liste de fait résultat est vide
 
 ---
-C'est tout pour cette section, vous pouvez passer à la section suivante : [Algorithmes des sous programmes](Algorithm.md).
+C'est tout pour cette section, vous pouvez passer à la section suivante : [Algorithmes des sous programmes](Alogrithm.md).

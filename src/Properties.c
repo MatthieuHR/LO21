@@ -7,7 +7,7 @@
  * @param prop A pointer to the Property to be tested.
  * @return True if the Property is empty (NULL), False otherwise.
  */
-Bool isUndefinedProperty(void* prop){
+Boolean isUndefinedProperty(void* prop){
     if(prop != NULL){
         return False;
     }else{

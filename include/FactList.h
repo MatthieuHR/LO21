@@ -12,14 +12,14 @@ typedef struct elm4{
 typedef struct {
     ElmOfFact* head;
     long last_id;
-    Bool (*cmpValue)(void *, void*);
-    Bool (*isEmpty)(void *);
+    Boolean (*cmpValue)(void *, void*);
+    Boolean (*isEmpty)(void *);
     void (*freeValue)(void*);
 }PreFactList;
 
 typedef PreFactList* FactList;
 
-FactList createFactList(Bool (*cmpValue)(void*, void*),Bool (*isEmpty)(void *) , void(*freeValue)(void*));//
+FactList createFactList(Boolean (*cmpValue)(void*, void*), Boolean (*isEmpty)(void *) , void(*freeValue)(void*));//
 FactList addFact(FactList list, void* fact);//
 FactList removeAllFactsAndFree(FactList list);//
 FactList removeAllFacts(FactList list);//
@@ -28,15 +28,15 @@ FactList removeAFactAndFree(FactList list, void* fact);//
 FactList removeAFactById(FactList list, long id);//
 FactList removeAFactByIdAndFree(FactList list, long id);//
 FactList freeFactList(FactList list);//
-Bool isAlreadyInFactList(FactList list, void* fact);//
-Bool isPresentInFactList(FactList list, void* fact);//
-Bool isEmptyFactList(FactList list);//
-Bool isUndefinedFactList(FactList list);//
+Boolean isAlreadyInFactList(FactList list, void* fact);//
+Boolean isPresentInFactList(FactList list, void* fact);//
+Boolean isEmptyFactList(FactList list);//
+Boolean isUndefinedFactList(FactList list);//
 ElmOfFact* getHeadOfFactList(FactList list);//
 ElmOfFact* nextOfFactList(ElmOfFact* elm);//
 void* getFactById(FactList list, long id);//
 long getIdOfFact(ElmOfFact*);//
 void* getFact(ElmOfFact*);//
-Bool isEmptyProperty(FactList facts,void* prop);//
+Boolean isEmptyProperty(FactList facts, void* prop);//
 
 #endif // FACTLIST_H

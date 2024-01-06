@@ -28,14 +28,14 @@ Rule createEmptyRule(FactList facts);//
 Rule addFactInPremise(Rule rule, void* premise);//
 Rule setConclusion(Rule rule, void* conclusion);//
 Rule removeConclusion(Rule rule);//
-Bool factInPremise(Rule rule, void* prop);//
+Boolean factInPremise(Rule rule, void* prop);//
 Rule removeFromPremise(Rule rule, void* premise);//
 Rule removeFromPremiseById(Rule rule, long id);//
-Bool isPremiseEmpty(Rule rule);//
-Bool isUndefinedConclusion(Rule rule);//
-Bool isEqualsRule(Rule rule1, Rule rule2);//
-Bool isRuleEmpty(Rule rule);//
-Bool isUndefinedRule(Rule rule);//
+Boolean isPremiseEmpty(Rule rule);//
+Boolean isUndefinedConclusion(Rule rule);//
+Boolean isEqualsRule(Rule rule1, Rule rule2);//
+Boolean isRuleEmpty(Rule rule);//
+Boolean isUndefinedRule(Rule rule);//
 ElmOfPremise* getHeadOfPremise(Rule rule);//
 ElmOfPremise* nextOfPremise(ElmOfPremise* elm);//
 void* getPremise(ElmOfPremise* elm);//

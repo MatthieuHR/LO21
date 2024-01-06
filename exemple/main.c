@@ -94,26 +94,24 @@ void printDB(DB db) {
     }
 }
 
-Bool cmpMyStruct(void* self, void* other) {
+Boolean cmpMyStruct(void* self, void* other) {
     if(self == NULL || other == NULL) {
         return False;
     }
     return strcmp(((my_struct*)self)->name, ((my_struct*)other)->name) == 0;
 }
 
-Bool isEmpty(void* self) {
+Boolean empty(void* self) {
     if(!isUndefinedProperty(self)) {
         if (((my_struct *) self)->name != NULL) {
-            return True;
+            return False;
         }
     }
-    return False;
+    return True;
 }
 
 int main(){
-    Bool (*cmp)(void*, void*) = cmpMyStruct;
-    Bool (*empty)(void*) = isEmpty;
-    FactList my_fact_list = createFactList(cmp,empty, my_struct_delete);
+    FactList my_fact_list = createFactList(cmpMyStruct, empty, my_struct_delete);
 
     my_struct* my_struct1 = my_struct_new();
     my_struct_set_name(my_struct1, "Il est midi");
@@ -147,6 +145,8 @@ int main(){
     my_rule2 = addFactInPremise(my_rule2, my_struct3);
     my_rule2 = setConclusion(my_rule2, my_struct4);
 
+    getFactById(my_fact_list, 1);
+
     my_db = addRuleToDB(my_db, my_rule1);
     my_db = addRuleToDB(my_db, my_rule2);
 
@@ -157,8 +157,8 @@ int main(){
     my_struct * user_my_struct = NULL;
     Rule user_rule = NULL;
     FactList user_fact_list = NULL;
-    FactList factToTest = createFactList(cmp,empty,my_struct_delete);
-    FactList result = createFactList(cmp,empty,my_struct_delete);
+    FactList factToTest = createFactList(cmpMyStruct,empty,my_struct_delete);
+    FactList result = createFactList(cmpMyStruct,empty,my_struct_delete);
     DB copy = NULL;
 
     while (user_input != 'q') {
@@ -217,17 +217,19 @@ int main(){
                             printf("Enter the id of the fact you want to remove: ");
                             scanf("%ld", &id);
                             printf("\n");
-                            my_fact_list = removeAFactById(my_fact_list, id);
+                            my_fact_list = removeAFactByIdAndFree(my_fact_list, id);
                             break;
                         case '3':
                             printf("Are you sure you want to remove all facts ? (y/n): ");
                             scanf(" %c", &user_input);
                             printf("\n");
-                            if (isUndefinedDB(my_db) && user_input == 'y') {
+                            if (isDBEmpty(my_db) && user_input == 'y') {
                                 my_fact_list = removeAllFactsAndFree(my_fact_list);
                                 printf("All facts have been removed\n");
                             } else {
-                                printf("The DB is not empty, you can't remove all facts\n");
+                                if (isDBEmpty(my_db)) {
+                                    printf("The facts have not been removed because the DB is not empty\n");
+                                }
                             }
                             printf("\nPRESS ANY KEY TO CONTINUE\n");
                             scanf(" %c", &trash);
@@ -420,7 +422,7 @@ int main(){
                 if (expt == 1){printf("The DB is empty\n");}
                 if(expt == 2){printf("The fact list is empty\n");}
                 if(expt == 3){printf("The result list is empty\n");}
-                if(expt == 0){
+                if(expt != 0){
                     printf("The expert system hasn't been run\n");
                     printf("PRESS ANY KEY TO CONTINUE\n");
                     scanf(" %c", &trash);
@@ -443,6 +445,7 @@ int main(){
         }
     }
     freeDB(my_db);
+    freeDB(copy);
     freeFactList(factToTest);
     freeFactList(result);
     freeFactList(my_fact_list);

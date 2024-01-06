@@ -7,12 +7,13 @@
  * @param rule The rule to check.
  * @return True if the rule is empty, False otherwise.
  */
-Bool isRuleEmpty(Rule rule) {
-    if (rule != NULL && rule->premise.head == NULL && rule->conclusion == NULL) {
-        return True;
-    } else {
-        return False;
+Boolean isRuleEmpty(Rule rule) {
+    if (rule != NULL) {
+        if (rule->conclusion != NULL && rule->premise.head != NULL) {
+            return False;
+        }
     }
+    return True;
 }
 
 /**
@@ -21,7 +22,7 @@ Bool isRuleEmpty(Rule rule) {
  * @param rule The rule to check.
  * @return True if the rule is undefined, False otherwise.
  */
-Bool isUndefinedRule(Rule rule) {
+Boolean isUndefinedRule(Rule rule) {
     return rule == NULL;
 }
 
@@ -33,7 +34,7 @@ Bool isUndefinedRule(Rule rule) {
  *
  * Note : Usage of this function is not recommended due to the operation cost it performs.
  */
-Bool isEqualsRule(Rule rule1, Rule rule2){
+Boolean isEqualsRule(Rule rule1, Rule rule2){
     if(!isUndefinedRule(rule1) && !isUndefinedRule(rule2) && rule1->facts->head == rule2->facts->head && rule1->facts->cmpValue(rule1->conclusion,rule2->conclusion)){
         ElmOfPremise* point1 = rule1->premise.head;
         while (point1 != NULL){
@@ -77,7 +78,7 @@ Rule createEmptyRule(FactList facts){
  * @param rule The rule to check.
  * @return True if the premise is empty, False otherwise.
  */
-Bool isPremiseEmpty(Rule rule){
+Boolean isPremiseEmpty(Rule rule){
     if(!isUndefinedRule(rule) && rule->premise.head==NULL){
         return True;
     } else{
@@ -91,7 +92,7 @@ Bool isPremiseEmpty(Rule rule){
  * @param rule The rule to check.
  * @return True if the conclusion is empty, False otherwise.
  */
-Bool isUndefinedConclusion(Rule rule) {
+Boolean isUndefinedConclusion(Rule rule) {
     if (!isUndefinedRule(rule) && rule->conclusion == NULL) {
         return True;
     } else {
@@ -106,7 +107,7 @@ Bool isUndefinedConclusion(Rule rule) {
  * @param prop The Property to search for in the premise field.
  * @return True if the Property is found in the premise field, False otherwise.
  */
-Bool factInPremise(Rule rule, void* prop){
+Boolean factInPremise(Rule rule, void* prop){
     if(isUndefinedRule(rule) || rule->premise.head == NULL || isUndefinedProperty(prop)){return False;}
     if(rule->premise.head->premise==prop){
         return True;
@@ -181,7 +182,7 @@ Rule removeFromPremise(Rule rule, void* premise){
  * @return The updated rule.
  */
 Rule removeFromPremiseById(Rule rule, long id) {
-    if (isUndefinedRule(rule)) {
+    if (!isUndefinedRule(rule) && id >= 0 && id <= rule->premise.last_id) {
         if (rule->premise.head != NULL) {
             ElmOfPremise *point = rule->premise.head;
             if (point->id == id) {
@@ -213,7 +214,7 @@ Rule removeFromPremiseById(Rule rule, long id) {
  * @return The modified rule.
  */
 Rule setConclusion(Rule rule, void* conclusion){
-    if(isUndefinedRule(rule) && isPresentInFactList(rule->facts, conclusion)){
+    if(!isUndefinedRule(rule) && isPresentInFactList(rule->facts, conclusion) && !factInPremise(rule, conclusion)){
         rule->conclusion=conclusion;
     }
     return rule;
@@ -226,7 +227,7 @@ Rule setConclusion(Rule rule, void* conclusion){
  * @return The modified rule.
  */
 Rule removeConclusion(Rule rule){
-    if(isUndefinedRule(rule)){
+    if(!isUndefinedRule(rule)){
         rule->conclusion = NULL;
     }
     return rule;
@@ -239,7 +240,7 @@ Rule removeConclusion(Rule rule){
  * @return The premise field of the rule, or NULL if the rule is NULL.
  */
 void* getPremise(ElmOfPremise* elm){
-    if(elm == NULL){return NULL;}
+    if(isUndefined(elm)){return NULL;}
     else{return elm->premise;}
 }
 
@@ -310,7 +311,7 @@ FactList getFactListOfRule(Rule rule){
  * @return The FactList associated with the Rule, or NULL if the Rule is NULL or has no premise.
  */
 FactList freeRule(Rule rule){
-    if(isUndefinedRule(rule)){
+    if(!isUndefinedRule(rule)){
         if(rule->premise.head!=NULL){
             ElmOfPremise* point = rule->premise.head;
             while (point!=NULL){

@@ -7,11 +7,8 @@
  * @param db the DB to be tested.
  * @return True if the DB is undefined (NULL), False otherwise.
  */
-Bool isUndefinedDB(DB db){
-    if(db!=NULL){
-        return True;
-    }
-    return False;
+Boolean isUndefinedDB(DB db){
+    return db==NULL;
 }
 
 /**
@@ -20,11 +17,11 @@ Bool isUndefinedDB(DB db){
  * @param db the DB to be tested.
  * @return True if the DB is empty, False otherwise.
  */
-Bool isDBEmpty(DB db){
-    if(db!=NULL){
-        return db->head!=NULL;
+Boolean isDBEmpty(DB db){
+    if(!isUndefinedDB(db)){
+        return db->head==NULL;
     }
-    return False;
+    return True;
 }
 
 /**
@@ -33,7 +30,7 @@ Bool isDBEmpty(DB db){
  * @param rule the Rule to be tested.
  * @return True if the Rule is addable, False otherwise.
  */
-Bool isRuleAddable(Rule rule){
+Boolean isRuleAddable(Rule rule){
     return !isRuleEmpty(rule) && !isUndefinedFactList(rule->facts);
 }
 
@@ -43,7 +40,7 @@ Bool isRuleAddable(Rule rule){
  * @param rule the Rule to be tested.
  * @return True if the Rule is present, False otherwise.
  */
-Bool isPresentInDB(DB db, Rule rule){
+Boolean isPresentInDB(DB db, Rule rule){
     if(!isUndefinedRule(rule) && !isDBEmpty(db)){
         ElmOfDB* point = db->head;
         while (point!=NULL){
@@ -62,7 +59,7 @@ Bool isPresentInDB(DB db, Rule rule){
  * @param rule the Rule to be tested.
  * @return True if the Rule is present, False otherwise.
  */
-Bool isAlreadyInDB(DB db, Rule rule){
+Boolean isAlreadyInDB(DB db, Rule rule){
     if(!isUndefinedRule(rule) && !isDBEmpty(db)){
         ElmOfDB* point = db->head;
         while (point!=NULL){
@@ -228,7 +225,7 @@ DB removeARuleAndFree(DB db, Rule rule){
  * @return the updated DB with the Rule removed or not.
  */
 DB removeARuleByIdAndFree(DB db, long id){
-    if(!isDBEmpty(db) && id >= 0){
+    if(!isDBEmpty(db) && id >= 0 && id <= db->last_id){
         ElmOfDB* point = db->head;
         ElmOfDB* prev = NULL;
         while (point!=NULL){
@@ -263,7 +260,7 @@ DB removeARuleByIdAndFree(DB db, long id){
  * @return the updated DB with the Rule removed or not.
  */
 DB removeARuleById(DB db, long id){
-    if(!isDBEmpty(db) && id >= 0){
+    if(!isDBEmpty(db) && id >= 0 && id <= db->last_id){
         ElmOfDB* point = db->head;
         ElmOfDB* prev = NULL;
         while (point!=NULL){

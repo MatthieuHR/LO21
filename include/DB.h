@@ -34,10 +34,10 @@ DB removeAllRulesAndFree(DB db);//
 DB removeARule(DB db, Rule rule);//
 DB removeARuleById(DB db, long id);//
 DB removeAllRules(DB db);//
-Bool isPresentInDB(DB db, Rule rule);//
-Bool isAlreadyInDB(DB db, Rule rule);//
-Bool isUndefinedDB(DB db);//
-Bool isDBEmpty(DB db);//
-Bool isRuleAddable(Rule rule);//
+Boolean isPresentInDB(DB db, Rule rule);//
+Boolean isAlreadyInDB(DB db, Rule rule);//
+Boolean isUndefinedDB(DB db);//
+Boolean isDBEmpty(DB db);//
+Boolean isRuleAddable(Rule rule);//
 
 #endif /* DB_H */

@@ -8,7 +8,7 @@
  * @param prop A pointer to the Property to be tested.
  * @return True if the Property is empty, False otherwise.
  */
-Bool isEmptyProperty(FactList facts,void* prop){
+Boolean isEmptyProperty(FactList facts, void* prop){
     if (!isUndefinedFactList(facts) && !isUndefinedProperty(prop)){
         return facts->isEmpty(prop);
     }
@@ -21,8 +21,11 @@ Bool isEmptyProperty(FactList facts,void* prop){
  * @param list A pointer to the FactList to be tested.
  * @return True if the Undefined is empty (NULL), False otherwise.
  */
-Bool isUndefinedFactList(FactList list){
-    return list == NULL;
+Boolean isUndefinedFactList(FactList list){
+    if (list == NULL){
+        return True;
+    }
+    return False;
 }
 
 /**
@@ -31,7 +34,7 @@ Bool isUndefinedFactList(FactList list){
  * @param list A pointer to the FactList to be tested.
  * @return True if the FactList is empty, False otherwise.
  */
-Bool isEmptyFactList(FactList list){
+Boolean isEmptyFactList(FactList list){
     if(list != NULL){
         return list->head == NULL;
     }
@@ -44,7 +47,7 @@ Bool isEmptyFactList(FactList list){
  * @param cmpValue A function pointer to the comparison function used to compare values in the FactList.
  * @return A pointer to the newly created FactList, or NULL if cmpValue is NULL.
  */
-FactList createFactList(Bool (*cmpValue)(void*, void*), Bool (*isEmpty)(void *), void (*freeValue)(void*)) {
+FactList createFactList(Boolean (*cmpValue)(void*, void*), Boolean (*isEmpty)(void *), void (*freeValue)(void*)) {
     if(cmpValue!=NULL && isEmpty!=NULL && freeValue!=NULL){
         FactList new = (FactList)malloc(sizeof(PreFactList));
         new->head=NULL;
@@ -78,7 +81,7 @@ ElmOfFact* createElmOfFact() {
  * @param fact The fact to check for.
  * @return True if the fact is already in the FactList, False otherwise.
  */
-Bool isAlreadyInFactList(FactList list, void* fact){
+Boolean isAlreadyInFactList(FactList list, void* fact){
     if(isEmptyFactList(list) || isUndefinedProperty(fact)){return False;}
     if(list->cmpValue(list->head->fact,fact)){return True;}
     else {
@@ -95,7 +98,7 @@ Bool isAlreadyInFactList(FactList list, void* fact){
  * @param fact The fact to search for.
  * @return True if the fact is present in the list, False otherwise.
  */
-Bool isPresentInFactList(FactList list, void* fact){
+Boolean isPresentInFactList(FactList list, void* fact){
     if(isEmptyFactList(list) || isUndefinedProperty(fact)){return False;}
     if(list->head->fact==fact){return True;}
     else{
@@ -113,7 +116,7 @@ Bool isPresentInFactList(FactList list, void* fact){
  * @return The updated FactList with the fact added or not.
  */
 FactList addFact(FactList list, void* fact){
-    if(!isEmptyProperty(fact,list->isEmpty) && !isUndefinedFactList(list) && !isAlreadyInFactList(list, fact)) {
+    if(!isUndefinedFactList(list) && !isEmptyProperty(list,fact) && !isAlreadyInFactList(list, fact)) {
         ElmOfFact* newl = createElmOfFact();
         newl->fact=fact;
         newl->next=list->head;
@@ -193,7 +196,7 @@ FactList removeAFactAndFree(FactList list, void* fact) {
  * @return The updated FactList with the fact removed or not.
  */
 FactList removeAFactById(FactList list, long id){
-    if(isUndefinedFactList(list) && id <= list->last_id){
+    if(!isUndefinedFactList(list) && id <= list->last_id && id >= 0){
         ElmOfFact* point = list->head;
         if(point->id==id){
             list->head = point->next;
@@ -223,7 +226,7 @@ FactList removeAFactById(FactList list, long id){
  * @return The updated FactList with the fact removed or not.
  */
 FactList removeAFactByIdAndFree(FactList list, long id) {
-    if (isUndefinedFactList(list) && id <= list->last_id) {
+    if (!isUndefinedFactList(list) && id <= list->last_id && id >= 0) {
         ElmOfFact *point = list->head;
         if (point->id == id) {
             list->head = point->next;
@@ -292,7 +295,7 @@ FactList removeAllFacts(FactList list){
  * @return A pointer to the fact with the specified ID, or NULL if not found.
  */
 void* getFactById(FactList list, long id){
-    if(!isEmptyFactList(list) && id <= list->last_id){
+    if(!isEmptyFactList(list) && id <= list->last_id && id >= 0){
         ElmOfFact* point = list->head;
         while (point != NULL){
             if(point->id==id){

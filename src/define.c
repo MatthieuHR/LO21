@@ -7,6 +7,6 @@
 * @param elm A pointer to be tested.
 * @return True if the pointer is empty, False otherwise.
 */
-Bool isUndefined(void* elm){
+Boolean isUndefined(void* elm){
     return elm == NULL;
 }

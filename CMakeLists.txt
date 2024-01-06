@@ -14,8 +14,6 @@ add_executable(LO21 exemple/main.c
         src/Properties.c
         include/Properties.h
         src/Rules.c
-        test.c
-        test.c
         src/ExpertSys.c
         src/define.c
 )
