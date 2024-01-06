@@ -5,13 +5,25 @@ Dans cette section, vous pouvez retrouver tous les algorithmes des sous programm
 
 >[!NOTE]
 >
->Avant de commencer la fonction `isEmpty(elm:type)` permet de savoir si un élément est vide (`UNDEFINED`) peu importe le type `type`.
+>Avant de commencer la fonction `isEmpty(elm:type)` permet de savoir si un élément est vide (`UNDEFINED` ou `NULL` en C) peu importe le type `type`. Cette fonction est utilisée dans tous les algorithmes pour vérifier que les éléments passés en paramètres sont bien définis.`
 > 
 > `Type` servira à identifier le type d'un **fait**.
 
 >[!WARNING]
 >
 >Les fonctions de bases ont changé de nom pour correspond à leur nom de champs. Certaines peuvent exister en C. Pour vérifier cela merci de vous référer au [guide des fonctions](Function.md).
+
+
+## isEmpty
+Dans cette section, nous allons vous exposer quand la fonction `isEmpty` renvoie `True` ou `False` en fonction du type de l'élément passé en paramètre :
+* `Propertie` : cela est définie par l'utilisateur avec la fonction du champ `isEmpty` de la liste de fait (`FactList`).
+* `FactList` : est vide si `head` est `UNDEFINED`.
+* `Rule` : est vide si `premise` est `UNDEFINED` et `conclusion` est `UNDEFINED`.
+* `DB` : est vide si `head` est `UNDEFINED`.
+
+>[!NOTE]
+> 
+>La `isEmpty` vérifie si un type est définie avant de tester ces champs. Si le type n'est pas définie alors la fonction renvoie `False`.
 
 ## Les algorithmes avec des `FactList`
 
