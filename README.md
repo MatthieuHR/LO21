@@ -25,16 +25,14 @@ Notre projet se présente sous la forme d'une bibliothèque dont voici l'arbores
     - include
     - src
     - exemple
-        * Make
-    * main.c
+        * main.c
+    * CMakeList.txt
     * README.md
 
 * = fichier   - = répertoire
 ````
-Le fichier `Make` dans le dossier `exemple` vous permet de compiler notre exemple de système expert avec des explications présentes dans le code. De plus, vous pouvez en apprendre davantage sur cet exemple [ici](doc/fr/Test.md).
 
-
-Enfin, vous avez à votre disposition tous les fichiers `Header` dans le dossier `include` et tous les fichiers `C` dans le dossier `src`. Toute la documentation est accessible depuis le `README.md` et est également disponible dans le dossier `doc` en français et en anglais. Vous pouvez y retrouver l'ensemble des fonctions disponibles ainsi que des explications sur le fonctionnement du système expert.
+Enfin, vous avez à votre disposition tous les fichiers `Header` dans le dossier `include` et tous les fichiers `C` dans le dossier `src`. Toute la documentation est accessible depuis le `README.md` et est également disponible dans le dossier `doc` en français. Vous pouvez y retrouver l'ensemble des fonctions disponibles ainsi que des explications sur le fonctionnement du système expert.
 
 
 ## Pour en savoir plus (**Rapport**)

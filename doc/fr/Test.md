@@ -22,7 +22,7 @@ Le fichier `main.c` est disponible dans le dossier exemple.
 
 Pour compiler le programme, il vous suffit de lancer la commande suivante depuis la racine du projet :
 ```bash
-gcc -o main main.c -I ../include/ ../src/*.c
+gcc -o expertSystem exemple/main.c src/define.c src/Properties.c src/FactList.c src/Rules.c src/DB.c src/ExpertSys.c
 ```
 De plus un ficher make est disponible à la racine du projet.
 
