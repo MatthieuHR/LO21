@@ -78,6 +78,7 @@ Ce type est une liste de `ElmOfPremise` de taille non  définit.
 Il possède deux champs :
 * `head` qui permet d'accéder au premier élément.
 * `tail` qui permet d'accéder au dernier élément.
+* `last_id` qui est le dernier `id` donnée à un `ElmOfPremise` et vaut `-1` quand aucun élément n'a été ajoutée.
 
 Une `Premise` est une liste de fait (`Property`) lier par la condition `ET`.
 
@@ -88,6 +89,7 @@ Nous avons choisi cette implémentation car un accès en queue est utile pour le
 
 Ce type est composé de deux champs :
 * `premise` qui est de type `Property` et qui représente un fait, une donnée.
+* `id` qui est l'identifiant unique de cet élément.
 * `next` qui représente l'élément suivant de la liste.
 
 Un `ElmOfPremise` représente un élément d'une liste de type `Premise`.
@@ -167,11 +169,13 @@ La structure `ElmOfPremise` sert à définir un élément de la liste qui a pour
 typedef struct elm{
     void* premise;
     struct elm* next;
+    long id;
 }ElmOfPremise;
 
 typedef struct {
     ElmOfPremise* head;
     ElmOfPremise* tail;
+    long last_id;
 }Premise;
 ````
 
