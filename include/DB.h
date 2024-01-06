@@ -24,10 +24,15 @@ ElmOfDB* getHeadRule(DB db);
 ElmOfDB* getNextRule(ElmOfDB* elm);
 Rule getRuleByIDd(DB db, long id);
 Rule getRule(ElmOfDB* elm);
-long getID(ElmOfDB* elm);
+long getIdOfRule(ElmOfDB* elm);
 DB copyOfDB(DB db);
 FactList freeDB(DB db);
 FactList getFactListOfDB(DB db);
 DB removeARule(DB db,Rule rule);
+DB removeARuleById(DB db, long id);
+DB removeAllRules(DB db);
+Bool isPresentInDB(DB db, Rule rule);
+Bool isAlreadyInDB(DB db, Rule rule);
+Bool isEmptyDB(DB db);
 
 #endif /* DB_H */

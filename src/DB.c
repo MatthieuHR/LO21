@@ -33,7 +33,32 @@
      * @return The updated DB with the Rule added or not.
      */
     DB addRuleToDB(DB db, Rule rule){
-        if(db!=NULL && !isPremiseEmpty(rule) && getConclusion(rule)!=NULL && rule->facts->head == db->facts->head){
+        if(db!=NULL && !isPremiseEmpty(rule) && getConclusion(rule)!=NULL && rule->facts->head == db->facts->head && !isPresentInDB(db,rule)){
+            ElmOfDB* newl = (ElmOfDB*)malloc(sizeof (ElmOfDB));
+            newl->rule=rule;
+            newl->next=NULL;
+            newl->id=db->last_id+1;
+            if(db->head == NULL){
+                db->head = newl;
+                db->tail = newl;
+            }else{
+                db->tail->next=newl;
+                db->tail=newl;
+            }
+            db->last_id++;
+        }
+        return db;
+    }
+
+    /**
+ * Function to add a Rule to a DB with a comparaison on the values of the rules. Not recommended because it's not efficient. Use addRuleToDB instead.
+ *
+ * @param db The DB to add the Rule to.
+ * @param rule The Rule to be added.
+ * @return The updated DB with the Rule added or not.
+ */
+    DB addRuleToDB_Strict(DB db, Rule rule){
+        if(db!=NULL && !isPremiseEmpty(rule) && getConclusion(rule)!=NULL && rule->facts->head == db->facts->head && !isAlreadyInDB(db,rule)){
             ElmOfDB* newl = (ElmOfDB*)malloc(sizeof (ElmOfDB));
             newl->rule=rule;
             newl->next=NULL;
@@ -117,6 +142,7 @@
             free(db);
             return rtn;
         }
+        free(db);
         return NULL;
     }
 
@@ -172,7 +198,11 @@
                         }
                     }else{
                         prev->next=point->next;
+                        if(point->next==NULL){
+                            db->tail=prev;
+                        }
                     }
+                    freeRule(point->rule);
                     free(point);
                     return db;
                 }
@@ -183,7 +213,7 @@
         return db;
     }
 
-    long getID(ElmOfDB* elm){
+    long getIdOfRule(ElmOfDB* elm){
         if(elm!=NULL){
             return elm->id;
         }
@@ -201,4 +231,80 @@
             }
         }
         return NULL;
+    }
+
+    Bool isPresentInDB(DB db, Rule rule){
+        if(db!=NULL && rule!=NULL && db->head!=NULL){
+            ElmOfDB* point = db->head;
+            while (point!=NULL){
+                if(point->rule==rule){
+                    return True;
+                }
+                point=point->next;
+            }
+        }
+        return False;
+    }
+
+    Bool isAlreadyInDB(DB db, Rule rule){
+        if(db!=NULL && rule!=NULL && db->head!=NULL){
+            ElmOfDB* point = db->head;
+            while (point!=NULL){
+                if(isEqualsRule(point->rule,rule)){
+                    return True;
+                }
+                point=point->next;
+            }
+        }
+        return False;
+    }
+
+    Bool isEmptyDB(DB db){
+        if(db!=NULL){
+            return True;
+        }
+        return False;
+    }
+
+    DB removeARuleById(DB db, long id){
+        if(db!=NULL && db->head!=NULL && id >= 0){
+            ElmOfDB* point = db->head;
+            ElmOfDB* prev = NULL;
+            while (point!=NULL){
+                if(point->id==id){
+                    if(prev==NULL){
+                        db->head=point->next;
+                        if(db->head==NULL){
+                            db->tail=NULL;
+                        }
+                    }else{
+                        prev->next=point->next;
+                        if(point->next==NULL){
+                            db->tail=prev;
+                        }
+                    }
+                    freeRule(point->rule);
+                    free(point);
+                    return db;
+                }
+                prev=point;
+                point=point->next;
+            }
+        }
+        return db;
+    }
+
+    DB removeAllRules(DB db){
+        if(db!=NULL && db->head!=NULL){
+            ElmOfDB* point = db->head;
+            while (point!=NULL){
+                ElmOfDB* temp = point;
+                point=point->next;
+                freeRule(temp->rule);
+                free(temp);
+            }
+            db->head=NULL;
+            db->tail=NULL;
+        }
+        return db;
     }

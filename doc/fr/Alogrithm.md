@@ -1,11 +1,17 @@
-# Algorithm des sous programmes
+# Algorithmes des sous programmes
 
 ---
 Dans cette section, vous pouvez retrouver tous les algorithmes des sous programmes en fonctions des données qu'ils traitent.
 
+>[!NOTE]
+>
 >Avant de commencer la fonction `isEmpty(elm:type)` permet de savoir si un élément est vide (`UNDEFINED`) peu importe le type `type`.
 > 
 > `Type` servira à identifier le type d'un **fait**.
+
+>[!WARNING]
+>
+>Les fonctions de bases on changé de nom pour corespondre à leur nom de champs. Certaines peuvent exister en C. Pour vérifier cela merci de vous référer au [guide des fonctions](Function.md).
 
 ## Les algorithmes avec des `FactList`
 
@@ -42,12 +48,12 @@ End
 ````
 
 ---
-### `removeAllFacts`
+### `removeAllFactsAndFree`
 Cette fonction permet de libérer la mémoire utilisée par une `FactList` en cas de besoin, par exemple en cas d'erreur.
 * `list` est la liste que l'on souhaite vider.
 >La fonction renvoie la liste de fait modifiée.
 ````
-function removeAllFacts(list:FactList):FactList
+function removeAllFactsAndFree(list:FactList):FactList
 Start
     point:ElmOfFact <- head(list)
     While not isEmpty(point) Do
@@ -58,29 +64,29 @@ Start
     Done
     head(list) = UNDEFINED
     last_id(list) = -1
-    removeAllFacts <- point
+    removeAllFactsAndFree <- point
 End
 ````
 
 ---
-### `getById`
+### `getFactById`
 Cette fonction permet de récupérer un élément d'une liste de fait en fonction de son `id`.
 * `list` est la liste de fait dont on souhaite extraire un élément.
 * `id` est l'identifiant unique dont on veut la structure associée.
 * `point` est un pointeur pour parcourir la list.
 >La fonction renvoie un fait de type `Type`.
 ````
-function getById(list:FactList, id:LongInteger):Type
+function getFactById(list:FactList, id:LongInteger):Type
 Start
     If not isEmpty(head(list)) AND id <= last_id(list) Then
         point:ElmOfFact <- head(list)
         While not isEmpty(point) Do
             If id(point) = id Then
-                getById <- fact(point)*
+                getFactById <- fact(point)*
             EndIf
         Done
     EndIf
-    getById <- UNDEFINED
+    getFactById <- UNDEFINED
 End
 ````
 
@@ -138,7 +144,7 @@ Cette fonction permet de libérer la mémoire utilisée par une `FactList` en ca
 function freeFactList(list:FactList):FactList
 Start
     If not isEmpty(list) AND not isEmpty(head(list)) Then
-        list <- removeAllFacts(list)
+        list <- removeAllFactsAndFree(list)
     EndIf
     free(list)
     EndIf
@@ -265,6 +271,39 @@ End
 ````
 
 ---
+### `isEqualsRule`
+Cette fonction permet de savoir si deux règles sont égales en comparants leurs champs de valeurs.
+* `rule1` est la première règle que l'on souhaite comparer.
+* `rule2` est la seconde règle que l'on souhaite comparer.
+* `point1` est un pointeur pour parcourir la prémisse de `rule1`.
+* `point2` est un pointeur pour parcourir la prémisse de `rule2`.
+>La fonction renvoie `True` si les règles sont égales, `False` sinon.
+````
+function isEqualsRule(rule1:Rule, rule2:Rule):Bool
+Start
+    If not isEmpty(rule1) ANS not isEmpty(rule2) && head(facts(rule1)) = head(facts(rule2)) AND conclusion(rule1) = conclusion(rule2) Then
+        point1:ElmOfPremise <- head(premise(rule1))
+        While not isEmpty(point1) Do
+            If not factInPremise(rule2, premise(point1)) Then
+                isEqualsRule <- False
+            EndIf
+            point1 <- next(point1)
+        Done
+        point2:ElmOfPremise <- head(premise(rule2))
+        While not isEmpty(point2) Do
+            If not factInPremise(rule1, premise(point2)) Then
+                isEqualsRule <- False
+            EndIf
+            point2 <- next(point2)
+        Done
+        isEqualsRule <- True
+    EndIf
+    isEqualsRule <- False
+End
+````
+
+
+---
 ### `freeRule`
 Cette fonction permet de libérer la mémoire utilisée par une règle en cas de besoin, par exemple en cas d'erreur ou à la fin du programme.
 * `rule` est la règle que l'on souhaite vider.
@@ -355,6 +394,52 @@ End
 ````
 
 ---
+### `isPresentInDB`
+Cette fonction permet de savoir si une règle appartient à une base de connaissance (`DB`) récursivement en fonction de son adresse mémoire.
+* `db` est la base de connaissance ou l'on cherche notre règle.
+* `rule` est la règle que l'on cherche.
+* `point` est un pointeur pour parcourir la base de connaissance `db`.
+>La fonction renvoie un `Bool` qui vaut `True` si la règle est déjà présente, `False` sinon.
+````
+function isPresentInDB(db:DB, rule:Rule):Bool
+Start
+    If not isEmpty(db) AND not isEmpty(rule) AND not isEmpty(head(db)) Then
+        point:ElmOfDB <- head(db)
+        While not isEmpty(point) Do
+            If rule(point) = rule Then
+                isPresentInDB <- True
+            EndIf
+            point <- next(point)
+        Done
+    EndIf
+    isPresentInDB <- False
+End
+````
+
+---
+### `isAlreadyInDB`
+Cette fonction permet de savoir si une règle appartient à une base de connaissance (`DB`) récursivement en fonction de ses champs de valeurs.
+* `db` est la base de connaissance ou l'on cherche notre règle.
+* `rule` est la règle que l'on cherche.
+* `point` est un pointeur pour parcourir la base de connaissance `db`.
+>La fonction renvoie un `Bool` qui vaut `True` si la règle est déjà présente, `False` sinon.
+````
+function isAlreadyInDB(db:DB, rule:Rule):Bool
+Start
+    If not isEmpty(db) AND not isEmpty(rule) AND not isEmpty(head(db)) Then
+        point:ElmOfDB <- head(db)
+        While not isEmpty(point) Do
+            If isEqualsRule(rule(point), rule) Then
+                isAlreadyInDB <- True
+            EndIf
+            point <- next(point)
+        Done
+    EndIf
+    isAlreadyInDB <- False
+End
+````
+
+---
 ### `freeDB`
 Cette fonction permet de libérer la mémoire utilisée par une base de connaissance en cas de besoin, par exemple en cas d'erreur ou à la fin du programme.
 * `db` est la base de connaissance que l'on souhaite vider.
@@ -414,3 +499,6 @@ Start
     removeARule <- db
 End
 ````
+
+---
+C'est tout pour cette section, vous pouvez passer à la section suivante : [Guide des fonction (en C)](Test.md).

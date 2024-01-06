@@ -26,9 +26,9 @@ Cette partie sera traitée en fonctions des fichiers `.h` et chaque fichier succ
 
 `FactList addFact(FactList list, void* fact)` : ajoute un fait (`fact`) à une liste de fait à condition qu'un autre fait ne renvoie pas `True` quand il est comparé avec `fact` à l'aide de la fonction `cmpValue()` dans le champ du même nom dans `list`. La fonction renvoie quoi qu'il arrive la même `list` avec un élément en plus ou non.
 
-`FactList removeAllFacts(FactList list)` : permet de vider une liste de fait, mais ne vide pas le champ `cmpValue` intact. Cette fonction `free()` tous les fait de `list`. Renvoie une `Factlist` semblable à celle créée par la fonction `createFactList()`.
+`FactList removeAllFactsAndFree(FactList list)` : permet de vider une liste de fait, mais ne vide pas le champ `cmpValue` intact. Cette fonction `free()` tous les fait de `list`. Renvoie une `Factlist` semblable à celle créée par la fonction `createFactList()`.
 
-`void* getById(FactList list, long id)` : permet d'obtenir un pointeur sur le fait souhaité en fonction de son champ `id`. Le paramètre `id` est celui qui doit matcher le champ `id`. Renvoi un fait s'il est trouvé sinon `NULL`.
+`void* getFactById(FactList list, long id)` : permet d'obtenir un pointeur sur le fait souhaité en fonction de son champ `id`. Le paramètre `id` est celui qui doit matcher le champ `id`. Renvoi un fait s'il est trouvé sinon `NULL`.
 
 `FactList freeFactList(FactList list)` : permet de libérer la mémoire allouée à une liste de fait. Renvoie `NULL`. La fonction `free()` tous les fait de `list`.
 

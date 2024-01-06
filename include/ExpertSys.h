@@ -2,6 +2,7 @@
 #define EXPERTSYS_H
 
 #include "DB.h"
-// Your code goes here
+
+void expertSystem(FactList factsToTest, FactList resultFacts, DB knowledgeBase);
 
 #endif // EXPERTSYS_H

@@ -7,12 +7,13 @@
  * @param cmpValue A function pointer to the comparison function used to compare values in the FactList.
  * @return A pointer to the newly created FactList, or NULL if cmpValue is NULL.
  */
-FactList createFactList(Bool (*cmpValue)(void*, void*)){
+FactList createFactList(Bool (*cmpValue)(void*, void*), void(*freeValue)(void*)) {
     if(cmpValue!=NULL){
         FactList newl = (FactList)malloc(sizeof(PreFactList));
         newl->head=NULL;
         newl->last_id=-1;
         newl->cmpValue = cmpValue;
+        newl->freeValue = freeValue;
         return newl;
     }else{
         return NULL;
@@ -74,12 +75,24 @@ FactList addFact(FactList list, void* fact){
  * @param list The FactList to be modified.
  * @return The modified FactList with all elements removed.
  */
+FactList removeAllFactsAndFree(FactList list){
+    ElmOfFact* point = list->head;
+    while (point != NULL){
+        list->head = point;
+        point = point->next;
+        list->freeValue(list->head->fact);
+        free(list->head);
+    }
+    list->head=NULL;
+    list->last_id=-1;
+    return list;
+}
+
 FactList removeAllFacts(FactList list){
     ElmOfFact* point = list->head;
     while (point != NULL){
         list->head = point;
         point = point->next;
-        free(list->head->fact);
         free(list->head);
     }
     list->head=NULL;
@@ -94,7 +107,7 @@ FactList removeAllFacts(FactList list){
  * @param id The ID of the fact to retrieve.
  * @return A pointer to the fact with the specified ID, or NULL if not found.
  */
-void* getById(FactList list, long id){
+void* getFactById(FactList list, long id){
     if(list != NULL && id <= list->last_id){
         ElmOfFact* point = list->head;
         while (point != NULL){
@@ -133,7 +146,7 @@ Bool isPresentInFactList(FactList list, void* fact){
 FactList freeFactList(FactList list){
     if(list != NULL){
         if(list->head != NULL){
-            list = removeAllFacts(list);
+            list = removeAllFactsAndFree(list);
         }
         free(list);
     }
@@ -184,7 +197,7 @@ FactList freeFactList(FactList list){
      return NULL;
  }
 
-    long getId(ElmOfFact* elm){
+    long getIdOfFact(ElmOfFact* elm){
         if(elm != NULL){
             return elm->id;
         }
@@ -196,5 +209,35 @@ FactList freeFactList(FactList list){
             return elm->fact;
         }
         return NULL;
+    }
+
+    Bool isEmptyFactList(FactList list){
+        if(list != NULL){
+            return list->head == NULL;
+        }
+        return True;
+    }
+
+    FactList removeAFactById(FactList list, long id){
+        if(list != NULL && id <= list->last_id){
+            ElmOfFact* point = list->head;
+            if(point->id==id){
+                list->head = point->next;
+                free(point);
+            }else{
+                ElmOfFact* prev = point;
+                point = point->next;
+                while(point != NULL){
+                    if(point->id==id){
+                        prev->next = point->next;
+                        free(point);
+                        return list;
+                    }
+                    prev = point;
+                    point = point->next;
+                }
+            }
+        }
+        return list;
     }
 

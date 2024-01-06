@@ -12,8 +12,26 @@ Rule createEmptyRule(FactList facts){
     newl->conclusion=NULL;
     newl->premise.tail=NULL;
     newl->premise.head=NULL;
+    newl->premise.last_id=-1;
     newl->facts = facts;
     return newl;
+}
+
+/**
+ * Function to check if a Property is in the premise field of a Rule.
+ *
+ * @param rule The Rule to check.
+ * @param prop The Property to search for in the premise field.
+ * @return True if the Property is found in the premise field, False otherwise.
+ */
+Bool factInPremise(Rule rule, void* prop){
+    if(rule == NULL || rule->premise.head == NULL || prop == NULL){return False;}
+    if(rule->premise.head->premise==prop){
+        return True;
+    }
+    PreRule new = *rule;
+    new.premise.head = new.premise.head->next;
+    return factInPremise(&new, prop);
 }
 
 /**
@@ -24,9 +42,10 @@ Rule createEmptyRule(FactList facts){
  * @return The updated Rule with the premise added or not.
  */
 Rule addPremise(Rule rule, void* premise){
-    if(!isEmptyProperty(premise) && rule!=NULL && isPresentInFactList(rule->facts, premise)){
+    if(!isEmptyProperty(premise) && rule!=NULL && isPresentInFactList(rule->facts, premise) && !factInPremise(rule, premise) && rule->conclusion!=premise){
         ElmOfPremise* new = malloc(sizeof(ElmOfPremise));
         new->premise=premise;
+        new->id=rule->premise.last_id+1;
         new->next=NULL;
         if(rule->premise.head==NULL){
             rule->premise.head=new;
@@ -35,6 +54,7 @@ Rule addPremise(Rule rule, void* premise){
             rule->premise.tail->next = new;
             rule->premise.tail=new;
         }
+        rule->premise.last_id++;
     }
     return rule;
 }
@@ -53,22 +73,13 @@ Rule setConclusion(Rule rule, void* conclusion){
     return rule;
 }
 
-/**
- * Function to check if a Property is in the premise field of a Rule.
- * 
- * @param rule The Rule to check.
- * @param prop The Property to search for in the premise field.
- * @return True if the Property is found in the premise field, False otherwise.
- */
-Bool factInPremise(Rule rule, void* prop){
-    if(rule == NULL || rule->premise.head == NULL || prop == NULL){return False;}
-    if(rule->premise.head->premise==prop){
-        return True;
+Rule removeConclusion(Rule rule){
+    if(rule != NULL){
+        rule->conclusion = NULL;
     }
-    PreRule new = *rule;
-    new.premise.head = new.premise.head->next;
-    return factInPremise(&new, prop);
+    return rule;
 }
+
 
 /**
  * Removes a Property from the premise field of a Rule.
@@ -194,4 +205,65 @@ ElmOfPremise* nextOfPremise(ElmOfPremise* elm){
 void* getPremise(ElmOfPremise* elm){
     if(elm == NULL){return NULL;}
     else{return elm->premise;}
+}
+
+Bool isEqualsRule(Rule rule1, Rule rule2){
+    if(rule1 != NULL && rule2 != NULL && rule1->facts->head == rule2->facts->head && rule1->facts->cmpValue(rule1->conclusion,rule2->conclusion)){
+        ElmOfPremise* point1 = rule1->premise.head;
+        while (point1 != NULL){
+            if(!factInPremise(rule2, point1->premise)){
+                return False;
+            }
+            point1=point1->next;
+        }
+        ElmOfPremise *point2 = rule2->premise.head;
+        while (point2 != NULL){
+            if(!factInPremise(rule1, point2->premise)){
+                return False;
+            }
+            point2=point2->next;
+        }
+        return True;
+    }
+    return False;
+}
+
+/**
+ * Removes a premise from a rule by its ID.
+ *
+ * @param rule The rule to remove the premise from.
+ * @param id The ID of the premise to remove.
+ * @return The updated rule.
+ */
+Rule removeFromPremiseById(Rule rule, long id) {
+    if (rule != NULL) {
+        if (rule->premise.head != NULL) {
+            ElmOfPremise *point = rule->premise.head;
+            if (point->id == id) {
+                rule->premise.head = point->next;
+                free(point);
+            } else {
+                while (point->next != NULL && point->next->id != id) {
+                    point = point->next;
+                }
+                if (point->next != NULL) {
+                    ElmOfPremise *temp = point->next;
+                    point->next = point->next->next;
+                    free(temp);
+                }
+            }
+        }
+    }
+    return rule;
+}
+
+/**
+ * Retrieves the ID of a premise element.
+ *
+ * @param elm The premise element.
+ * @return The ID of the premise element, or -1 if the premise element is NULL.
+ */
+long getIdOfPremise(ElmOfPremise* elm) {
+    if (elm == NULL) { return -1; }
+    else { return elm->id; }
 }

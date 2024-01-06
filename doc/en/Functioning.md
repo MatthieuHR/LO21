@@ -68,12 +68,12 @@ Dans notre système expert toutes les conclusions et prémises sont tirée de ce
 Pour vous aider à sa création, vous avez à votre disposition plusieurs fonctions :
 * `createFactList(Bool (*cmpValue)(void*, void*))` pour créer une liste de fait vide avec `cmpValue` qui est un pointeur sur la fonction de comparaison que vous avez définie.
 * `addFact(FactList list,*void fact)` pour ajouter une propriété(`fact`) a une liste de fait(`list`). Vous pouvez utiliser la meme variable `fact` en changent ça valeur sans problems.
-* `removeAllFacts(FactList list)` pour supprimer tous les fait d'une liste de fait.
+* `removeAllFactsAndFree(FactList list)` pour supprimer tous les fait d'une liste de fait.
 
 Il y a aussi des fonctions qui intéragissent avec le type `FactList` :
 * `isAlreadyInFactList(FactList list, void* fact)` qui vérifie si l'élément est dans la liste de fait avec le pointeur de fonction et revoie un `*void`. 
 * `isPresentInFactList(FactList list, void* fact);` qui vérifie si l'élément est dans la liste de fait avec l'emplacement mémoire et revoie un `*void`
-* `getById(FactList list, long id)` qui renvoie l'élément associé à l'`id`;.
+* `getFactById(FactList list, long id)` qui renvoie l'élément associé à l'`id`;.
 
 >Pour plus de détail sur les fonctions merci de regarder les algorithms commenter [ici](Alogrithm.md)
 

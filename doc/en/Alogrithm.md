@@ -42,12 +42,12 @@ End
 ````
 
 ---
-### `removeAllFacts`
+### `removeAllFactsAndFree`
 Cette fonction permet de libérer la mémoire utilisée par une `FactList` en cas de besoin, par exemple en cas d'erreur.
 * `list` est la liste que l'on souhaite vider.
 >La fonction renvoie la liste de fait modifiée.
 ````
-function removeAllFacts(list:FactList):FactList
+function removeAllFactsAndFree(list:FactList):FactList
 Start
     point:ElmOfFact <- head(list)
     While not isEmpty(point) Do
@@ -58,29 +58,29 @@ Start
     Done
     head(list) = UNDEFINED
     last_id(list) = -1
-    removeAllFacts <- point
+    removeAllFactsAndFree <- point
 End
 ````
 
 ---
-### `getById`
+### `getFactById`
 Cette fonction permet de récupérer un élément d'une liste de fait en fonction de son `id`.
 * `list` est la liste de fait dont on souhaite extraire un élément.
 * `id` est l'identifiant unique dont on veut la structure associée.
 * `point` est un pointeur pour parcourir la list.
 >La fonction renvoie un fait de type `Type`.
 ````
-function getById(list:FactList, id:LongInteger):Type
+function getFactById(list:FactList, id:LongInteger):Type
 Start
     If not isEmpty(head(list)) AND id <= last_id(list) Then
         point:ElmOfFact <- head(list)
         While not isEmpty(point) Do
             If id(point) = id Then
-                getById <- fact(point)*
+                getFactById <- fact(point)*
             EndIf
         Done
     EndIf
-    getById <- UNDEFINED
+    getFactById <- UNDEFINED
 End
 ````
 
@@ -138,7 +138,7 @@ Cette fonction permet de libérer la mémoire utilisée par une `FactList` en ca
 function freeFactList(list:FactList):FactList
 Start
     If not isEmpty(list) AND not isEmpty(head(list)) Then
-        list <- removeAllFacts(list)
+        list <- removeAllFactsAndFree(list)
     EndIf
     free(list)
     EndIf

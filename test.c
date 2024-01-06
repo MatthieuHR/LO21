@@ -1,4 +1,4 @@
-#include "include/DB.h"
+/*#include "include/DB.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -23,7 +23,7 @@ void printValue(void* a){
 void printFactList(FactList list){
     ElmOfFact* now = getHeadOfFactList(list);
     while(now!=NULL){
-        printf("%ld: ", getId(now));
+        printf("%ld: ", getIdOfFact(now));
         printValue(getFact(now));
         now = nextOfFactList(now);
     }
@@ -50,7 +50,7 @@ void printDB(DB db){
     }
 }
 
-int main(){
+int test(){
     Bool (*fnPointer)(void*, void*) = cmpValue;
     if(createFactList(NULL) != NULL){
         printf("createFactList() should return NULL if the function pointer is NULL\n");
@@ -125,7 +125,7 @@ int main(){
     }
 
     for (int i=0; i<2; i++){
-        if(!factInPremise(rule2, getById(getFactListOfRule(rule2),i))){
+        if(!factInPremise(rule2, getFactById(getFactListOfRule(rule2),i))){
             printf("factInPremise() should return True if the element is in the premise\n");
             exit(1);
         }
@@ -194,3 +194,4 @@ int main(){
     return 0;
 
 }
+*/

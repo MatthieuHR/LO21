@@ -16,4 +16,5 @@ add_executable(LO21 exemple/main.c
         src/Rules.c
         test.c
         test.c
+        src/ExpertSys.c
 )
