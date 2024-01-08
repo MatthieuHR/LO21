@@ -353,7 +353,7 @@ Cette fonction permet de savoir si deux règles sont égales en comparants leurs
 ````
 function isEqualsRule(rule1:Rule, rule2:Rule):Boolean
 Start
-    If not isEmpty(rule1) ANS not isEmpty(rule2) && head(facts(rule1)) = head(facts(rule2)) AND conclusion(rule1) = conclusion(rule2) Then
+    If not isUndefined(rule1) ANS not isundifined(rule2) && head(facts(rule1)) = head(facts(rule2)) AND conclusion(rule1) = conclusion(rule2) Then
         point1:ElmOfPremise <- head(premise(rule1))
         While not isEmpty(point1) Do
             If not factInPremise(rule2, premise(point1)) Then
@@ -433,8 +433,8 @@ Stat
         If isEmpty(head(premise(rule))) Then
             head(premise(rule)) = newl
             tail(premise(rule)) = newl
-        EndIf
-        If isEmpty(premise(rule)) Then
+        
+        Else 
             next(tail(premise(rule))) <- newl
             tail(premise(rule)) <- newl
         EndIf
@@ -485,9 +485,9 @@ Cette fonction permet de retirer un fait de la prémisse en fonction de son `id`
 * `point` est l'élément que l'on compare actuellement (sauf pour la tete de liste).
 >La fonction renvoie la règle modifiée.
 ````
-function removeFromPremise(rule:Rule, id:LongInteger):Rule
+function removeFromPremiseById(rule:Rule, id:LongInteger):Rule
 Start
-    If not isUndefined(rule) AND not isUndefined(premise) Then
+    If not isUndefined(rule) AND id >=0 AND last_id(premise(rule)) Then
     If not isUndefined(head(premise(rule))) Then
         point:ElmOfPremise <- head(premise(rule))
         If id(point) = id Then
@@ -521,7 +521,7 @@ Cette fonction permet de mettre à jour la conclusion d'une règle.
 ````
 function setConclusion(rule:Rule, conclusion:Type):Rule
 Start
-    If not isEmpty(rule) AND isPresentInFactList(facts(rule), conclusion) Then
+    If not isUndifined(rule) AND isPresentInFactList(facts(rule), conclusion) AND not factInPremise( rule, conclusion) Then
         conclusion(rule) <- conclusion
     EndIf
     setConclusion <- rule
