@@ -68,10 +68,10 @@ Une `FactList` est une liste de faits qui servent de base pour les autres types.
 
 Nous avons choisi cette implementation car la structure d'une **pile** est suffisante dans ce cas, comme aucune obligation d'implémentation était spécifiée et cela rend les algorithmes plus simples. De plus seuls les champs essentiels sont présents. Le champ `last_id` pourrait être remplacé par une accession à l'`id` du premier élément de la liste, mais cela complique le code et le champ `last_id` aura toujours une valeur ce qui évite des vérifications avec un access à la tete de liste.
 
-Les trois dernier champs sont des fonctions que l'utilisatuer doit renseigner afin de garrantir le fonctionnement du système expert. Nous allons détailleur leurs 3 roles :
-* `cmpValue` permet de définir comment comparer deux élément par valeur. Cette fonction est utilile pour savoir si un fait ayant déja les même valeurs n'est pas présent dans une liste avant de l'ajouter. Doit renvoyer `True` s'ils sont égaux et `False` sinon. Le prototype est le suivant : `theFunction(fact1:Type , fact2:Type):Boolean`
-* `isEmpty` permet de définir si un élémnet est vide donc si ses champs sont vide ou quels champs doivent l'être. Doit renvoyer `True` s'il est vide et `False` sinon. Le prototype est le suivant : `theFunction(fact:Type):Boolean`
-* `freeValue` doit permettre de libérer entièrement les champs et l'élément lui même. Ne renvoie rien. Le prototype est le suivant : `theFunction(fact:Type):UNDEFINED`
+Les trois derniers champs sont des fonctions que l'utilisateur doit renseigner afin de garantir le fonctionnement du système expert. Nous allons détailler leurs 3 roles :
+* `cmpValue` permet de définir comment comparer deux éléments par valeur. Cette fonction est utilisée pour savoir si un fait ayant déja les mêmes valeurs n'est pas présent dans une liste avant de l'ajouter. Doit renvoyer `True` s'ils sont égaux et `False` sinon. Le prototype est le suivant : `theFunction(fact1:Type , fact2:Type):Boolean`
+* `isEmpty` permet de définir si un élément est vide donc si ses champs sont vides ou quels champs doivent l'être. Doit renvoyer `True` s'il est vide et `False` sinon. Le prototype est le suivant : `theFunction(fact:Type):Boolean`
+* `freeValue` doit permettre de libérer entièrement les champs et l'élément lui-même. Ne renvoie rien. Le prototype est le suivant : `theFunction(fact:Type):UNDEFINED`
 
 ---
 ### `ElmOfFact`
@@ -101,7 +101,7 @@ Nous avons choisi cette implémentation, car un accès en queue est utile pour l
 
 >[!FACT]
 >
->Nous aurions prédérer une pile car garde l'avantage de l'ajout en `o(1)` et plus simple mais le sujet nous imposer une liste.
+>Nous aurions préféré une pile, car garde l'avantage de l'ajout en `o(1)` et plus simple, mais le sujet nous imposer une liste.
 
 ---
 ### `ElmOfPremise`

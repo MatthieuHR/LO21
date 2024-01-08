@@ -583,9 +583,9 @@ End
 
 ---
 ### `isRuleAddable`
-Cette fonction permet de savoir si une règle est ajoutable à une base de connaissance (`DB`).
+Cette fonction permet de savoir si une règle est **addable** à une base de connaissance (`DB`).
 * `rule` est la règle que l'on souhaite ajouter.
->La fonction renvoie un `Boolean` qui vaut `True` si la règle est ajoutable, `False` sinon.
+>La fonction renvoie un `Boolean` qui vaut `True` si la règle est **addable**, `False` sinon.
 ````
 function isRuleAddable(rule:Rule):Boolean
 Start
@@ -978,7 +978,7 @@ Cette fonction permet de réaliser un système expert.
 * `factsToTset` est la liste de fait à tester.
 * `resultFacts` est la liste de fait résultat.
 * `db` est la base de connaissance.
-* `current_elm_of_db` est l'éélment de `db` que l'ont vérifie.
+* `current_elm_of_db` est l'élément de `db` que l'ont vérifié.
 * `current_premise` est l'élément de la prémisse que l'on teste actuellement.
 * `previous_premise` est l'élément de la prémisse avant `current_premise`
 * `current_fact` est le fait que l'on compare actuellement.

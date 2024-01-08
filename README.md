@@ -15,7 +15,7 @@ Bonjour, nous avons eu l'occasion de mener à bien un projet ayant pour objectif
 
 >[!NOTE]
 >
->Pour en apprendre plus sur le fonctionnement de nimporte quelle système expert vous avez a votre disposition [cette page wikipédia](https://en.wikipedia.org/wiki/Expert_system).
+>Pour en apprendre plus sur le fonctionnement de n'importe quels systèmes experts, vous avez à votre disposition [cette page wikipédia](https://en.wikipedia.org/wiki/Expert_system).
 
 
 ## Comment faire fonctionner le projet

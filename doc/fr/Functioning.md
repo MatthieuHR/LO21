@@ -35,7 +35,7 @@ int main(){
 `````
 Ici `elm` est utilisable par notre système expert.
 
-Il vous faut aussi définir des pointeurs de fonction pour les différentes fonctions présentes dans les champs d'une liste de fait. Pour cela, il vous suffit de suivre cet exemple pour le champs `cmpValue` de la structure `FactList`:
+Il vous faut aussi définir des pointeurs de fonction pour les différentes fonctions présentes dans les champs d'une liste de fait. Pour cela, il vous suffit de suivre cet exemple pour le champ `cmpValue` de la structure `FactList`:
 `````c
 #include <stdlib.h>
 #include <DB.h>
@@ -130,7 +130,7 @@ Il y a aussi des fonctions qui intéragissent avec le type `DB` :
 * `isDBEmpty(db:DB):Boolean` qui renvoie un `Boolean` et dit si la base de connaissance est vide.
 * `isPresentInDB(db:DB, fact;void*):Boolean` qui renvoie un `Boolean` et dit si le fait est présent dans la base de connaissance par rapport à l'objet lui-même.
 * `isAlreadyInDB(db:DB, fact:void*):Boolean` qui renvoie un `Boolean` et dit si le fait est présent dans la base de connaissance par rapport à ses champs.
-* `isRuleAddable(db:DB, rule:Rule):Boolean` qui renvoie un `Boolean` et dit si la règle est ajoutable dans la base de connaissance.
+* `isRuleAddable(db:DB, rule:Rule):Boolean` qui renvoie un `Boolean` et dit si la règle est **addable** dans la base de connaissance.
 * `getRuleById(db:DB, id:LongInteger):Rule` qui renvoie la règle associée à l'id.
 
 >Pour plus de détail sur les fonctions merci de regarder les algorithms commenter [ici](Alogrithm.md)

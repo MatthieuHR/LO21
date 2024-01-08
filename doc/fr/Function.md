@@ -18,7 +18,7 @@ Cette partie sera traitée en fonctions des fichiers `.h` et chaque fichier succ
 ## Fichier `FactList.h`
 
 ---
-### Les fontion de test : 
+### Les fonctions de test : 
 
 ---
 `Boolean isEmptyProperty(FactList facts, void* prop)` : dit si un fait (`prop`) est vide. Renvoie `True` si est vide, `False` sinon. Une `Property` est vide si elle est indéfinie ou si le résultat de la fonction `isEmpty` du champ du meme nom est `True`.
@@ -32,7 +32,7 @@ Cette partie sera traitée en fonctions des fichiers `.h` et chaque fichier succ
 `Boolean isEmptyFactList(FactList list)` : permet de savoir si une liste de fait (`list`) est vide. Une liste de fait est vide si elle est indéfinie ou sa tete est indéfinie. La fonction renvoie `True` si la liste est vide et `False` sinon.
 
 
-### Les fonction pour manipuler une `FactList` :
+### Les fonctions pour manipuler une `FactList` :
 
 ---
 `FactList createFactList(Boolean (*cmpValue)(void*, void*), Boolean (*isEmpty)(void *), void(*freeValue)(void*)))` : revoie un objet de type `FactList` avec tous ses champs `NULL` sauf `cmpValue` qui est remplie avec le paramètre `cmpValue`,`isEmpty` qui est remplie avec le paramètre `isEmpty`,`freeValue` qui est remplie avec le paramètre `freeValue` et `last_id` qui vaut `-1`. Sert à créer un objet utilisable pour les autres fonctions. La fonction renvoie `NULL` si un des trois parameters est `NULL`.
@@ -76,15 +76,15 @@ Cette partie sera traitée en fonctions des fichiers `.h` et chaque fichier succ
 ### Les fonctions de test :
 
 ---
-`Boolean isEqualsRule(Rule rule1, Rule rule2)` : permet de savoir si deux règles (`rule1` et `rule2`) sont identiques par rapport à tous leurs champs (`conclusion`, `premise`, `facts`) et les prémisses sont égale si toutes les faits d'une prémisses sont dans l'autres prémisse et incersement (les `id` peuvent différer). La fonction renvoie `True` si les règles sont identiques et `False` sinon.
+`Boolean isEqualsRule(Rule rule1, Rule rule2)` : permet de savoir si deux règles (`rule1` et `rule2`) sont identiques par rapport à tous leurs champs (`conclusion`, `premise`, `facts`) et les prémisses sont égales si tous les faits d'une prémisse sont dans l'autre prémisse et inversement (les `id` peuvent différer). La fonction renvoie `True` si les règles sont identiques et `False` sinon.
 
 `Boolean isUndefinedRule(Rule rule)` : permet de savoir si une règle (`rule`) est indéfinie. Une règle est indéfinie si elle pointe sur `NULL`. La fonction renvoie `True` si la règle est définie et `False` sinon.
 
 `Boolean isEmptyRule(Rule rule)` : permet de savoir si une règle (`rule`) est vide. Une règle est vide si elle pointe sur `NULL` ou si sa prémise est vide dont que le champ `head` de la prémise est indéfinie. La fonction renvoie `True` si la règle est vide et `False` sinon.
 
-`Boolean factInPremise(Premise premise, void* prop)` : permet de savoir si un fait (`prop`) est dans une prémise (`premise`). La fonction renvoie `True` si le fait est dans la prémise et `False` sinon. La fonction est récursive. Un fait idéfinie ne peut être dans une prémisse.
+`Boolean factInPremise(Premise premise, void* prop)` : permet de savoir si un fait (`prop`) est dans une prémise (`premise`). La fonction renvoie `True` si le fait est dans la prémise et `False` sinon. La fonction est récursive. Un fait indéfini ne peut être dans une prémisse.
 
-`Boolean isPremiseEmpty(Rule rule)` : permet de savoir si une `prémise` d'une règle (`rule`) est vide donc si sa tête est inéfinie. La fonction renvoie `True` si la prémise est vide et `False` sinon. La fonction est récursive.
+`Boolean isPremiseEmpty(Rule rule)` : permet de savoir si une `prémise` d'une règle (`rule`) est vide donc si sa tête est infinite. La fonction renvoie `True` si la prémise est vide et `False` sinon. La fonction est récursive.
 
 `Boolean isUndefinedConclusion(Rule rule)` : permet de savoir si une `conclusion` d'une règle (`rule`) est indéfinie (pointe sur `NULL`). La fonction renvoie `True` si la conclusion est définie et `False` sinon.
 
@@ -94,15 +94,15 @@ Cette partie sera traitée en fonctions des fichiers `.h` et chaque fichier succ
 ---
 `Rule createEmptyRule(FactList facts)` : renvoie un objet de type `Rules` avec tous ces champs `NULL` sauf `facts` qui vaut le paramètre `facts`. Renvoi `NULL` si `facts` est indéfinie.
 
-`Rule addFactInPremise(Rule rule, void* premise)` : permet d'ajouter un fait (`premise`) dans le champ `premise` d'une règle (`rule`). Le fait n'est pas ajouté s'il n'est pas dans la liste de fait  ou `rule` est indéfinie ou le fait est indéfinie ou si la conconclusion est le fait. La fonction renvoie quoi qu'il arrive `rule` modifier ou non.
+`Rule addFactInPremise(Rule rule, void* premise)` : permet d'ajouter un fait (`premise`) dans le champ `premise` d'une règle (`rule`). Le fait n'est pas ajouté s'il n'est pas dans la liste de fait ou `rule` est indéfinie ou le fait est indéfinie ou si la conclusion est le fait. La fonction renvoie quoi qu'il arrive `rule` modifier ou non.
 
 `Rule removeFromPremise(Rule rule, void* premise)` : permet de supprimer un fait (`premise`) dans le champ `premise` d'une règle (`rule`). La fonction renvoie quoi qu'il arrive `rule` modifier ou non.
 
 `Rule removeFromPremiseById(Rule rule, long id)` : permet de supprimer un fait (`premise`) dans le champ `premise` d'une règle (`rule`) en fonction de son champ `id`. La fonction renvoie quoi qu'il arrive `rule` modifier ou non.
 
-`Rule setConclusion(Rule rule, void* conclusion)` : permet de définir une conclusion (`conclusion`) dans le champ `conclusion` d'une règle (`rule`). La fonction renvoie quoi qu'il arrive `rule` modifier ou non. Le fait n'est pas ajouté s'il n'est pas dans la liste de fait ou vide indéfinie ou si la règles est indéfinie ou si la conclusion est présent dans la prémisse.
+`Rule setConclusion(Rule rule, void* conclusion)` : permet de définir une conclusion (`conclusion`) dans le champ `conclusion` d'une règle (`rule`). La fonction renvoie quoi qu'il arrive `rule` modifier ou non. Le fait n'est pas ajouté s'il n'est pas dans la liste de fait ou vide indéfinie ou si la règle est indéfinie ou si la conclusion est présent dans la prémisse.
 
-`Rule removeConclusion(Rule rule)` : permet de rendre inféfinie la concluison d'une règle. Renvoie la règle avec le champs `conclusion` indéfinie.
+`Rule removeConclusion(Rule rule)` : permet de rendre indéfinie la conclusion d'une règle. Renvoie la règle avec le champ `conclusion` indéfinie.
 
 `FactList freeRule(Rule rule)` : permet de libérer la mémoire allouée à une règle. La fonction `free()` tous les éléments de la prémise et la conclusion. Renvoie la liste de fait associée à la règle. Revoie `NULL` si la mèmoire n'a pas pu être libérée. Ne libère pas les faits.
 
@@ -120,16 +120,16 @@ Les fonctions pour parcourir une `Rule` :
 
 `void* getIdOfPremise(ElmOfPremise* elm)` : permet d'obtenir l'id d'un élément de prémise (`elm`). La fonction renvoie un pointeur sur l'id de type `long`. Renvoie `-1` si `elm` est `NULL`.
 
-`FactList getFactListOfRule(Rule rule)` : permet d'obtenir la liste de fait associée à une règle (`rule`). La fonction renvoie un pointeur sur la liste de fait de type `FactList` et `NULL` si la règle est indéfinie. Normalement si la règle a été correctement créer avec la fonction `createEmptyRule()` le champs `facts` n'est jamais vide.
+`FactList getFactListOfRule(Rule rule)` : permet d'obtenir la liste de fait associée à une règle (`rule`). La fonction renvoie un pointeur sur la liste de fait de type `FactList` et `NULL` si la règle est indéfinie. Normalement si la règle a été correctement créer avec la fonction `createEmptyRule()` le champ `facts` n'est jamais vide.
 
 ## Fichier `DB.h`
 
 ---
 
-### Les fonvtion de test :
+### Les fonctions de test :
 
 ----
-`Bolean isRuleAddable(Rule rule)` : permet de savoir si une règle est prètre à être ajouter à une base de connaissance. Une règle est ajoutable si elle n'est pas vide et si sa liste de fait est définie.
+`Bolean isRuleAddable(Rule rule)` : permet de savoir si une règle est prête à être ajoutée à une base de connaissance. Une règle est **addable** si elle n'est pas vide et si sa liste de fait est définie.
 
 `Boolean isUndefinedDB(DB db)` : permet de savoir si une base de connaissance (`db`) est indéfinie. Une base de connaissance est indéfinie si elle pointe sur `NULL`. La fonction renvoie `True` si la base de connaissance est définie et `False` sinon.
 
@@ -146,7 +146,7 @@ Les fonctions pour parcourir une `Rule` :
 
 `DB createEmptyDB(FactList facts)` : permet de créer une base de connaissance vide avec une liste de fait associée (`facts`). La fonction renvoie un pointeur sur la base de connaissance de type `DB`. Renvoie `NULL` si la liste de fait est indéfinie.
 
-`DB addRule(DB db, Rule rule)` : permet d'ajouter une règle (`rule`) à une base de connaissance (`db`). La fonction renvoie quoi qu'il arrive `db` modifier ou non. La fonction ne fait rien si la règle est vide ou la base de donnée. Une règle qui existe déja dans la base de connaisance n'est pas ajouter. De plus la liste de faits de la règle et base de connaissance doit être la même.
+`DB addRule(DB db, Rule rule)` : permet d'ajouter une règle (`rule`) à une base de connaissance (`db`). La fonction renvoie quoi qu'il arrive `db` modifier ou non. La fonction ne fait rien si la règle est vide ou la base de donnée. Une règle qui existe déja dans la base de connaissance n'est pas ajoutée. De plus la liste de faits de la règle et base de connaissance doit être la même.
 
 `Rule removeARule(DB db, Rule rule)` : permet de supprimer une règle (`rule`) d'une base de connaissance (`db`). La fonction renvoie quoi qu'il arrive `db` modifier ou non. La fonction ne fait rien si la règle est vide ou la base de donnée.
 
@@ -168,7 +168,7 @@ Les fonctions pour parcourir une `Rule` :
 ### Les fonctions pour parcourir une `DB` :
 
 ---
-`ElmOfDB* getHeadRule(DB db)` : permet d'obtenir la première règle (`Rule`) de la base de connaissance (`db`). La fonction renvoie un pointeur sur le premier élément de la base de connaissance de type `ElmOfDB*` et `NULL` si le champs n'existe pas.
+`ElmOfDB* getHeadRule(DB db)` : permet d'obtenir la première règle (`Rule`) de la base de connaissance (`db`). La fonction renvoie un pointeur sur le premier élément de la base de connaissance de type `ElmOfDB*` et `NULL` si le champ n'existe pas.
 
 `ElmOFDB* getNextRule(ElmOfDB* rule)` : permet d'obtenir la règle suivante (`Rule`) d'une règle (`rule`). La fonction renvoie un pointeur sur la règle suivante de type `ElmOfDB*`. Renvoie `NULL` si `rule` est indéfinie.
 
@@ -183,6 +183,3 @@ Les fonctions pour parcourir une `Rule` :
 
 ---
 `int expertSystem(FactList factsToTest, FactList resultFacts, DB knowledgeBase)` : permet de lancer l'expert système. La fonction renvoie `0` si tout s'est bien passé, `1` si `factsToTest` est vide, `2` si `resultFacts` est non vide, `3` si `knowledgeBase` est vide.
-
----
-C
