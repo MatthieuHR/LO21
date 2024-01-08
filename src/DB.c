@@ -85,7 +85,7 @@ Boolean isAlreadyInDB(DB db, Rule rule){
 * @return The newly created DB, or NULL if the FactList is empty.
 */
 DB createEmptyDB(FactList facts){
-    if(!isEmptyFactList(facts)){
+    if(!isUndefinedFactList(facts)){
         DB new = (DB)malloc(sizeof(PreDB));
         new->tail=NULL;
         new->head=NULL;

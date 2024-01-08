@@ -43,8 +43,6 @@ Notre programme ne semble pas avoir de fuite mémoire. Nous avons aussi testé n
 > 
 > Cependant, les fuites pendant l'implémentation ont été nombreuses et nous vous conseillons de faire attention à ce point et d'utiliser Valgrind pour vérifier votre programme.
 
-Nous pensons aussi que le champ `last_id` des listes de faits peut différer entre les règles et base de connaissances car ce n'est pas un pointeur mais ous n'avons pas eu le temps de vérifier ce point.
-
 ## Conclusion :
 
 ---

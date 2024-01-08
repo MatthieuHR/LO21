@@ -978,7 +978,11 @@ Cette fonction permet de réaliser un système expert.
 * `factsToTset` est la liste de fait à tester.
 * `resultFacts` est la liste de fait résultat.
 * `db` est la base de connaissance.
+* `current_elm_of_db` est l'éélment de `db` que l'ont vérifie.
+* `current_premise` est l'élément de la prémisse que l'on teste actuellement.
+* `previous_premise` est l'élément de la prémisse avant `current_premise`
 * `current_fact` est le fait que l'on compare actuellement.
+* ``
 * 
 >La fonction revoit un entier en fonction de sa réussite ou échec.
 ````
@@ -996,11 +1000,11 @@ Start
     
     While not isEmpty(factToTest) AND isUndefined(fact(head(factToTest))) Do
         Type current_fact <- fact(head(factToTest))
-        ruleNode:ElmOfDB <- head(db)
+        current_elm_of_db:ElmOfDB <- head(db)
         
-        While not isUndefined(ruleNode) Do
-        is_rule_find:Boolean <- False
-            current_rule:Rule <- rule(ruleNode)
+        While not isUndefined(current_elm_of_db) Do
+            is_rule_find:Boolean <- False
+            current_rule:Rule <- rule(current_elm_of_db)
             current_node:ElmOfPremise <- head(premise(current_rule))
             previous_node:ElmOfPremise <- UNDEFINED
             
@@ -1020,19 +1024,17 @@ Start
                     free(current_node)
                     current_node <- NULL
                     If isPremiseEmpty(current_rule) Then
-                        If isUndefined(conclusion(current_rule)) Then
-                            resultFacts <- addFact(resultFacts, conclusion(current_fact))
-                            factsToTest <- addFact(factsToTest, conclusion(current_fact))
-                            db <- removeARuleAndFree(db, current_rule)
-                        EndIf
+                        resultFacts <- addFact(resultFacts, conclusion(current_fact))
+                        factsToTest <- addFact(factsToTest, conclusion(current_fact))
+                        db <- removeARuleAndFree(db, current_rule)
                     EndIf
                 Else
                     previous_node <- current_node
-                    ruleNode <- next(ruleNode)
+                    current_elm_of_db <- next(current_elm_of_db)
                 EndIf
             Done
             If not is_rule_find Then
-                ruleNode <- next(ruleNode)
+                current_elm_of_db <- next(current_elm_of_db)
             EndIf
         Done
     factsToTest <- removeAFacts(factsToTest, current_fact)    

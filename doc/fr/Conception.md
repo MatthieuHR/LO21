@@ -41,12 +41,16 @@ C'est pour quoi nous n'avons attribué aucun type défini à cette donnée. À l
 >La donnée est alors représentée en C par un pointeur sur void : `void*`
 
 Nous avons tous de meme une fonction qui interagissent avec ce type non défini :
-* `isUndefinedProperty(fact)` qui dit si le fait est indéfinie.
+* `isUndefinedProperty(fact)` qui dit si le fait en paramètre (`fact`) est indéfinie.
 
 
 ## Types implémentés
 
 Voici un récapitulatif des types implémenté et leurs utilités (sans distinctions entre pointeur et type). Nous avons aussi décrété que toutes ces structures portrait être indéfinie (`NULL` en C).
+
+>[!NOTE]
+>
+>`Type` désigne le type de notre fait.
 
 ---
 ### `FactList`
@@ -54,27 +58,32 @@ Voici un récapitulatif des types implémenté et leurs utilités (sans distinct
 Ce type est une **pile** de `ElmOfFact` de taille non définit.
 
 Il y a cinq champs :
-* `head` le première élement de la liste.
-* `last_id` qui est le dernier `id` donnée à un `ElmOfFact`. Par défaut sa valeur est à -1 quand aucun `id` n'a été distribuer.
-* `cmpValue` qui est une fonction de comparaison entre deux faits
-* `isEmpy` qui est une fonction qui dit si la liste est vide.
-* `freeValue` qui est une fonction qui libère la mémoire d'un fait
+* `head:ElmOfFact` le première élement de la liste.
+* `last_id:LongInteger` qui est le dernier `id` donnée à un `ElmOfFact`. Par défaut sa valeur est à -1 quand aucun `id` n'a été distribuer.
+* `cmpValue:function` qui est une fonction de comparaison entre deux faits
+* `isEmpy:function` qui est une fonction qui dit si la liste est vide.
+* `freeValue:function` qui est une fonction qui libère la mémoire d'un fait
 
 Une `FactList` est une liste de faits qui servent de base pour les autres types.
 
 Nous avons choisi cette implementation car la structure d'une **pile** est suffisante dans ce cas, comme aucune obligation d'implémentation était spécifiée et cela rend les algorithmes plus simples. De plus seuls les champs essentiels sont présents. Le champ `last_id` pourrait être remplacé par une accession à l'`id` du premier élément de la liste, mais cela complique le code et le champ `last_id` aura toujours une valeur ce qui évite des vérifications avec un access à la tete de liste.
 
+Les trois dernier champs sont des fonctions que l'utilisatuer doit renseigner afin de garrantir le fonctionnement du système expert. Nous allons détailleur leurs 3 roles :
+* `cmpValue` permet de définir comment comparer deux élément par valeur. Cette fonction est utilile pour savoir si un fait ayant déja les même valeurs n'est pas présent dans une liste avant de l'ajouter. Doit renvoyer `True` s'ils sont égaux et `False` sinon. Le prototype est le suivant : `theFunction(fact1:Type , fact2:Type):Boolean`
+* `isEmpty` permet de définir si un élémnet est vide donc si ses champs sont vide ou quels champs doivent l'être. Doit renvoyer `True` s'il est vide et `False` sinon. Le prototype est le suivant : `theFunction(fact:Type):Boolean`
+* `freeValue` doit permettre de libérer entièrement les champs et l'élément lui même. Ne renvoie rien. Le prototype est le suivant : `theFunction(fact:Type):UNDEFINED`
+
 ---
 ### `ElmOfFact`
 
 Ce type est composé de trois champs :
-* `id` qui est l'identifiant unique de cet élément.
-* `fact` qui est de type `Property` et qui représente un **fait**, une donnée.
-* `next` qui représente l'élément suivant de la liste.
+* `id:LongInteger` qui est l'identifiant unique de cet élément.
+* `fact:Type` qui est de type `Property` et qui représente un **fait**, une donnée.
+* `next:ElmOfFact` qui représente l'élément suivant de la liste.
 
 Un `ElmOfFact` représenté un élément d'une liste de type `FactList`.
 
-Nous avons choisi cette implémentation, car une liste simplement chainée suit. Le champ `id` est juste là pour rendre plus pratique l'utilisation de la structure `FactList` par un humain, comme aucune fonction ne se sert comme référence.
+Nous avons choisi cette implémentation, car une liste simplement chainée suit. Le champ `id` est juste là pour rendre plus pratique l'utilisation de la structure `FactList` par un humain, comme aucune fonction de base ne se sert comme référence.
 
 ---
 ### `Premise`
@@ -82,21 +91,25 @@ Nous avons choisi cette implémentation, car une liste simplement chainée suit.
 Ce type est une liste de `ElmOfPremise` de taille non définit. 
 
 Il possède deux champs :
-* `head` qui permet d'accéder au premier élément.
-* `tail` qui permet d'accéder au dernier élément.
-* `last_id` qui est le dernier `id` donnée à un `ElmOfPremise` et il vaut `-1` quand aucun élément n'a été ajoutée.
+* `head:ElmOfPremise` qui permet d'accéder au premier élément.
+* `tail:ElmOfPremise` qui permet d'accéder au dernier élément.
+* `last_id:LongInteger` qui est le dernier `id` donnée à un `ElmOfPremise` et il vaut `-1` quand aucun élément n'a été ajoutée.
 
 Une `Premise` est une liste de fait (`Property`) lier par la condition `ET`.
 
-Nous avons choisi cette implémentation, car un accès en queue est utile pour les obligations liées au projet ce qui permet de faire un ajout en queue en `o(1)`. De plus nous gardons un accès en tête, puisque la liste est simplement chainée.
+Nous avons choisi cette implémentation, car un accès en queue est utile pour les obligations liées au projet ce qui permet de faire un ajout en queue en `o(1)`. De plus nous gardons un accès en tête, puisque la liste est simplement chainée. 
+
+>[!FACT]
+>
+>Nous aurions prédérer une pile car garde l'avantage de l'ajout en `o(1)` et plus simple mais le sujet nous imposer une liste.
 
 ---
 ### `ElmOfPremise`
 
 Ce type est composé de deux champs :
-* `premise` qui est de type `Property` et qui représente un fait, une donnée.
-* `id` qui est l'identifiant unique de cet élément.
-* `next` qui représente l'élément suivant de la liste.
+* `premise:Type` qui est de type `Property` et qui représente un fait, une donnée.
+* `id:LongInteger` qui est l'identifiant unique de cet élément.
+* `next:ElmOfPremise` qui représente l'élément suivant de la liste.
 
 Un `ElmOfPremise` représenté un élément d'une liste de type `Premise`.
 
@@ -106,9 +119,9 @@ Nous avons choisi cette implémentation, car rien de plus est nécessaire pour c
 ### `Rule`
 
 Ce type est composé de trois champs :
-* `premise` de type `Premise` qui représente un ensemble de conditions à satisfaire.
-* `conclusion` de type `Property` qui est le résultat si la prémisse est satisfaite.
-* `facts` qui est la liste de fait (`FactList`) sur laquelle se base la règle
+* `premise:Premise` de type `Premise` qui représente un ensemble de conditions à satisfaire.
+* `conclusion:Type` de type `Property` qui est le résultat si la prémisse est satisfaite.
+* `facts:FactList` qui est la liste de fait (`FactList`) sur laquelle se base la règle
 
 Et représente une règle à satisfaire.
 
@@ -120,9 +133,9 @@ Nous avons choisi cette représentation, car l'accès à la liste de fait est in
 Ce type est une liste de `ElmOfDB` de taille non définit. 
 
 Il est composé de quatre champs :
-* `head` qui permet d'accéder au premier élément.
-* `tail` qui permet d'accéder au dernier élément.
-* `last_id` qui est le dernier `id` donnée à un `ElmOfDB` et il vaut `-1` quand aucun élément n'a été ajoutée.
+* `head:ElmOfDB` qui permet d'accéder au premier élément.
+* `tail:ElmOfDB` qui permet d'accéder au dernier élément.
+* `last_id:LongInteger` qui est le dernier `id` donnée à un `ElmOfDB` et il vaut `-1` quand aucun élément n'a été ajoutée.
 * `facts` qui est la liste de fait (`FactList`) sur laquelle se base la base de connaissance.
 
 Une `DB` est liste de règle (`Rule`) afin de pouvoir faire résonner notre système expert.
@@ -133,9 +146,9 @@ Nous avons choisi cette implementation car un accès en queue est utile pour res
 ### `ElmOfDB`
 
 Ce type est composé de trois champs :
-* `rule` qui est de type `Rule` et qui représente une règle.
-* `next` qui représente l'élément suivant de la liste.
-* `id` qui est l'identifiant unique de cet élément
+* `rule:Rule` qui est de type `Rule` et qui représente une règle.
+* `next:ElmOfDB` qui représente l'élément suivant de la liste.
+* `id:LongIntegr` qui est l'identifiant unique de cet élément
 
 Un `ElmOfDB` représenté un élément d'une liste de type `DB`.
 
