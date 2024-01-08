@@ -466,7 +466,7 @@ Cette fonction permet de retirer un fait de la prémisse en fonction de son `id`
 ````
 function removeFromPremiseById(rule:Rule, id:LongInteger):Rule
 Start
-    If not isUndefined(rule) AND id >=0 AND last_id(premise(rule)) Then
+    If not isUndefined(rule) AND id >=0 AND last_id(premise(rule)) <= id Then
     If not isUndefined(head(premise(rule))) Then
         point:ElmOfPremise <- head(premise(rule))
         If id(point) = id Then
