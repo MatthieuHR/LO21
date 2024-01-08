@@ -383,27 +383,6 @@ Cette fonction sert à définir récursivement si un fait est dans une prémisse
 ````
 function factInPremise(premise:Rule, prop:Type):Boolean
 Start
-    If isUndefined(rule) OR isUndefined(head(premise(rule))) OR isUndefined(prop) Then
-        factInPremise <- False
-    EndIf
-    If premise(head(premise(rule))) = prop Then
-        factInPremise <- True
-    Endif
-    new:Rule <- rule
-    head(premise(new) <- next(head(premise(rule)))
-    factInPremise <- factInPremise(new, prop)
-End
-````
-
----
-### `factInPremise`
-Cette fonction sert à définir récursivement si un fait est dans une prémisse de règle.
-* `rule` est la règle dont on veut savoir si le fait y est contenu dans la prémisse.
-* `prop` est le fait que l'on cherche.
->La fonction renvoie `True` si la propriété est comprise, `False` sinon.
-````
-function factInPremise(premise:Rule, prop:Type):Boolean
-Start
     If isEmpty(rule) OR isEmpty(head(premise(rule))) OR isEmpty(prop) Then
         factInPremise <- False
     EndIf
@@ -544,6 +523,28 @@ End
 ````
 
 ---
+### `getPremiseById`
+Cette fonction permet de récupérer un élément d'une prémisse en fonction de son `id`.
+* `rule` est la règle dont on souhaite extraire un élément.
+* `id` est l'identifiant unique dont on veut la structure associée.
+* `point` est un pointeur pour parcourir la prémisse.
+>La fonction renvoie un fait de type `Type`.
+````
+function getPremiseById(rule:Rule, id:LongInteger):Type
+Start
+    If not isEmpty(rule) AND id <= last_id(rule) AND id >= 0 Then
+        point:ElmOfPremise <- head(premise(rule))
+        While not isEmpty(point) Do
+            If id(point) = id Then
+                getPremiseById <- premise(point)
+            EndIf
+        Done
+    EndIf
+    getPremiseById <- UNDEFINED
+End
+````
+
+---
 ### `freeRule`
 Cette fonction permet de libérer la mémoire utilisée par une règle en cas de besoin, par exemple en cas d'erreur ou à la fin du programme.
 * `rule` est la règle que l'on souhaite vider.
@@ -565,6 +566,8 @@ Start
         rtn:FactList <- facts(rule)
         free(rule)
         freeRule <- rtn
+    EndIf
+    freeRule <- UNDEFINED
 End
 ````
 ## Les algorithmes avec des `DB`
@@ -603,7 +606,7 @@ Cette fonction permet de savoir si une règle appartient à une base de connaiss
 ````
 function isPresentInDB(db:DB, rule:Rule):Boolean
 Start
-    If not isEmpty(db) AND not isEmpty(rule) AND not isEmpty(head(db)) Then
+    If not isUndefined(rule) AND not isEmpty(db) Then
         point:ElmOfDB <- head(db)
         While not isEmpty(point) Do
             If rule(point) = rule Then
@@ -626,7 +629,7 @@ Cette fonction permet de savoir si une règle appartient à une base de connaiss
 ````
 function isAlreadyInDB(db:DB, rule:Rule):Boolean
 Start
-    If not isEmpty(db) AND not isEmpty(rule) AND not isEmpty(head(db)) Then
+    If not not isUndefined(rule) AND not isEmpty(db) Then
         point:ElmOfDB <- head(db)
         While not isEmpty(point) Do
             If isEqualsRule(rule(point), rule) Then
@@ -661,6 +664,7 @@ Start
             next(tail(db)) <- newl
             tail(db) <- newl
         EndIf
+        last_id(db) <- last_id(db) + 1
     EndIf
     addRuleToDB <- db 
 End
@@ -688,6 +692,7 @@ Start
             next(tail(db)) <- newl
             tail(db) <- newl
         EndIf
+        last_id(db) <- last_id(db) + 1
     EndIf
     addRuleToDB_Strict <- db 
 End
@@ -704,7 +709,7 @@ Cette fonction permet de retirer une règle d'une base de connaissance.
 ````
 function removeARule(db:DB, rule:Rule):DB
 Start
-    If not isEmpty(db) AND not isEmpty(rule) AND not isEmpty(head(db)) Then
+    If not isEmpty(db) AND not isUndefined(rule) Then
         prev:ElmOfDB <- UNDEFINED
         now:ElmOfDB <- head(db)
         While not isEmpty(now) Do
@@ -741,7 +746,7 @@ Cette fonction permet de retirer une règle d'une base de connaissance et de lib
 ````
 function removeARuleAndFree(db:DB, rule:Rule):DB
 Start
-    If not isEmpty(db) AND not isEmpty(rule) AND not isEmpty(head(db)) Then
+    If not isEmpty(db) AND not isUndefined(rule) Then
         prev:ElmOfDB <- UNDEFINED
         now:ElmOfDB <- head(db)
         While not isEmpty(now) Do
@@ -876,7 +881,7 @@ Cette fonction permet de retirer toutes les règles d'une base de connaissance e
 ````
 function removeAllRulesAndFree(db:DB):DB
 Start
-    If not isUndefined(db)  Then
+    If not isEmpty(db)  Then
         point:ElmOfDB <- head(db)
         While not isEmpty(point) Do
             head(db) <- point
@@ -884,10 +889,10 @@ Start
             freeRule(rule(temp))
             free(head(db))
         Done
-        head(db) <- UNDEFINED
-        tail(db) <- UNDEFINED
-        last_id(db) <- -1
     EndIf
+    head(db) <- UNDEFINED
+    tail(db) <- UNDEFINED
+    last_id(db) <- -1
     removeAllRulesAndFree <- db
 End
 ````
@@ -925,7 +930,10 @@ Cette fonction permet de réaliser une copie d'une base de connaissance.
 >La fonction revoit la copie de la db.
 ````
 function copyOfDB(db:DB):DB
-Start 
+Start
+    if isUndefined(db) OR isEpty(fact(db)) Then
+        copyOfDB <- UNDEFINED
+    EndIf
     new_db:DB <- createDB(facts(db))
     point:ElmOfDB <- head(db)
     While not isEmpty(point) Do
@@ -967,6 +975,8 @@ Start
         rtn:FactList <- fact(bd)
         free(db)
         freeDB <- rtn
+    EndIf
+    freeDB <- UNDEFINED
 End
 ````
 

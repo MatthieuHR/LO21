@@ -245,6 +245,25 @@ void* getPremise(ElmOfPremise* elm){
 }
 
 /**
+ * Retrieves the premise field of a rule by its ID.
+ *
+ * @param rule The rule to retrieve the premise from.
+ * @param id The ID of the premise to retrieve.
+ * @return The premise field of the rule, or NULL if the rule is NULL or the premise is not found.
+ */
+void* getPremiseById(Rule rule, long id) {
+    if (!isRuleEmpty(rule) && id >= 0 && id <= rule->premise.last_id) {
+        ElmOfPremise *point = rule->premise.head;
+        while (point != NULL) {
+            if (point->id == id) {
+                return point->premise;
+            }
+        }
+    }
+    return NULL;
+}
+
+/**
  * Returns the first premise element of a rule.
  *
  * @param rule The rule to retrieve the premise from.

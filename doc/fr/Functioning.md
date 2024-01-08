@@ -169,6 +169,7 @@ Pour parcourir une **liste de fait**, il faut utiliser les fonctions suivantes :
 Pour parcourir une **règle**, il faut utiliser les fonctions suivantes :
 * `getHeadOfPremise(rule:Rule):ElmOfPremise` pour récupérer la tête de la liste de prémises.
 * `getNextOfPremise(rule:ElmOfPremise):ElmOfPremise` pour récupérer l'élément suivant de la liste de prémises.
+* `getPremiseById(elm:ElmOfPremise):void*` pour récupérer le fait de l'élément de la prémise en fonction de son `id`.
 * `getPremise(elm:ElmOfPremise):void*` pour récupérer le fait de l'élément de la prémisse.
 * `getCoclusion(rule:Rule):void*` pour récupérer la conclusion de la règle.
 >Pour plus de détail sur les fonctions merci de regarder les implémentations C commenter [ici](Function.md)

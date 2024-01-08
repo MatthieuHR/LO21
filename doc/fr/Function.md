@@ -57,7 +57,7 @@ Cette partie sera traitée en fonctions des fichiers `.h` et chaque fichier succ
 ### Les fonctions pour parcourir une `FactList` :
 
 ---
-`void* getFactById(FactList list, long id)` : permet d'obtenir un pointeur sur le fait souhaité en fonction de son champ `id`. Le paramètre `id` est celui qui doit matcher le champ `id`. Renvoi un fait s'il est trouvé sinon `NULL`.
+`void* getPremiseById(FactList list, long id)` : permet d'obtenir un pointeur sur le fait souhaité en fonction de son champ `id`. Le paramètre `id` est celui qui doit matcher le champ `id`. Renvoi un fait s'il est trouvé sinon `NULL`.
 
 `ElmOfFact* getHeadOfFactList(FactList list)` : permet d'obtenir le premier élément d'une liste de fait (`list`). La fonction renvoie un pointeur sur le premier élément de la liste de fait de type `ElmOfFact*`. Renvoi `NULL` si n'existe pas.
 
@@ -171,6 +171,8 @@ Les fonctions pour parcourir une `Rule` :
 `ElmOfDB* getHeadRule(DB db)` : permet d'obtenir la première règle (`Rule`) de la base de connaissance (`db`). La fonction renvoie un pointeur sur le premier élément de la base de connaissance de type `ElmOfDB*` et `NULL` si le champ n'existe pas.
 
 `ElmOFDB* getNextRule(ElmOfDB* rule)` : permet d'obtenir la règle suivante (`Rule`) d'une règle (`rule`). La fonction renvoie un pointeur sur la règle suivante de type `ElmOfDB*`. Renvoie `NULL` si `rule` est indéfinie.
+
+`Rule getRuleById(DB db, long id)` : permet d'obtenir la règle (`Rule`) souhaitée en fonction de son champ `id` d'une base de connaissance. Le paramètre `id` est celui qui doit matcher le champ `id`. Renvoie un pointeur sur la règle de type `Rule`. Renvoie `NULL` si n'existe pas.
 
 `Rule getRule(ElmOfDB* rule)` : permet d'obtenir la règle (`Rule`) d'un élément de base de connaissance (`rule`). La fonction renvoie un pointeur sur la règle de type `Rule`. Renvoie `NULL` si `rule` est indéfinie.
 

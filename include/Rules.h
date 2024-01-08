@@ -39,6 +39,7 @@ Boolean isUndefinedRule(Rule rule);//
 ElmOfPremise* getHeadOfPremise(Rule rule);//
 ElmOfPremise* nextOfPremise(ElmOfPremise* elm);//
 void* getPremise(ElmOfPremise* elm);//
+void* getPremiseById(Rule rule, long id);//
 void* getConclusion(Rule rule);//
 long getIdOfPremise(ElmOfPremise* elm);//
 FactList getFactListOfRule(Rule rule);//

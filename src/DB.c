@@ -160,7 +160,6 @@ DB removeARule(DB db,Rule rule){
         while (point!=NULL){
             if(point->rule==rule){
                 if(prev==NULL){
-
                     db->head=point->next;
                     if(db->head==NULL){
                         db->tail=NULL;
@@ -472,6 +471,5 @@ long getIdOfRule(ElmOfDB* elm){
             free(db);
             return rtn;
         }
-        free(db);
         return NULL;
     }
