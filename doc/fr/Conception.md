@@ -99,8 +99,9 @@ Une `Premise` est une liste de fait (`Property`) lier par la condition `ET`.
 
 Nous avons choisi cette implémentation, car un accès en queue est utile pour les obligations liées au projet ce qui permet de faire un ajout en queue en `o(1)`. De plus nous gardons un accès en tête, puisque la liste est simplement chainée. 
 
->[!FACT]
+>[!NOTE]
 >
+>Nous aurions préféré une pile, car garde l'avantage de l'ajout en `o(1)` et plus simple, mais le sujet nous imposer une liste.
 >Nous aurions préféré une pile, car garde l'avantage de l'ajout en `o(1)` et plus simple, mais le sujet nous imposer une liste.
 
 ---
