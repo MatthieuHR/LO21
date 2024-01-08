@@ -399,7 +399,7 @@ int main(){
                 }
                 break;
             case '6':
-                if (isEmptyFactList(my_fact_list) || isUndefinedDB(my_db)) {
+                if (isEmptyFactList(my_fact_list) || isDBEmpty(my_db)) {
                     printf("The fact list or the DB is empty, you can't run the expert system\n");
                     printf("\nPRESS ANY KEY TO CONTINUE\n");
                     scanf(" %c", &trash);
@@ -428,7 +428,7 @@ int main(){
                     scanf(" %c", &trash);
                     printf("\n");
                     removeAllFacts(factToTest);
-                    freeFactList(copy);
+                    freeDB(copy);
                     break;
                 }
 
