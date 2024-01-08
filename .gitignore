@@ -2,5 +2,6 @@
 /cmake-build-debug/
 /.vscode/
 /.idea/
-```
+/CMakeFiles/
+/cmake-build-debug
 
