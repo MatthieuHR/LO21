@@ -73,7 +73,7 @@ void printPremise(ElmOfPremise * premise) {
 }
 
 void printRule(Rule rule) {
-    printf("Rule n:\n");
+    printf("Rule-\n");
     printf("___\n");
     ElmOfPremise * current = getHeadOfPremise(rule);
     printPremise(current);
@@ -227,7 +227,7 @@ int main(){
                                 my_fact_list = removeAllFactsAndFree(my_fact_list);
                                 printf("All facts have been removed\n");
                             } else {
-                                if (isDBEmpty(my_db)) {
+                                if (user_input == 'y') {
                                     printf("The facts have not been removed because the DB is not empty\n");
                                 }
                             }
@@ -427,6 +427,9 @@ int main(){
                     printf("PRESS ANY KEY TO CONTINUE\n");
                     scanf(" %c", &trash);
                     printf("\n");
+                    removeAllFacts(factToTest);
+                    freeFactList(copy);
+                    break;
                 }
 
                 printf("The result is:\n");
