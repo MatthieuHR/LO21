@@ -205,10 +205,10 @@ int main(){
                             user_my_struct->name = malloc(sizeof(char) * 100);
                             user_my_struct->description = malloc(sizeof(char) * 100);
                             printf("Enter the name of the fact: ");
-                            scanf("%s", user_my_struct->name);
+                            scanf(" %[^\n]", user_my_struct->name);
                             printf("\n");
                             printf("Enter the description of the fact: ");
-                            scanf("%s", user_my_struct->description);
+                            scanf(" %[^\n]", user_my_struct->description);
                             printf("\n");
                             my_fact_list = addFact(my_fact_list, user_my_struct);
                             break;
